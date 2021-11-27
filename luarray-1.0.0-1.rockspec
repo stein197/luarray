@@ -7,7 +7,7 @@ source = {
 	branch = "main"
 }
 description = {
-	summary = "Flexible array implementation for Lua",
+	summary = "Instantiatable flexible array implementation with familiar methods for Lua",
 	detailed = [[
 		Lua provides only a few methods to work with tables. This package is an attempt to extend Lua's capabilities
 		to work with array-like structures by introducing new `array` type with a bunch of useful and common methods
