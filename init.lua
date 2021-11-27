@@ -1,4 +1,8 @@
-local prototype = {
+local _ENV = setmetatable({}, {
+	__index = _ENV
+})
+
+proto = {
 	len = function (self) end; -- TODO
 	every = function (self, f) end; -- TODO
 	filter = function (self, f) end; -- TODO
@@ -33,12 +37,32 @@ local prototype = {
 	shuffle = function (self) end; -- TODO
 	pad = function (self) end; -- TODO
 	unique = function (self) end; -- TODO
+
+	totable = function (self)
+		local t = {}
+		for k, v in pairs(self.__data) do
+			t[k] = type(v) == "table" and v:totable() or v
+		end
+		return t
+	end;
 }
 
-local metatable = {
-	__index = prototype;
-	__newindex = function (self, k, v) end; -- TODO
-	__len = function (self) end; -- TODO
+metatable = {
+	__index = function (self, k)
+		local m = proto[k]
+		return m and m or self.__data[k]
+	end;
+
+	__newindex = function (self, k, v)
+		if not proto[k] and not metatable[k] then
+			self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
+		end
+	end;
+
+	__len = function (self)
+		return #self.__data
+	end;
+
 	__pairs = function (self) end; -- TODO
 	__add = function (self, tbl) end; -- TODO
 	__sub = function (self, tbl) end; -- TODO
@@ -47,12 +71,22 @@ local metatable = {
 	__call = function(self, ...) end; -- TODO: Iterator?
 }
 
-local function combine() end
-
-return function (...)
+function ctor(self, ...)
 	local args = {...}
-	return setmetatable({
-		-- TODO: Deep clone instead of assigning?
-		__data = #args == 1 and type(args[1]) == "table" and args[1] or args
-	}, metatable)
+	local array = {
+		__data = {}
+	}
+	local data = #args == 1 and type(args[1]) == "table" and args[1] or args
+	for k, v in pairs(data) do
+		array.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
+	end
+	return setmetatable(array, metatable)
 end
+
+return setmetatable({
+	combine = function (keys, values)
+
+	end;
+}, {
+	__call = ctor
+})
