@@ -1,8 +1,4 @@
-local _ENV = setmetatable({}, {
-	__index = _ENV
-})
-
-proto = {
+local proto = {
 	len = function (self) end; -- TODO
 	every = function (self, f) end; -- TODO
 	filter = function (self, f) end; -- TODO
@@ -39,25 +35,45 @@ proto = {
 	unique = function (self) end; -- TODO
 
 	totable = function (self)
-		local t = {}
-		for k, v in pairs(self.__data) do
-			t[k] = type(v) == "table" and v:totable() or v
-		end
-		return t
+		-- local t = {}
+		-- for k, v in pairs(self.__data) do
+		-- 	t[k] = type(v) == "table" and v:totable() or v
+		-- end
+		-- return t
 	end;
 }
 
-metatable = {
-	__index = function (self, k)
-		local m = proto[k]
-		return m and m or self.__data[k]
-	end;
+local metatable = {}
 
-	__newindex = function (self, k, v)
-		if not proto[k] and not metatable[k] then
-			self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
+local function ctor(self, ...)
+	local args = {...}
+	local array = {
+		__data = {} -- TODO: No need in __data? Store directly in array?
+	}
+	local issinglearg = #args == 1 and type(args[1]) == "table"
+	local data = issinglearg and args[1] or args
+	if issinglearg and getmetatable(data) == metatable then
+		table.insert(array.__data, data)
+	else
+		for k, v in pairs(data) do
+			array.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
 		end
-	end;
+	end
+	return setmetatable(array, metatable)
+end
+
+-- function metatable.__index(self, k)
+-- 	local m = proto[k]
+-- 	return m and m or self.__data[k]
+-- end
+
+-- function metatable.__newindex(self, k, v)
+-- 	if not proto[k] and not metatable[k] then
+-- 		self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
+-- 	end
+-- end
+
+local metatable = {
 
 	__len = function (self)
 		return #self.__data
@@ -71,22 +87,12 @@ metatable = {
 	__call = function(self, ...) end; -- TODO: Iterator?
 }
 
-function ctor(self, ...)
-	local args = {...}
-	local array = {
-		__data = {}
-	}
-	local data = #args == 1 and type(args[1]) == "table" and args[1] or args
-	for k, v in pairs(data) do
-		array.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
-	end
-	return setmetatable(array, metatable)
-end
+
 
 return setmetatable({
-	combine = function (keys, values)
+	-- combine = function (keys, values)
 
-	end;
+	-- end;
 }, {
 	__call = ctor
 })
