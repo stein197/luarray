@@ -8,12 +8,27 @@ luarocks install luarray
 ```
 
 ## Usage
+The usage is pretty similar to PHP's arrays as it's shown in the example below:
 ```lua
 local array = require "luarray"
-array("a", "b", "c")
+array("a", "b", "c") -- Creates {"a", "b", "c"}
+```
+The only function takes varargs and wraps them up. But what if you want to wrap tables with arbitrary keys? The ONLY
+exception for that case is that if `array` takes only single argument AND it's a table, then the constructor wraps it:
+```lua
+array({
+	a = 1,
+	b = 2
+}) -- {a = 1, b = 2}
+```
+You can pass other arrays as well and you'll get what you expect:
+```lua
+array(array(1)) -- {{1}}
 ```
 
 ## API
+
+> To get more detailed documentation refer to the sources.
 
 ## Testing
 Install luaunit package:

@@ -33,6 +33,7 @@ local proto = {
 	shuffle = function (self) end; -- TODO
 	pad = function (self) end; -- TODO
 	unique = function (self) end; -- TODO
+	islist = function (self) end; -- TODO
 
 	totable = function (self)
 		-- local t = {}
@@ -45,6 +46,9 @@ local proto = {
 
 local metatable = {}
 
+--- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
+--- the function wraps it. Otherwise wraps all arguments as if it's a table.
+--- @return table array Array
 local function ctor(self, ...)
 	local args = {...}
 	local array = {
@@ -62,19 +66,28 @@ local function ctor(self, ...)
 	return setmetatable(array, metatable)
 end
 
+--- Overloads index access to the array. Redirects all calls to the internal `__data` table field if the key is not in
+--- the proto table, otherwise returns function from it.
+--- @param self table The table
+--- @param k any An index key
+--- @return any value The value associated with the key
 function metatable.__index(self, k)
 	local m = proto[k]
 	return m and m or self.__data[k]
 end
 
+--- Overloads index assigning. Redirects all calls to the internal `__data` table field.
+--- @param self table The table
+--- @param k any An index key
+--- @param v any A new value associated with the key
 function metatable.__newindex(self, k, v)
 	self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
 end
 
 local metatable = {
 
-	__len = function (self)
-		return #self.__data
+	__len = function (self) -- TODO
+		-- return #self.__data
 	end;
 
 	__pairs = function (self) end; -- TODO
@@ -84,8 +97,6 @@ local metatable = {
 	__concat = function(self, tbl) end; -- TODO
 	__call = function(self, ...) end; -- TODO: Iterator?
 }
-
-
 
 return setmetatable({
 	-- combine = function (keys, values)

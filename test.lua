@@ -19,7 +19,7 @@ local tabc = {"a", "b", "c"}
 local tassoc = {a = 1, b = 2, c = 3}
 local ae = luaunit.assertEquals
 
--- TODO: Unite cases into table and go through the tables to assert equality
+-- TODO: Unite cases into table and go through the tables to assert equality, structure tests
 TestArray = {
 	["test: array() returns a table containing \"__data\" field"] = function ()
 		ae(array().__data, {})
