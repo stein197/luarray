@@ -1,5 +1,5 @@
-local array = require ""
-local luaunit = require "luaunit"
+local array <const> = require ""
+local luaunit <const> = require "luaunit"
 
 local cases = {
 	empty = {},
@@ -69,6 +69,56 @@ TestArray = {
 	["test: __index(): Access methods will return one"] = function ()
 		ae(type(array({1, 2, 3}).len), "function")
 	end;
+
+	["test: __newindex(): Setting at numberic index"] = function ()
+		local a = array()
+		a[1] = "a"
+		ae(a[1], "a")
+	end;
+
+	["test: __newindex(): Setting at string index"] = function ()
+		local a = array()
+		a.a = 1
+		ae(a.a, 1)
+	end;
+
+	["test: __newindex(): Setting at complex type index"] = function ()
+		local a = array()
+		local i = {1}
+		a[i] = 1
+		ae(a[i], 1)
+	end;
+
+	["test: __newindex(): Setting at meta index will write the value to __data field"] = function ()
+		local a = array()
+		a.__index = 1
+		ae(a, {__data = {__index = 1}})
+	end;
+
+	["test: __newindex(): Setting at proto index will write the value to __data field"] = function ()
+		local a = array()
+		a.len = 1
+		ae(a, {__data = {len = 1}})
+	end;
+
+	["test: __newindex(): Setting table value will wrap it"] = function ()
+		local a = array()
+		a.t = {}
+		ae(a, {__data = {t = {__data = {}}}})
+		a = array()
+		a.t = {1}
+		ae(a, {__data = {t = {__data = {1}}}})
+	end;
+
+	["test: __newindex(): Setting array value will assign it"] = function ()
+		local a = array()
+		a.t = array()
+		ae(a.t, {__data = {}})
+		a = array()
+		a.t = {1}
+		ae(a.t, {__data = {1}})
+	end;
+
 }
 
 os.exit(luaunit.run())

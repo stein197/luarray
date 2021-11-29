@@ -67,11 +67,9 @@ function metatable.__index(self, k)
 	return m and m or self.__data[k]
 end
 
--- function metatable.__newindex(self, k, v)
--- 	if not proto[k] and not metatable[k] then
--- 		self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(v) or v
--- 	end
--- end
+function metatable.__newindex(self, k, v)
+	self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
+end
 
 local metatable = {
 
