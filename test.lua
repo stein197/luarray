@@ -53,6 +53,10 @@ TestArray = {
 		ae(array({1, 2, {3, 4}}), {__data = {1, 2, {__data = {3, 4}}}})
 	end;
 
+	["test: array(): Instantiating array with metakeys will put them in internal __data field"] = function ()
+		ae(array({__index = 1, len = 2}), {__data = {__index = 1, len = 2}})
+	end;
+
 	["test: __index(): Accessing by number"] = function ()
 		ae(array("a")[1], "a")
 	end;
