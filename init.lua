@@ -62,10 +62,10 @@ local function ctor(self, ...)
 	return setmetatable(array, metatable)
 end
 
--- function metatable.__index(self, k)
--- 	local m = proto[k]
--- 	return m and m or self.__data[k]
--- end
+function metatable.__index(self, k)
+	local m = proto[k]
+	return m and m or self.__data[k]
+end
 
 -- function metatable.__newindex(self, k, v)
 -- 	if not proto[k] and not metatable[k] then

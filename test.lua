@@ -19,6 +19,7 @@ local tabc = {"a", "b", "c"}
 local tassoc = {a = 1, b = 2, c = 3}
 local ae = luaunit.assertEquals
 
+-- TODO: Unite cases into table and go through the tables to assert equality
 TestArray = {
 	["test: array() returns a table containing \"__data\" field"] = function ()
 		ae(array().__data, {})
@@ -50,6 +51,23 @@ TestArray = {
 
 	["test: array(..., {...}) wraps nested tables"] = function ()
 		ae(array({1, 2, {3, 4}}), {__data = {1, 2, {__data = {3, 4}}}})
+	end;
+
+	["test: __index(): Accessing by number"] = function ()
+		ae(array("a")[1], "a")
+	end;
+
+	["test: __index(): Accessing by string"] = function ()
+		ae(array({a = 1}).a, 1)
+	end;
+
+	["test: __index(): Accessing by complex type"] = function ()
+		local k = {1}
+		ae(array({[k] = "a"})[k], "a")
+	end;
+
+	["test: __index(): Access methods will return one"] = function ()
+		ae(type(array({1, 2, 3}).len), "function")
 	end;
 }
 
