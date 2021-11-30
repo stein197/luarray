@@ -34,6 +34,7 @@ local proto = {
 	pad = function (self) end; -- TODO
 	unique = function (self) end; -- TODO
 	islist = function (self) end; -- TODO
+	isempty = function (self) end; -- TODO
 
 	totable = function (self)
 		-- local t = {}
@@ -44,6 +45,7 @@ local proto = {
 	end;
 }
 
+-- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 local metatable = {}
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
@@ -97,9 +99,7 @@ local metatable = {
 }
 
 return setmetatable({
-	-- combine = function (keys, values)
-
-	-- end;
+	combine = function (keys, values) end; -- TODO
 }, {
 	__call = ctor
 })
