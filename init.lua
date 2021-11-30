@@ -1,53 +1,6 @@
-local proto = {
-	len = function (self) end; -- TODO
-	every = function (self, f) end; -- TODO
-	filter = function (self, f) end; -- TODO
-	fill = function (self, f) end; -- TODO
-	find = function (self, f) end; -- TODO
-	findindex = function (self, f) end; -- TODO
-	flat = function (self, depth) end; -- TODO
-	foreach = function (self, f) end; -- TODO
-	contains = function (self, item) end; -- TODO
-	indexof = function (self, item) end; -- TODO
-	lastindexof = function (self, item) end; -- TODO
-	join = function (self, sep) end; -- TODO
-	map = function (self, f) end; -- TODO
-	reduce = function (self, f, init) end; -- TODO
-	reduceend = function (self, f, init) end; -- TODO
-	reverse = function (self) end; -- TODO
-	slice = function (self, from, to) end; -- TODO
-	some = function (self, f) end; -- TODO
-	sort = function (self, f) end; -- TODO
-	clone = function (self) end; -- TODO
-	push = function (self, item) end; -- TODO
-	unshift = function (self, item) end; -- TODO
-	pop = function (self) end; -- TODO
-	shift = function (self) end; -- TODO
-	column = function (self) end; -- TODO
-	keys = function (self) end; -- TODO
-	values = function (self) end; -- TODO
-	diff = function (self, f) end; -- TODO
-	intersect = function (self, f) end; -- TODO
-	first = function (self) end; -- TODO
-	last = function (self) end; -- TODO
-	shuffle = function (self) end; -- TODO
-	pad = function (self) end; -- TODO
-	unique = function (self) end; -- TODO
-	islist = function (self) end; -- TODO
-	isempty = function (self) end; -- TODO
-	truncate = function (self) end; -- TODO
-
-	totable = function (self)
-		-- local t = {}
-		-- for k, v in pairs(self.__data) do
-		-- 	t[k] = type(v) == "table" and v:totable() or v
-		-- end
-		-- return t
-	end;
-}
-
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 local metatable = {}
+local proto = {}
 
 local function isplaintable(t)
 	return type(t) == "table" and getmetatable(t) ~= metatable
@@ -102,6 +55,44 @@ end
 function metatable:__sub() end -- TODO
 function metatable:__concat() end -- TODO
 function metatable:__eq() end -- TODO
+function proto:len(self) end; -- TODO
+function proto:every(self, f) end; -- TODO
+function proto:filter(self, f) end; -- TODO
+function proto:fill(self, f) end; -- TODO
+function proto:find(self, f) end; -- TODO
+function proto:findindex(self, f) end; -- TODO
+function proto:flat(self, depth) end; -- TODO
+function proto:foreach(self, f) end; -- TODO
+function proto:contains(self, item) end; -- TODO
+function proto:indexof(self, item) end; -- TODO
+function proto:lastindexof(self, item) end; -- TODO
+function proto:join(self, sep) end; -- TODO
+function proto:map(self, f) end; -- TODO
+function proto:reduce(self, f, init) end; -- TODO
+function proto:reduceend(self, f, init) end; -- TODO
+function proto:reverse(self) end; -- TODO
+function proto:slice(self, from, to) end; -- TODO
+function proto:some(self, f) end; -- TODO
+function proto:sort(self, f) end; -- TODO
+function proto:clone(self) end; -- TODO
+function proto:push(self, item) end; -- TODO
+function proto:unshift(self, item) end; -- TODO
+function proto:pop(self) end; -- TODO
+function proto:shift(self) end; -- TODO
+function proto:column(self) end; -- TODO
+function proto:keys(self) end; -- TODO
+function proto:values(self) end; -- TODO
+function proto:diff(self, f) end; -- TODO
+function proto:intersect(self, f) end; -- TODO
+function proto:first(self) end; -- TODO
+function proto:last(self) end; -- TODO
+function proto:shuffle(self) end; -- TODO
+function proto:pad(self) end; -- TODO
+function proto:unique(self) end; -- TODO
+function proto:islist(self) end; -- TODO
+function proto:isempty(self) end; -- TODO
+function proto:truncate(self) end; -- TODO
+function proto:totable(self) local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end; -- TODO
 
 return setmetatable({
 	combine = function (keys, values) end; -- TODO
