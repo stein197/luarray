@@ -127,6 +127,13 @@ TestArray = {
 		ae(array({a = 1}).__data.a, 1)
 	end;
 
+	["test: __len(): Length of empty table is 0"] = function ()
+		ae(#array(), 0)
+	end;
+
+	["test: __len(): Default"] = function ()
+		ae(#array(1, 2, 3), 3)
+	end;
 }
 
 os.exit(luaunit.run())
