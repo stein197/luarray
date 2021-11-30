@@ -123,6 +123,10 @@ TestArray = {
 		ae(a.t, {__data = {1}})
 	end;
 
+	["test: __newindex(): Can access values through direct __data access"] = function ()
+		ae(array({a = 1}).__data.a, 1)
+	end;
+
 }
 
 os.exit(luaunit.run())
