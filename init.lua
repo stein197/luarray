@@ -35,6 +35,7 @@ local proto = {
 	unique = function (self) end; -- TODO
 	islist = function (self) end; -- TODO
 	isempty = function (self) end; -- TODO
+	truncate = function (self) end; -- TODO
 
 	totable = function (self)
 		-- local t = {}
