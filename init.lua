@@ -55,7 +55,13 @@ end
 function metatable:__sub() end -- TODO
 function metatable:__concat() end -- TODO
 function metatable:__eq() end -- TODO
-function proto:len() end; -- TODO
+
+--- Returns length of the table. Same as `#` operator.
+--- @return number len The length of the table.
+function proto:len()
+	return #self.__data
+end;
+
 function proto:every(f) end; -- TODO
 function proto:filter(f) end; -- TODO
 function proto:fill(f) end; -- TODO
@@ -92,7 +98,7 @@ function proto:unique() end; -- TODO
 function proto:islist() end; -- TODO
 function proto:isempty() end; -- TODO
 function proto:truncate() end; -- TODO
-function proto:totable() local t = {};for k, v in pairs(.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end; -- TODO
+function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end; -- TODO
 
 return setmetatable({
 	combine = function (keys, values) end; -- TODO

@@ -140,6 +140,14 @@ TestArray = {
 		ae(#array(1, 2, 3), 3)
 	end;
 
+	["test: len(): Length of empty table is 0"] = function ()
+		ae(array():len(), 0)
+	end;
+
+	["test: len()"] = function ()
+		ae(array(1, 2, 3):len(), 3)
+	end;
+
 	["test: __add(): Adding simple values will add them into inner __data"] = function () error "Not implemented" end;
 	["test: __add(): Adding a table will wrap it"] = function () error "Not implemented" end;
 	["test: __add(): Adding an array will just add it"] = function () error "Not implemented" end;
