@@ -55,44 +55,44 @@ end
 function metatable:__sub() end -- TODO
 function metatable:__concat() end -- TODO
 function metatable:__eq() end -- TODO
-function proto:len(self) end; -- TODO
-function proto:every(self, f) end; -- TODO
-function proto:filter(self, f) end; -- TODO
-function proto:fill(self, f) end; -- TODO
-function proto:find(self, f) end; -- TODO
-function proto:findindex(self, f) end; -- TODO
-function proto:flat(self, depth) end; -- TODO
-function proto:foreach(self, f) end; -- TODO
-function proto:contains(self, item) end; -- TODO
-function proto:indexof(self, item) end; -- TODO
-function proto:lastindexof(self, item) end; -- TODO
-function proto:join(self, sep) end; -- TODO
-function proto:map(self, f) end; -- TODO
-function proto:reduce(self, f, init) end; -- TODO
-function proto:reduceend(self, f, init) end; -- TODO
-function proto:reverse(self) end; -- TODO
-function proto:slice(self, from, to) end; -- TODO
-function proto:some(self, f) end; -- TODO
-function proto:sort(self, f) end; -- TODO
-function proto:clone(self) end; -- TODO
-function proto:push(self, item) end; -- TODO
-function proto:unshift(self, item) end; -- TODO
-function proto:pop(self) end; -- TODO
-function proto:shift(self) end; -- TODO
-function proto:column(self) end; -- TODO
-function proto:keys(self) end; -- TODO
-function proto:values(self) end; -- TODO
-function proto:diff(self, f) end; -- TODO
-function proto:intersect(self, f) end; -- TODO
-function proto:first(self) end; -- TODO
-function proto:last(self) end; -- TODO
-function proto:shuffle(self) end; -- TODO
-function proto:pad(self) end; -- TODO
-function proto:unique(self) end; -- TODO
-function proto:islist(self) end; -- TODO
-function proto:isempty(self) end; -- TODO
-function proto:truncate(self) end; -- TODO
-function proto:totable(self) local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end; -- TODO
+function proto:len() end; -- TODO
+function proto:every(f) end; -- TODO
+function proto:filter(f) end; -- TODO
+function proto:fill(f) end; -- TODO
+function proto:find(f) end; -- TODO
+function proto:findindex(f) end; -- TODO
+function proto:flat(depth) end; -- TODO
+function proto:foreach(f) end; -- TODO
+function proto:contains(item) end; -- TODO
+function proto:indexof(item) end; -- TODO
+function proto:lastindexof(item) end; -- TODO
+function proto:join(sep) end; -- TODO
+function proto:map(f) end; -- TODO
+function proto:reduce(f, init) end; -- TODO
+function proto:reduceend(f, init) end; -- TODO
+function proto:reverse() end; -- TODO
+function proto:slice(from, to) end; -- TODO
+function proto:some(f) end; -- TODO
+function proto:sort(f) end; -- TODO
+function proto:clone() end; -- TODO
+function proto:push(item) end; -- TODO
+function proto:unshift(item) end; -- TODO
+function proto:pop() end; -- TODO
+function proto:shift() end; -- TODO
+function proto:column() end; -- TODO
+function proto:keys() end; -- TODO
+function proto:values() end; -- TODO
+function proto:diff(f) end; -- TODO
+function proto:intersect(f) end; -- TODO
+function proto:first() end; -- TODO
+function proto:last() end; -- TODO
+function proto:shuffle() end; -- TODO
+function proto:pad() end; -- TODO
+function proto:unique() end; -- TODO
+function proto:islist() end; -- TODO
+function proto:isempty() end; -- TODO
+function proto:truncate() end; -- TODO
+function proto:totable() local t = {};for k, v in pairs(.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end; -- TODO
 
 return setmetatable({
 	combine = function (keys, values) end; -- TODO
