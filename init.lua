@@ -68,19 +68,17 @@ end
 
 --- Overloads index access to the array. Redirects all calls to the internal `__data` table field if the key is not in
 --- the proto table, otherwise returns function from it.
---- @param self table The table
 --- @param k any An index key
 --- @return any value The value associated with the key
-function metatable.__index(self, k)
+function metatable:__index(k)
 	local m = proto[k]
 	return m and m or self.__data[k]
 end
 
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
---- @param self table The table
 --- @param k any An index key
 --- @param v any A new value associated with the key
-function metatable.__newindex(self, k, v)
+function metatable:__newindex(k, v)
 	self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
 end
 
