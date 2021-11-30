@@ -84,19 +84,14 @@ function metatable:__newindex(k, v)
 	self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
 end
 
-local metatable = {
-
-	__len = function (self) -- TODO
-		-- return #self.__data
-	end;
-
-	__pairs = function (self) end; -- TODO
-	__add = function (self, tbl) end; -- TODO
-	__sub = function (self, tbl) end; -- TODO
-	__eq = function (self, tbl) end; -- TODO
-	__concat = function(self, tbl) end; -- TODO
-	__call = function(self, ...) end; -- TODO: Iterator?
-}
+function metatable:__call() end -- TODO
+function metatable:__len() end -- TODO
+function metatable:__pairs() end -- TODO
+function metatable:__ipairs() end -- TODO
+function metatable:__add() end -- TODO
+function metatable:__sub() end -- TODO
+function metatable:__concat() end -- TODO
+function metatable:__eq() end -- TODO
 
 return setmetatable({
 	combine = function (keys, values) end; -- TODO
