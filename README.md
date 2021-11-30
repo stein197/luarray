@@ -21,9 +21,9 @@ array({
 	b = 2
 }) -- {a = 1, b = 2}
 ```
-You can pass other arrays as well and you'll get what you expect:
+You can pass other arrays as well and you'll get what you expect. Note that in this case the result will be different from that was in the previous one:
 ```lua
-array(array(1)) -- {{1}}
+array(array(1)) -- {{1}} instead of {1}
 ```
 
 ## API
