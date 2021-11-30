@@ -49,6 +49,10 @@ local proto = {
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 local metatable = {}
 
+local function isplaintable(t)
+	return type(t) == "table" and getmetatable(t) ~= metatable
+end
+
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
 --- @return table array Array
@@ -63,7 +67,7 @@ local function ctor(self, ...)
 		table.insert(array.__data, data)
 	else
 		for k, v in pairs(data) do
-			array.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
+			array.__data[k] = isplaintable(v) and ctor(self, v) or v
 		end
 	end
 	return setmetatable(array, metatable)
@@ -82,7 +86,7 @@ end
 --- @param k any An index key
 --- @param v any A new value associated with the key.
 function metatable:__newindex(k, v)
-	self.__data[k] = type(v) == "table" and getmetatable(v) ~= metatable and ctor(self, v) or v
+	self.__data[k] = isplaintable(v) and ctor(self, v) or v
 end
 
 --- Overloads `#` operator.
@@ -91,10 +95,10 @@ function metatable:__len()
 	return #self.__data
 end
 
-function metatable:__call() end -- TODO
--- function metatable:__pairs() end -- TODO
--- function metatable:__ipairs() end -- TODO
-function metatable:__add() end -- TODO
+-- function metatable:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
+-- function metatable:__call() end -- TODO
+-- function metatable:__pairs() return pairs(self.__data) end -- TODO
+-- function metatable:__ipairs() return ipairs(self.__data) end -- TODO
 function metatable:__sub() end -- TODO
 function metatable:__concat() end -- TODO
 function metatable:__eq() end -- TODO
