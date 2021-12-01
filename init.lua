@@ -133,6 +133,23 @@ function proto:each(f)
 	end
 end
 
+--- Combines two tables into one by using the first one as keys and the second one as values.
+--- @param keys table|Array Keys.
+--- @param values table|Array Values.
+--- @return Array rs Combined array.
+function static.combine(keys, values)
+	if #keys ~= #values then
+		error(string.format("Keys and values tables have different lengths: %s against %s", #keys, #values))
+	end
+	keys = getmetatable(keys) == mt and keys.__data or keys
+	values = getmetatable(values) == mt and values.__data or values
+	local rs = ctor()
+	for i = 1, #keys do
+		rs.__data[keys[i]] = values[i]
+	end
+	return rs
+end
+
 function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
 function mt:__call() end -- TODO
 function mt:__concat() end -- TODO
@@ -172,7 +189,6 @@ function proto:truncate() end -- TODO
 function proto:swap() end -- TODO
 function proto:range(n, f) end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
-function static.combine(keys, values) end; -- TODO
 function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {
