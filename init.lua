@@ -120,7 +120,8 @@ function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
 function proto:flat(depth) end -- TODO
 function proto:foreach(f) end -- TODO
-function proto:contains(item) end -- TODO
+function proto:containskey(item) end -- TODO
+function proto:containsvalue(item) end -- TODO
 function proto:indexof(item) end -- TODO
 function proto:lastindexof(item) end -- TODO
 function proto:join(sep) end -- TODO
