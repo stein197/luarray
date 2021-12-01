@@ -327,6 +327,10 @@ TestArray = {
 		ae(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end, false), {2, 4})
 	end;
 
+	["test: filter(): Returned value is an array"] = function ()
+		ae(getmetatable(array():filter(function () end)), getmetatable(array()))
+	end;
+
 	["test: each(): Closure accepts all arguments"] = function ()
 		local value, key, tbl
 		local a = array({a = 1})
