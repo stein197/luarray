@@ -68,12 +68,27 @@ function proto:len()
 	return #self.__data
 end
 
+--- Check if at least one element in the array satisfies the predicate.
+--- @generic K, V
+--- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
+--- @return boolean rs `true` if at least one element satisfies the predicate.
+function proto:some(f)
+	local rs = false
+	for k, v in pairs(self) do
+		rs = rs or f(v, k, self)
+		if rs then
+			break
+		end
+	end
+	return not not rs
+end
+
 --- Checks if every element in the array satisfies the passed predicate.
 --- ```lua
 --- array(1, 2, 3):every(function (v, k, self) return v > 2 and type(k) ~= "string" end)
 --- ```
 --- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate
+--- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
 function proto:every(f)
 	local rs = true
@@ -83,7 +98,7 @@ function proto:every(f)
 			break
 		end
 	end
-	return not not rs -- Explicit casting to boolean
+	return not not rs
 end
 
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
@@ -128,7 +143,6 @@ function proto:reduce(f, init) end -- TODO
 function proto:reduceend(f, init) end -- TODO
 function proto:reverse() end -- TODO
 function proto:slice(from, to) end -- TODO
-function proto:some(f) end -- TODO
 function proto:sort(f) end -- TODO
 function proto:clone() end -- TODO
 function proto:addend(item) end -- TODO

@@ -217,6 +217,39 @@ TestArray = {
 		ae(array(1, 2, 3):len(), 3)
 	end;
 
+	["test: some(): Calling on empty array returns false"] = function ()
+		af(array():some(function () return true end))
+	end;
+
+	["test: some(): Calling on array with single trythy element returns true"] = function ()
+		at(array(1, 2, 3):some(function (v) return v == 2 end))
+	end;
+
+	["test: some(): Calling on array with all falsy elements return false"] = function ()
+		af(array(1, 2, 3):some(function (v) return type(v) == "string" end))
+	end;
+
+	["test: some(): Calling on array with all truthy elements return true"] = function ()
+		at(array(1, 2, 3):some(function (v) return type(v) ~= "string" end))
+	end;
+
+	["test: some(): Not returning from closure is considered as falsy"] = function ()
+		af(array(true):some(function () end))
+	end;
+
+	["test: some(): Closure accepts value, key and table itself"] = function ()
+		local value, key, tbl
+		local a = array({a = 1})
+		a:some(function (v, k, t)
+			value = v
+			key = k
+			tbl = t
+		end)
+		ae(value, 1)
+		ae(key, "a")
+		ae(tbl, a)
+	end;
+
 	["test: every(): Calling on empty array returns true"] = function ()
 		at(array():every(function () return false end))
 	end;
