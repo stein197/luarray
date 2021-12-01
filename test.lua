@@ -26,35 +26,46 @@ TestArray = {
 	end;
 
 	["test: array({}) creates a wrapper around single table argument"] = function ()
-		ae(array(tempty), {__data = {}})
-		ae(array(t123), {__data = {1, 2, 3}})
-		ae(array(tassoc), {__data = {a = 1, b = 2, c = 3}})
+		ae(array(tempty).__data, {})
+		ae(array(t123).__data, {1, 2, 3})
+		ae(array(tassoc).__data, {a = 1, b = 2, c = 3})
 	end;
 
 	["test: array(1) creates a wrapper around single argument"] = function ()
-		ae(array(1), {__data = {1}})
+		ae(array(1).__data, {1})
 	end;
 
 	["test: array(1, 2, 3) creates a wrapper around arguments"] = function ()
-		ae(array(1, 2, 3), {__data = {1, 2, 3}})
+		ae(array(1, 2, 3).__data, {1, 2, 3})
 	end;
 
 	["test: array({...}, ...) creates a wrapper around arguments where the first one is a table"] = function ()
-		ae(array({1}, 2, 3), {__data = {{__data = {1}}, 2, 3}})
+		local a = array({1}, 2, 3)
+		ae(a.__data, {{1}, 2, 3})
+		ae(getmetatable(a.__data[1]), getmetatable(a))
 	end;
 
 	["test: array({}) on arrays just assigns them instead of wrapping them again"] = function ()
-		ae(array(array(1)), {__data = {{__data = {1}}}})
-		ae(array(1, array(1)), {__data = {1, {__data = {1}}}})
-		ae(array(array(1), 1), {__data = {{__data = {1}}, 1}})
+		local a1 = array(array(1))
+		ae(a1.__data, {{1}})
+		ae(getmetatable(a1.__data[1]), getmetatable(a1))
+		local a2 = array(1, array(1))
+		ae(a2.__data, {1, {1}})
+		ae(getmetatable(a2.__data[2]), getmetatable(a2))
+		local a3 = array(array(1), 1)
+		ae(a3.__data, {{1}, 1})
+		ae(getmetatable(a3.__data[1]), getmetatable(a3))
 	end;
 
 	["test: array(..., {...}) wraps nested tables"] = function ()
-		ae(array({1, 2, {3, 4}}), {__data = {1, 2, {__data = {3, 4}}}})
+		local a = array({1, 2, {3, 4}})
+		ae(a.__data, {1, 2, {3, 4}})
+		ae(getmetatable(a.__data[3]), getmetatable(a))
 	end;
 
 	["test: array(): Instantiating array with metakeys will put them in internal __data field"] = function ()
-		ae(array({__index = 1, len = 2}), {__data = {__index = 1, len = 2}})
+		ae(array({__index = 1, len = 2}).__data, {__index = 1, len = 2})
+		ae(array({__index = 1, len = 2}), {__index = 1, len = 2})
 	end;
 
 	["test: array(): Instantiating with first value of false"] = function ()
@@ -101,31 +112,33 @@ TestArray = {
 	["test: __newindex(): Setting at meta index will write the value to __data field"] = function ()
 		local a = array()
 		a.__index = 1
-		ae(a, {__data = {__index = 1}})
+		ae(a.__data, {__index = 1})
 	end;
 
 	["test: __newindex(): Setting at proto index will write the value to __data field"] = function ()
 		local a = array()
 		a.len = 1
-		ae(a, {__data = {len = 1}})
+		ae(a.__data, {len = 1})
 	end;
 
 	["test: __newindex(): Setting table value will wrap it"] = function ()
 		local a = array()
 		a.t = {}
-		ae(a, {__data = {t = {__data = {}}}})
+		ae(a.__data, {t = {}})
+		ae(getmetatable(a.t), getmetatable(a))
 		a = array()
 		a.t = {1}
-		ae(a, {__data = {t = {__data = {1}}}})
+		ae(a.__data, {t = {1}})
+		ae(getmetatable(a.t), getmetatable(a))
 	end;
 
 	["test: __newindex(): Setting array value will assign it"] = function ()
 		local a = array()
 		a.t = array()
-		ae(a.t, {__data = {}})
+		ae(a.t.__data, {})
 		a = array()
 		a.t = {1}
-		ae(a.t, {__data = {1}})
+		ae(a.t.__data, {1})
 	end;
 
 	["test: __newindex(): Can access values through direct __data access"] = function ()
