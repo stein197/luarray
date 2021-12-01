@@ -57,7 +57,12 @@ function metatable:__pairs()
 	return pairs(self.__data)
 end
 
-function metatable:__ipairs() return ipairs(self.__data) end -- TODO
+--- Overloads calling to `ipairs` function. When the array is passed to `ipairs` function in for loop it simply iterates
+--- inner `__data` plain table
+function metatable:__ipairs()
+	return ipairs(self.__data)
+end
+
 function metatable:__sub() end -- TODO
 function metatable:__concat() end -- TODO
 function metatable:__eq() end -- TODO

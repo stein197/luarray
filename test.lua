@@ -189,6 +189,30 @@ TestArray = {
 		end;
 		ae(rs, {a = 1, b = 2, c = 3})
 	end;
+
+	["test: __ipairs(): Iterating through an array"] = function ()
+		local rs = {}
+		for k, v in ipairs(array("a", "b", "c")) do
+			rs[k] = v
+		end;
+		ae(rs, {"a", "b", "c"})
+	end;
+
+	["test: __ipairs(): Iterating through an empty array"] = function ()
+		local rs = {}
+		for k, v in ipairs(array()) do
+			rs[k] = v
+		end;
+		ae(rs, {})
+	end;
+
+	["test: __ipairs(): Iterating through an associated array"] = function ()
+		local rs = {}
+		for k, v in ipairs(array({a = 1, b = 2, c = 3})) do
+			rs[k] = v
+		end;
+		ae(rs, {})
+	end;
 }
 
 os.exit(luaunit.run())
