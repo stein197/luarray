@@ -1,4 +1,5 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
+-- TODO: Preserve order of addition
 local mt = {}
 local proto = {}
 local static = {}
@@ -133,6 +134,16 @@ function proto:each(f)
 	end
 end
 
+--- Returns array of keys.
+--- @return Array rs Keys.
+function proto:keys()
+	local rs = ctor()
+	for k in pairs(self) do
+		table.insert(rs.__data, k)
+	end
+	return rs
+end
+
 --- Combines two tables into one by using the first one as keys and the second one as values.
 --- @param keys table|Array Keys.
 --- @param values table|Array Values.
@@ -176,7 +187,6 @@ function proto:delstart(item) end -- TODO
 function proto:delend() end -- TODO
 function proto:addstart() end -- TODO
 function proto:col() end -- TODO
-function proto:keys() end -- TODO
 function proto:values() end -- TODO
 function proto:diff(f) end -- TODO
 function proto:intersect(f) end -- TODO

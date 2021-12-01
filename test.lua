@@ -388,8 +388,24 @@ TestArray = {
 		ae(array.combine({"a", "b", "c"}, array {1, 2, 3}), {a = 1, b = 2, c = 3})
 	end;
 
-	["test: combine(): Returned value is an array"] = function ()
+	["test: combine(): Returned type is an array"] = function ()
 		ae(getmetatable(array.combine({1}, {1})), getmetatable(array()))
+	end;
+
+	["test: keys(): Calling on empty array will return empty one"] = function ()
+		ae(array():keys(), {})
+	end;
+
+	["test: keys(): Retrieving numeric keys"] = function ()
+		ae(array("a", "b", "c"):keys(), {1, 2, 3})
+	end;
+
+	["test: keys(): Retrieving string keys"] = function ()
+		ae(array {a = 1, b = 2, c = 3} :keys(), {"a", "b", "c"})
+	end;
+
+	["test: keys(): Retuned type is an array"] = function ()
+		ae(getmetatable(array():keys()), getmetatable(array()))
 	end;
 }
 
