@@ -123,6 +123,15 @@ function proto:filter(f, pk)
 	return rs
 end
 
+--- Applies passed closure to all elements.
+--- @generic K, V
+--- @param f fun(v: V, k?: K, t?: table<K, V>) Closure.
+function proto:each(f)
+	for k, v in pairs(self) do
+		f(v, k, self)
+	end
+end
+
 function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
 function mt:__call() end -- TODO
 function mt:__sub() end -- TODO
@@ -132,7 +141,6 @@ function proto:fill(f) end -- TODO
 function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
 function proto:flat(depth) end -- TODO
-function proto:foreach(f) end -- TODO
 function proto:containskey(item) end -- TODO
 function proto:containsvalue(item) end -- TODO
 function proto:indexof(item) end -- TODO

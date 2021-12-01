@@ -326,6 +326,19 @@ TestArray = {
 	["test: filter(): Filtration discards keys when \"preservekeys\" is explicitly false"] = function ()
 		ae(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end, false), {2, 4})
 	end;
+
+	["test: each(): Closure accepts all arguments"] = function ()
+		local value, key, tbl
+		local a = array({a = 1})
+		a:each(function (v, k, t)
+			value = v
+			key = k
+			tbl = t
+		end)
+		ae(value, 1)
+		ae(key, "a")
+		at(tbl == a)
+	end;
 }
 
 os.exit(luaunit.run())
