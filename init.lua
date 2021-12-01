@@ -73,7 +73,24 @@ function proto:len()
 	return #self.__data
 end;
 
-function proto:every(f) end; -- TODO
+--- Checks if every element in the array satisfies the passed condition.
+--- ```lua
+--- array(1, 2, 3):every(function (v, k, self) return v > 2 and type(k) ~= "string" end)
+--- ```
+--- @generic K, V
+--- @param f fun(v: V, k?: K, t?: table<K, V>): boolean
+--- @return boolean rs `true` if all elements satisfy the condition.
+function proto:every(f)
+	local rs = true
+	for k, v in pairs(self) do
+		rs = rs and f(v, k, self)
+		if not rs then
+			break
+		end
+	end
+	return not not rs -- Explicit casting to boolean
+end;
+
 function proto:filter(f) end; -- TODO
 function proto:fill(f) end; -- TODO
 function proto:find(f) end; -- TODO

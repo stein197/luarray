@@ -18,6 +18,8 @@ local t123 = {1, 2, 3}
 local tabc = {"a", "b", "c"}
 local tassoc = {a = 1, b = 2, c = 3}
 local ae = luaunit.assertEquals
+local at = luaunit.assertTrue
+local af = luaunit.assertFalse
 
 -- TODO: Unite cases into table and go through the tables to assert equality, structure tests
 TestArray = {
@@ -153,14 +155,6 @@ TestArray = {
 		ae(#array(1, 2, 3), 3)
 	end;
 
-	["test: len(): Length of empty table is 0"] = function ()
-		ae(array():len(), 0)
-	end;
-
-	["test: len()"] = function ()
-		ae(array(1, 2, 3):len(), 3)
-	end;
-
 	["test: __add(): Adding simple values will add them into inner __data"] = function () error "Not implemented" end;
 	["test: __add(): Adding a table will wrap it"] = function () error "Not implemented" end;
 	["test: __add(): Adding an array will just add it"] = function () error "Not implemented" end;
@@ -212,6 +206,43 @@ TestArray = {
 			rs[k] = v
 		end;
 		ae(rs, {})
+	end;
+
+	["test: len(): Length of empty table is 0"] = function ()
+		ae(array():len(), 0)
+	end;
+
+	["test: len()"] = function ()
+		ae(array(1, 2, 3):len(), 3)
+	end;
+
+	["test: every(): Calling on empty array returns true"] = function ()
+		at(array():every(function () return false end))
+	end;
+
+	["test: every(): Calling on array with single falsy element returns false"] = function ()
+		af(array(1, 2, 3):every(function (v) return v <= 2 end))
+	end;
+
+	["test: every(): Calling on array with all truthy elements return true"] = function ()
+		at(array(1, 2, 3):every(function (v) return type(v) ~= "string" end))
+	end;
+
+	["test: every(): Not returning from closure is considered as falsy"] = function ()
+		af(array(true):every(function () end))
+	end;
+
+	["test: every(): Closure accepts value, key and table itself"] = function ()
+		local value, key, tbl
+		local a = array({a = 1})
+		a:every(function (v, k, t)
+			value = v
+			key = k
+			tbl = t
+		end)
+		ae(value, 1)
+		ae(key, "a")
+		ae(tbl, a)
 	end;
 }
 
