@@ -151,6 +151,8 @@ function static.combine(keys, values)
 end
 
 function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
+function mt:__mul() end -- TODO: Intersection
+function mt:__sub() end -- TODO
 function mt:__call() end -- TODO
 function mt:__concat() end -- TODO
 function mt:__eq() end -- TODO
