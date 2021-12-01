@@ -1,9 +1,9 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
-local metatable = {}
+local mt = {}
 local proto = {}
 
 local function isplaintable(t)
-	return type(t) == "table" and getmetatable(t) ~= metatable
+	return type(t) == "table" and getmetatable(t) ~= mt
 end
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
@@ -18,21 +18,21 @@ local function ctor(self, ...)
 	}
 	local issinglearg = #args == 1 and type(args[1]) == "table"
 	local data = issinglearg and args[1] or args
-	if issinglearg and getmetatable(data) == metatable then
+	if issinglearg and getmetatable(data) == mt then
 		table.insert(array.__data, data)
 	else
 		for k, v in pairs(data) do
 			array.__data[k] = isplaintable(v) and ctor(self, v) or v
 		end
 	end
-	return setmetatable(array, metatable)
+	return setmetatable(array, mt)
 end
 
 --- Overloads index access to the array. Redirects all calls to the internal `__data` table field if the key is not in
 --- the proto table, otherwise returns function from it.
 --- @param k any An index key.
 --- @return any value The value associated with the key.
-function metatable:__index(k)
+function mt:__index(k)
 	local m = proto[k]
 	return m and m or self.__data[k]
 end
@@ -40,25 +40,25 @@ end
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
 --- @param k any An index key
 --- @param v any A new value associated with the key.
-function metatable:__newindex(k, v)
+function mt:__newindex(k, v)
 	self.__data[k] = isplaintable(v) and ctor(self, v) or v
 end
 
 --- Overloads `#` operator.
 --- @return number len The length of the table.
-function metatable:__len()
+function mt:__len()
 	return #self.__data
 end
 
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
 --- inner `__data` plain table
-function metatable:__pairs()
+function mt:__pairs()
 	return pairs(self.__data)
 end
 
 --- Overloads calling to `ipairs` function. When the array is passed to `ipairs` function in for loop it simply iterates
 --- inner `__data` plain table
-function metatable:__ipairs()
+function mt:__ipairs()
 	return ipairs(self.__data)
 end
 
@@ -108,11 +108,11 @@ function proto:filter(f, pk)
 	return rs
 end
 
-function metatable:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
-function metatable:__call() end -- TODO
-function metatable:__sub() end -- TODO
-function metatable:__concat() end -- TODO
-function metatable:__eq() end -- TODO
+function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
+function mt:__call() end -- TODO
+function mt:__sub() end -- TODO
+function mt:__concat() end -- TODO
+function mt:__eq() end -- TODO
 function proto:fill(f) end -- TODO
 function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
