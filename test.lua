@@ -165,6 +165,30 @@ TestArray = {
 	["test: __add(): Adding a table will wrap it"] = function () error "Not implemented" end;
 	["test: __add(): Adding an array will just add it"] = function () error "Not implemented" end;
 	["test: __add(): Adding nil does nothing"] = function () error "Not implemented" end;
+
+	["test: __pairs(): Iterating through an array"] = function ()
+		local rs = {}
+		for k, v in pairs(array("a", "b", "c")) do
+			rs[k] = v
+		end;
+		ae(rs, {"a", "b", "c"})
+	end;
+
+	["test: __pairs(): Iterating through an empty array"] = function ()
+		local rs = {}
+		for k, v in pairs(array()) do
+			rs[k] = v
+		end;
+		ae(rs, {})
+	end;
+
+	["test: __pairs(): Iterating through an associated array"] = function ()
+		local rs = {}
+		for k, v in pairs(array({a = 1, b = 2, c = 3})) do
+			rs[k] = v
+		end;
+		ae(rs, {a = 1, b = 2, c = 3})
+	end;
 }
 
 os.exit(luaunit.run())
