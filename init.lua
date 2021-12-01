@@ -142,7 +142,16 @@ function proto:keys()
 		table.insert(rs.__data, k)
 	end
 	return rs
-end
+end -- TODO: Preserve keys orders
+
+--- Returns array of values discarding keys
+function proto:values()
+	local rs = ctor()
+	for k, v in pairs(self) do
+		table.insert(rs.__data, v)
+	end
+	return rs
+end -- TODO: Preserve keys orders
 
 --- Combines two tables into one by using the first one as keys and the second one as values.
 --- @param keys table|Array Keys.
@@ -187,7 +196,6 @@ function proto:delstart(item) end -- TODO
 function proto:delend() end -- TODO
 function proto:addstart() end -- TODO
 function proto:col() end -- TODO
-function proto:values() end -- TODO
 function proto:diff(f) end -- TODO
 function proto:intersect(f) end -- TODO
 function proto:first() end -- TODO

@@ -407,6 +407,22 @@ TestArray = {
 	["test: keys(): Retuned type is an array"] = function ()
 		ae(getmetatable(array():keys()), getmetatable(array()))
 	end;
+
+	["test: values(): Calling on empty array will return empty one"] = function ()
+		ae(array():values(), {})
+	end;
+
+	["test: values(): Retrieving values from list"] = function ()
+		ae(array("a", "b", "c"):values(), {"a", "b", "c"})
+	end;
+
+	["test: values(): Retrieving values from assoc array"] = function ()
+		ae(array {a = 1, b = 2, c = 3} :values(), {1, 2, 3})
+	end;
+
+	["test: values(): Retuned type is an array"] = function ()
+		ae(getmetatable(array():values()), getmetatable(array()))
+	end;
 }
 
 os.exit(luaunit.run())
