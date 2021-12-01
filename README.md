@@ -12,7 +12,7 @@ luarocks install luarray
 ```
 
 ## Usage
-The usage is pretty similar to PHP's arrays as it's shown in the example below:
+Firstly let's begin with differences between two terms used in this package - table and array. Table is an ordinary Lua table while array is a type that is returned by `array()` constructor. The usage is pretty similar to PHP's arrays as it's shown in the example below:
 ```lua
 local array = require "luarray"
 array("a", "b", "c") -- Creates {"a", "b", "c"}
