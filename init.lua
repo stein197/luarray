@@ -50,9 +50,6 @@ function metatable:__len()
 	return #self.__data
 end
 
-function metatable:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
-function metatable:__call() end -- TODO
-
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
 --- inner `__data` plain table
 function metatable:__pairs()
@@ -64,10 +61,6 @@ end
 function metatable:__ipairs()
 	return ipairs(self.__data)
 end
-
-function metatable:__sub() end -- TODO
-function metatable:__concat() end -- TODO
-function metatable:__eq() end -- TODO
 
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
@@ -115,6 +108,11 @@ function proto:filter(f, pk)
 	return rs
 end
 
+function metatable:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
+function metatable:__call() end -- TODO
+function metatable:__sub() end -- TODO
+function metatable:__concat() end -- TODO
+function metatable:__eq() end -- TODO
 function proto:fill(f) end -- TODO
 function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
