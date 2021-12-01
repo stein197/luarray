@@ -132,11 +132,11 @@ function proto:slice(from, to) end -- TODO
 function proto:some(f) end -- TODO
 function proto:sort(f) end -- TODO
 function proto:clone() end -- TODO
-function proto:push(item) end -- TODO
-function proto:unshift(item) end -- TODO
-function proto:pop() end -- TODO
-function proto:shift() end -- TODO
-function proto:column() end -- TODO
+function proto:addend(item) end -- TODO
+function proto:delstart(item) end -- TODO
+function proto:delend() end -- TODO
+function proto:addstart() end -- TODO
+function proto:col() end -- TODO
 function proto:keys() end -- TODO
 function proto:values() end -- TODO
 function proto:diff(f) end -- TODO
@@ -145,10 +145,11 @@ function proto:first() end -- TODO
 function proto:last() end -- TODO
 function proto:shuffle() end -- TODO
 function proto:pad() end -- TODO
-function proto:unique() end -- TODO
+function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:isempty() end -- TODO
 function proto:truncate() end -- TODO
+function proto:swap() end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
 
 return setmetatable({
