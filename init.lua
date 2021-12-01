@@ -1,6 +1,7 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 local mt = {}
 local proto = {}
+local static = {}
 
 local function isplaintable(t)
 	return type(t) == "table" and getmetatable(t) ~= mt
@@ -134,10 +135,8 @@ end
 
 function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
 function mt:__call() end -- TODO
-function mt:__sub() end -- TODO
 function mt:__concat() end -- TODO
 function mt:__eq() end -- TODO
-function proto:fill(f) end -- TODO
 function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
 function proto:flat(depth) end -- TODO
@@ -171,10 +170,11 @@ function proto:islist() end -- TODO
 function proto:isempty() end -- TODO
 function proto:truncate() end -- TODO
 function proto:swap() end -- TODO
+function proto:range(n, f) end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
+function static.combine(keys, values) end; -- TODO
+function static.range(n, f) end; -- TODO
 
-return setmetatable({
-	combine = function (keys, values) end; -- TODO
-}, {
+return setmetatable(static, {
 	__call = ctor
 })
