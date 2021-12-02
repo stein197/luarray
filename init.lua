@@ -197,11 +197,11 @@ function proto:findindex(f) end -- TODO
 function proto:flat(depth) end -- TODO
 function proto:containskey(item) end -- TODO
 function proto:containsvalue(item) end -- TODO
-function proto:indexof(item) end -- TODO
+function proto:firstindexof(item) end -- TODO
 function proto:lastindexof(item) end -- TODO
 function proto:join(sep) end -- TODO
 function proto:map(f) end -- TODO
-function proto:reduce(f, init) end -- TODO
+function proto:reducestart(f, init) end -- TODO
 function proto:reduceend(f, init) end -- TODO
 function proto:reverse() end -- TODO
 function proto:slice(from, to) end -- TODO
@@ -221,7 +221,6 @@ function proto:pad() end -- TODO
 function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:truncate() end -- TODO
-function proto:range(n, f) end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
 function static.range(n, f) end; -- TODO
 
