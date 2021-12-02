@@ -446,6 +446,15 @@ TestArray = {
 	["test: swap()"] = function ()
 		ae(array {a = 1, b = 2, c = 3}: swap(), {[1] = "a", [2] = "b", [3] = "c"})
 	end;
+
+	["test: isempty(): Empty table is empty"] = function ()
+		at(array():isempty())
+	end;
+
+	["test: isempty(): Table containing elements is not empty"] = function ()
+		af(array(1):isempty())
+		af(array(1, 2, 3):isempty())
+	end;
 }
 
 os.exit(luaunit.run())

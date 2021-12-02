@@ -163,6 +163,12 @@ function proto:swap()
 	return rs
 end
 
+--- Checks if the array is empty
+--- @return boolean rs `true` if the array contains no elements
+function proto:isempty()
+	return #self.__data == 0
+end
+
 --- Combines two tables into one by using the first one as keys and the second one as values.
 --- @param keys table|Array Keys.
 --- @param values table|Array Values.
@@ -214,7 +220,6 @@ function proto:shuffle() end -- TODO
 function proto:pad() end -- TODO
 function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
-function proto:isempty() end -- TODO
 function proto:truncate() end -- TODO
 function proto:range(n, f) end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
