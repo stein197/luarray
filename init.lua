@@ -153,6 +153,16 @@ function proto:values()
 	return rs
 end -- TODO: Preserve keys orders
 
+--- Swaps keys with values in the array.
+--- @return Array rs Array with swaped keys and values.
+function proto:swap()
+	local rs = ctor()
+	for k, v in pairs(self) do
+		rs.__data[v] = k
+	end
+	return rs
+end
+
 --- Combines two tables into one by using the first one as keys and the second one as values.
 --- @param keys table|Array Keys.
 --- @param values table|Array Values.
@@ -206,7 +216,6 @@ function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:isempty() end -- TODO
 function proto:truncate() end -- TODO
-function proto:swap() end -- TODO
 function proto:range(n, f) end -- TODO
 function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
 function static.range(n, f) end; -- TODO

@@ -423,6 +423,29 @@ TestArray = {
 	["test: values(): Retuned type is an array"] = function ()
 		ae(getmetatable(array():values()), getmetatable(array()))
 	end;
+
+	["test: swap(): Swapping empty array returns empty one"] = function ()
+		ae(array():swap(), {})
+	end;
+
+	["test: swap(): Swapping does not modifies an initial array"] = function ()
+		local a = array {a = 1, b = 2, c = 3}
+		a:swap()
+		ae(a, {a = 1, b = 2, c = 3})
+	end;
+
+	["test: swap(): Swapping returns new array"] = function ()
+		local a = array {a = 1, b = 2, c = 3}
+		ane(a:swap(), a)
+	end;
+
+	["test: swap(): Returned type is an array"] = function ()
+		ae(getmetatable(array():swap()), getmetatable(array()))
+	end;
+
+	["test: swap()"] = function ()
+		ae(array {a = 1, b = 2, c = 3}: swap(), {[1] = "a", [2] = "b", [3] = "c"})
+	end;
 }
 
 os.exit(luaunit.run())
