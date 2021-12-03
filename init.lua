@@ -1,11 +1,12 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 -- TODO: Preserve order of addition
+-- TODO: Wrapping only table WITHOUT metatables and add tests for trying to wrap this kind of tables
 local mt = {}
 local proto = {}
 local static = {}
 
 local function isplaintable(t)
-	return type(t) == "table" and getmetatable(t) ~= mt
+	return type(t) == "table" and not getmetatable(t)
 end
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
@@ -169,6 +170,16 @@ function proto:isempty()
 	return #self.__data == 0
 end
 
+--- Converts the array into ordinary Lua table.
+--- @return table ts Table.
+function proto:totable()
+	local t = {}
+	for k, v in pairs(self.__data) do
+		t[k] = type(v) == "table" and getmetatable(v) == mt and v:totable() or v
+	end
+	return t
+end
+
 --- Combines two tables into one by using the first one as keys and the second one as values.
 --- @param keys table|Array Keys.
 --- @param values table|Array Values.
@@ -221,7 +232,6 @@ function proto:pad() end -- TODO
 function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:truncate() end -- TODO
-function proto:totable() local t = {};for k, v in pairs(self.__data) do t[k] = type(v) == "table" and v:totable() or v;end return t; end -- TODO
 function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {
