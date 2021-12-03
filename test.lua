@@ -1,3 +1,14 @@
+--[[ 
+	All functions should be tested at least against:
+	- Empty table
+	- Table with single item
+	- Table with multiple items
+	All functions should:
+	- return different array (if the function returns an array)
+	- not modify self
+	- not wrap tables with metatables
+ ]]
+
 local array <const> = require ""
 local luaunit <const> = require "luaunit"
 
