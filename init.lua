@@ -236,6 +236,9 @@ function proto:pad() end -- TODO
 function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:truncate() end -- TODO
+function static.set(...) end; -- TODO ?
+function static.map(...) end; -- TODO ?
+function static.list(...) end; -- TODO ?
 function static.mutable(...) end; -- TODO
 function static.range(n, f) end; -- TODO
 
