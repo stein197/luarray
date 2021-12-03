@@ -1,9 +1,8 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
--- TODO: Preserve order of addition
+-- TODO: Preserve order of addition?
 -- TODO: Wrapping only table WITHOUT metatables and add tests for trying to wrap this kind of tables
--- TODO: Delete proto, rewrite it with mt.__index:<fn>
 local mt = {}
-local proto = {}
+local pt = {}
 local static = {}
 
 local function isplaintable(t)
@@ -41,7 +40,7 @@ end
 --- @param k any An index key.
 --- @return any value The value associated with the key.
 function mt:__index(k)
-	local m = proto[k]
+	local m = pt[k]
 	return m and m or self.__data[k]
 end
 
@@ -72,7 +71,7 @@ end
 
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
-function proto:len()
+function pt:len()
 	return #self.__data
 end
 
@@ -80,7 +79,7 @@ end
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @return boolean rs `true` if at least one element satisfies the predicate.
-function proto:some(f)
+function pt:some(f)
 	local rs = false
 	for k, v in pairs(self) do
 		rs = rs or f(v, k, self)
@@ -98,7 +97,7 @@ end
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
-function proto:every(f)
+function pt:every(f)
 	local rs = true
 	for k, v in pairs(self) do
 		rs = rs and f(v, k, self)
@@ -114,7 +113,7 @@ end
 --- @param f fun(v: V, k?: K, t?: table<K, V>) Predicate
 --- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default
 --- @return Array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved
-function proto:filter(f, pk)
+function pt:filter(f, pk)
 	local rs = ctor()
 	if pk == nil then
 		pk = true
@@ -134,7 +133,7 @@ end
 --- Applies passed closure to all elements.
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>) Closure.
-function proto:each(f)
+function pt:each(f)
 	for k, v in pairs(self) do
 		f(v, k, self)
 	end
@@ -142,7 +141,7 @@ end
 
 --- Returns array of keys.
 --- @return Array rs Keys.
-function proto:keys()
+function pt:keys()
 	local rs = ctor()
 	for k in pairs(self) do
 		table.insert(rs.__data, k)
@@ -151,7 +150,7 @@ function proto:keys()
 end -- TODO: Preserve keys orders
 
 --- Returns array of values discarding keys
-function proto:values()
+function pt:values()
 	local rs = ctor()
 	for k, v in pairs(self) do
 		table.insert(rs.__data, v)
@@ -161,7 +160,7 @@ end -- TODO: Preserve keys orders
 
 --- Swaps keys with values in the array.
 --- @return Array rs Array with swaped keys and values.
-function proto:swap()
+function pt:swap()
 	local rs = ctor()
 	for k, v in pairs(self) do
 		rs.__data[v] = k
@@ -171,13 +170,13 @@ end
 
 --- Checks if the array is empty
 --- @return boolean rs `true` if the array contains no elements
-function proto:isempty()
+function pt:isempty()
 	return #self.__data == 0
 end
 
 --- Converts the array into ordinary Lua table.
 --- @return table ts Table.
-function proto:totable()
+function pt:totable()
 	local t = {}
 	for k, v in pairs(self.__data) do
 		t[k] = isarray(v) and v:totable() or v
@@ -208,34 +207,34 @@ function mt:__sub() end -- TODO
 function mt:__call() end -- TODO
 function mt:__concat() end -- TODO
 function mt:__eq() end -- TODO
-function proto:find(f) end -- TODO
-function proto:findindex(f) end -- TODO
-function proto:containskey(item) end -- TODO
-function proto:containsvalue(item) end -- TODO
-function proto:firstindexof(item) end -- TODO
-function proto:lastindexof(item) end -- TODO
-function proto:join(sep) end -- TODO
-function proto:map(f) end -- TODO
-function proto:reducestart(f, init) end -- TODO
-function proto:reduceend(f, init) end -- TODO
-function proto:reverse() end -- TODO
-function proto:slice(from, to) end -- TODO
-function proto:sort(f) end -- TODO
-function proto:clone() end -- TODO
-function proto:addend(item) end -- TODO
-function proto:delstart(item) end -- TODO
-function proto:delend() end -- TODO
-function proto:addstart() end -- TODO
-function proto:col() end -- TODO
-function proto:diff(f) end -- TODO
-function proto:intersect(f) end -- TODO
-function proto:first() end -- TODO
-function proto:last() end -- TODO
-function proto:shuffle() end -- TODO
-function proto:pad() end -- TODO
-function proto:uniq() end -- TODO
-function proto:islist() end -- TODO
-function proto:truncate() end -- TODO
+function pt:find(f) end -- TODO
+function pt:findindex(f) end -- TODO
+function pt:containskey(item) end -- TODO
+function pt:containsvalue(item) end -- TODO
+function pt:firstindexof(item) end -- TODO
+function pt:lastindexof(item) end -- TODO
+function pt:join(sep) end -- TODO
+function pt:map(f) end -- TODO
+function pt:reducestart(f, init) end -- TODO
+function pt:reduceend(f, init) end -- TODO
+function pt:reverse() end -- TODO
+function pt:slice(from, to) end -- TODO
+function pt:sort(f) end -- TODO
+function pt:clone() end -- TODO
+function pt:addend(item) end -- TODO
+function pt:delstart(item) end -- TODO
+function pt:delend() end -- TODO
+function pt:addstart() end -- TODO
+function pt:col() end -- TODO
+function pt:diff(f) end -- TODO
+function pt:intersect(f) end -- TODO
+function pt:first() end -- TODO
+function pt:last() end -- TODO
+function pt:shuffle() end -- TODO
+function pt:pad() end -- TODO
+function pt:uniq() end -- TODO
+function pt:islist() end -- TODO
+function pt:truncate() end -- TODO
 function static.set(...) end; -- TODO ?
 function static.map(...) end; -- TODO ?
 function static.list(...) end; -- TODO ?
