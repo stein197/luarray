@@ -21,6 +21,24 @@ local ae = luaunit.assertEquals
 local at = luaunit.assertTrue
 local af = luaunit.assertFalse
 local ane = luaunit.assertNotEquals
+local an = luaunit.assertNil
+
+local Class = {}
+Class = setmetatable({}, {
+	__index = {
+		prop = "string";
+		method = function (self)
+			return self.prop
+		end;
+	};
+	__call = function (self)
+		return setmetatable({}, {
+			__index = Class
+		})
+	end;
+})
+
+print(Class():method())
 
 -- TODO: Unite cases into table and go through the tables to assert equality, structure tests
 TestArray = {
@@ -454,6 +472,35 @@ TestArray = {
 	["test: isempty(): Table containing elements is not empty"] = function ()
 		af(array(1):isempty())
 		af(array(1, 2, 3):isempty())
+	end;
+
+	["test: totable(): Converting empty array returns empty table"] = function ()
+		ae(array():totable(), {})
+	end;
+
+	["test: totable(): Converting nested arrays"] = function ()
+		ae(array(array(1), {2}), {{1}, {2}})
+	end;
+
+	["test: totable(): Converting does not destructures inner tables with different metatables"] = function ()
+		local o = Class()
+		local rs = array(1, 2, o):totable()
+		ae(rs, {1, 2, o})
+		ae(getmetatable(rs[3]), getmetatable(Class()))
+		ae(rs[3]:method(), "string")
+	end;
+
+	["test: totable(): Converting to table and back to an array returns the initial array"] = function ()
+		local a = {a = 1, b = 2, c = {d = 4}}
+		ae(array(array(a):totable()), a)
+	end;
+
+	["test: totable(): Returned value is a plain table"] = function ()
+		an(getmetatable(array():totable()))
+	end;
+
+	["test: totable()"] = function ()
+		ae(array(1, 2, {3, {d = 4}}):totable(), {1, 2, {3, {d = 4}}})
 	end;
 }
 
