@@ -9,6 +9,10 @@ local function isplaintable(t)
 	return type(t) == "table" and not getmetatable(t)
 end
 
+local function isarray(t)
+	return type(t) == "table" and getmetatable(t) == mt
+end
+
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
 --- @return Array array Array
@@ -175,7 +179,7 @@ end
 function proto:totable()
 	local t = {}
 	for k, v in pairs(self.__data) do
-		t[k] = type(v) == "table" and getmetatable(v) == mt and v:totable() or v
+		t[k] = isarray(v) and v:totable() or v
 	end
 	return t
 end
@@ -205,7 +209,6 @@ function mt:__concat() end -- TODO
 function mt:__eq() end -- TODO
 function proto:find(f) end -- TODO
 function proto:findindex(f) end -- TODO
-function proto:flat(depth) end -- TODO
 function proto:containskey(item) end -- TODO
 function proto:containsvalue(item) end -- TODO
 function proto:firstindexof(item) end -- TODO
