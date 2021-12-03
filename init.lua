@@ -1,6 +1,7 @@
 -- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 -- TODO: Preserve order of addition
 -- TODO: Wrapping only table WITHOUT metatables and add tests for trying to wrap this kind of tables
+-- TODO: Delete proto, rewrite it with mt.__index:<fn>
 local mt = {}
 local proto = {}
 local static = {}
@@ -235,6 +236,7 @@ function proto:pad() end -- TODO
 function proto:uniq() end -- TODO
 function proto:islist() end -- TODO
 function proto:truncate() end -- TODO
+function static.mutable(...) end; -- TODO
 function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {

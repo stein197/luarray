@@ -5,7 +5,8 @@
 	- Table with multiple items
 	All functions should:
 	- return different array (if the function returns an array)
-	- not modify self
+	- not modify self if __mutable == false
+	- modify self if __mutable == true
 	- not wrap tables with metatables
  ]]
 
