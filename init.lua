@@ -1,6 +1,8 @@
--- TODO: Metamethods: http://lua-users.org/wiki/MetatableEvents
 -- TODO: Preserve order of addition?
 -- TODO: Wrapping only table WITHOUT metatables and add tests for trying to wrap this kind of tables
+-- TODO: Delete pt and replace with mt.__index:<fn>
+-- TODO: Annotate types to help IDE
+-- TODO: Add __mutable flag
 local mt = {}
 local pt = {}
 local static = {}
@@ -40,8 +42,7 @@ end
 --- @param k any An index key.
 --- @return any value The value associated with the key.
 function mt:__index(k)
-	local m = pt[k]
-	return m and m or self.__data[k]
+	return pt[k] or self.__data[k]
 end
 
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
