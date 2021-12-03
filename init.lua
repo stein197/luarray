@@ -159,6 +159,18 @@ function pt:values()
 	return rs
 end -- TODO: Preserve keys orders
 
+--- Joins all the elements into a string with specified separator,
+--- @return string rs Joined string.
+function pt:join(sep)
+	local rs = ""
+	local k, v
+	repeat
+		k, v = next(self.__data, k)
+		rs = k ~= nil and rs..sep..tostring(v) or rs
+	until not k
+	return rs:sub(sep:len())
+end
+
 --- Swaps keys with values in the array.
 --- @return Array rs Array with swaped keys and values.
 function pt:swap()
@@ -214,7 +226,6 @@ function pt:containskey(item) end -- TODO
 function pt:containsvalue(item) end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
-function pt:join(sep) end -- TODO
 function pt:map(f) end -- TODO
 function pt:reducestart(f, init) end -- TODO
 function pt:reduceend(f, init) end -- TODO
@@ -236,9 +247,6 @@ function pt:pad() end -- TODO
 function pt:uniq() end -- TODO
 function pt:islist() end -- TODO
 function pt:truncate() end -- TODO
-function static.set(...) end; -- TODO ?
-function static.map(...) end; -- TODO ?
-function static.list(...) end; -- TODO ?
 function static.mutable(...) end; -- TODO
 function static.range(n, f) end; -- TODO
 

@@ -3,16 +3,18 @@
 	- Empty table
 	- Table with single item
 	- Table with multiple items
-	All functions should:
+	All functions should at least:
 	- return different array (if the function returns an array)
 	- not modify self if __mutable == false
 	- modify self if __mutable == true
 	- not wrap tables with metatables
+	All tests must be sorted in the way the methods they test are ordered.
  ]]
 
 local array <const> = require ""
 local luaunit <const> = require "luaunit"
 
+-- TODO: Delete cases
 local cases = {
 	empty = {},
 	[1] = {1},
@@ -452,6 +454,18 @@ TestArray = {
 
 	["test: values(): Retuned type is an array"] = function ()
 		ae(getmetatable(array():values()), getmetatable(array()))
+	end;
+
+	["test: join(): Joining empty array returns empty string"] = function ()
+		ae(array():join(" "), "")
+	end;
+
+	["test: join(): Joining array with single elements returns that elements in string format"] = function ()
+		ae(array(1):join(" "), "1")
+	end;
+
+	["test: join(): Joining array with multiple values"] = function ()
+		ae(array(1, "string", false):join(", "), "1, string, false")
 	end;
 
 	["test: swap(): Swapping empty array returns empty one"] = function ()
