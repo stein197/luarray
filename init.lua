@@ -5,7 +5,7 @@
 -- TODO: Make every function accept key first only then value
 local mt = {}
 
---- @class array.
+--- @class array
 --- @field private __data table
 --- @field private __mutable boolean
 local pt = {}

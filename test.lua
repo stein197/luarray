@@ -12,6 +12,7 @@
 	- return different array (if the function returns an array)
 	- modify or not modify self if __mutable == true/false
 	- not wrap tables with metatables
+	- modify only inner __data table
 ]]
 
 array = require ""
