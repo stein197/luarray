@@ -48,6 +48,6 @@ TestFilter = {
 	end;
 
 	["test: filter(): Returned value is an array"] = function ()
-		luaunit.assertEquals(getmetatable(array():filter(function () end)), getmetatable(array()))
+		luaunit.assertTrue(getmetatable(array():filter(function () end)) == getmetatable(array()))
 	end;
 }

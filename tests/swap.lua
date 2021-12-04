@@ -15,7 +15,7 @@ TestSwap = {
 	end;
 
 	["test: swap(): Returned type is an array"] = function ()
-		luaunit.assertEquals(getmetatable(array():swap()), getmetatable(array()))
+		luaunit.assertTrue(getmetatable(array():swap()) == getmetatable(array()))
 	end;
 
 	["test: swap()"] = function ()

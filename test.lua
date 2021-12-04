@@ -26,11 +26,12 @@ Class = setmetatable({}, {
 		end;
 	};
 	__call = function (self)
-		return setmetatable({}, {
-			__index = Class
-		})
+		return setmetatable({}, ClassMt)
 	end;
 })
+ClassMt = {
+	__index = Class
+}
 local command
 if package.config:sub(1, 1) == "/" then
 	command = "ls tests | grep \"\\.lua$\""

@@ -44,6 +44,6 @@ TestCombine = {
 	end;
 
 	["test: combine(): Returned type is an array"] = function ()
-		luaunit.assertEquals(getmetatable(array.combine({1}, {1})), getmetatable(array()))
+		luaunit.assertTrue(getmetatable(array.combine({1}, {1})) == getmetatable(array()))
 	end;
 }

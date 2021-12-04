@@ -11,7 +11,7 @@ TestToTable = {
 		local o = Class()
 		local rs = array(1, 2, o):totable()
 		luaunit.assertEquals(rs, {1, 2, o})
-		luaunit.assertEquals(getmetatable(rs[3]), getmetatable(Class()))
+		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Class()))
 		luaunit.assertEquals(rs[3]:method(), "string")
 	end;
 

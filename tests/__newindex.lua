@@ -34,11 +34,11 @@ Test__newindex = {
 		local a = array()
 		a.t = {}
 		luaunit.assertEquals(a.__data, {t = {}})
-		luaunit.assertEquals(getmetatable(a.t), getmetatable(a))
+		luaunit.assertTrue(getmetatable(a.t) == getmetatable(a))
 		a = array()
 		a.t = {1}
 		luaunit.assertEquals(a.__data, {t = {1}})
-		luaunit.assertEquals(getmetatable(a.t), getmetatable(a))
+		luaunit.assertTrue(getmetatable(a.t) == getmetatable(a))
 	end;
 
 	["test: __newindex(): Setting array value will assign it"] = function ()

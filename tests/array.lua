@@ -20,25 +20,25 @@ TestArray = {
 	["test: array({...}, ...) creates a wrapper around arguments where the first one is a table"] = function ()
 		local a = array({1}, 2, 3)
 		luaunit.assertEquals(a.__data, {{1}, 2, 3})
-		luaunit.assertEquals(getmetatable(a.__data[1]), getmetatable(a))
+		luaunit.assertTrue(getmetatable(a.__data[1]) == getmetatable(a))
 	end;
 
 	["test: array({}) on arrays just assigns them instead of wrapping them again"] = function ()
 		local a1 = array(array(1))
 		luaunit.assertEquals(a1.__data, {{1}})
-		luaunit.assertEquals(getmetatable(a1.__data[1]), getmetatable(a1))
+		luaunit.assertTrue(getmetatable(a1.__data[1]) == getmetatable(a1))
 		local a2 = array(1, array(1))
 		luaunit.assertEquals(a2.__data, {1, {1}})
-		luaunit.assertEquals(getmetatable(a2.__data[2]), getmetatable(a2))
+		luaunit.assertTrue(getmetatable(a2.__data[2]) == getmetatable(a2))
 		local a3 = array(array(1), 1)
 		luaunit.assertEquals(a3.__data, {{1}, 1})
-		luaunit.assertEquals(getmetatable(a3.__data[1]), getmetatable(a3))
+		luaunit.assertTrue(getmetatable(a3.__data[1]) == getmetatable(a3))
 	end;
 
 	["test: array(..., {...}) wraps nested tables"] = function ()
 		local a = array({1, 2, {3, 4}})
 		luaunit.assertEquals(a.__data, {1, 2, {3, 4}})
-		luaunit.assertEquals(getmetatable(a.__data[3]), getmetatable(a))
+		luaunit.assertTrue(getmetatable(a.__data[3]) == getmetatable(a))
 	end;
 
 	["test: array(): Instantiating array with metakeys will put them in internal __data field"] = function ()

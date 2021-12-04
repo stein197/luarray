@@ -12,6 +12,6 @@ TestValues = {
 	end;
 
 	["test: values(): Retuned type is an array"] = function ()
-		luaunit.assertEquals(getmetatable(array():values()), getmetatable(array()))
+		luaunit.assertTrue(getmetatable(array():values()) == getmetatable(array()))
 	end;
 }
