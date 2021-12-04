@@ -1,14 +1,13 @@
 --[[ 
-	All functions should be tested at least against:
+	All functions should be tested against:
 	- empty table
 	- table with single item
 	- table with multiple items
-	- passing a plain table
-	- passing an array
-	- passing tables with custom metatables (object instances)
-	- tables with numeric indeces
-	- tables with non-numeric indeces
-	All functions should at least:
+	- primitives
+	- plain table
+	- array
+	- tables with custom metatables (object instances)
+	All functions should:
 	- return different array (if the function returns an array)
 	- modify or not modify self if __mutable == true/false
 	- not wrap tables with metatables

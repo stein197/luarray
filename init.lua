@@ -29,7 +29,7 @@ local function ctor(self, ...)
 	}
 	local issinglearg = #args == 1 and type(args[1]) == "table"
 	local data = issinglearg and args[1] or args
-	if issinglearg and getmetatable(data) == mt then
+	if issinglearg and not isplaintable(data) then
 		table.insert(array.__data, data)
 	else
 		for k, v in pairs(data) do
