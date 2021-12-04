@@ -4,6 +4,10 @@
 -- TODO: Add __mutable flag
 -- TODO: Make every function accept key first only then value
 local mt = {}
+
+--- @class array
+--- @field private __data table
+--- @field private __mutable boolean
 local pt = {}
 local static = {}
 
@@ -17,9 +21,7 @@ end
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
---- @return Array array Array
---- @class Array
---- @field private __data table
+--- @return array array Array
 local function ctor(self, ...)
 	local args = {...}
 	local array = {
@@ -113,7 +115,7 @@ end
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default
---- @return Array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved
+--- @return array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved
 function pt:filter(f, pk)
 	local rs = ctor()
 	if pk == nil then
@@ -134,7 +136,7 @@ end
 --- Applies given function to every element in the array and returns the new one with values returned by the function.
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): V, K Function to apply on each element. Returns new value and key.
---- @return Array rs New array
+--- @return array rs New array
 function pt:map(f)
 	local rs = ctor()
 	for k, v in pairs(self) do
@@ -158,7 +160,7 @@ function pt:each(f)
 end
 
 --- Returns array of keys.
---- @return Array rs Keys.
+--- @return array rs Keys.
 function pt:keys()
 	local rs = ctor()
 	for k in pairs(self) do
@@ -189,7 +191,7 @@ function pt:join(sep)
 end
 
 --- Swaps keys with values in the array.
---- @return Array rs Array with swaped keys and values.
+--- @return array rs Array with swaped keys and values.
 function pt:swap()
 	local rs = ctor()
 	for k, v in pairs(self) do
@@ -214,10 +216,19 @@ function pt:totable()
 	return t
 end
 
+--- Returns mutable version of array. All operations made on mutable arrays applies directly to self instead of creating
+--- a new array.
+--- @return array rs Array
+function static.mutable(...)
+	local rs = ctor("", ...)
+	rs.__mutable = true
+	return rs
+end
+
 --- Combines two tables into one by using the first one as keys and the second one as values.
---- @param keys table|Array Keys.
---- @param values table|Array Values.
---- @return Array rs Combined array.
+--- @param keys table|array Keys.
+--- @param values table|array Values.
+--- @return array rs Combined array.
 function static.combine(keys, values)
 	if #keys ~= #values then
 		error(string.format("Keys and values tables have different lengths: %s against %s", #keys, #values))
@@ -263,7 +274,6 @@ function pt:pad() end -- TODO
 function pt:uniq() end -- TODO
 function pt:islist() end -- TODO
 function pt:truncate() end -- TODO
-function static.mutable(...) end; -- TODO
 function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {
