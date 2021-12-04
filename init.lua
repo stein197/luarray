@@ -5,7 +5,7 @@
 -- TODO: Make every function accept key first only then value
 local mt = {}
 
---- @class array
+--- @class array.
 --- @field private __data table
 --- @field private __mutable boolean
 local pt = {}
@@ -21,7 +21,7 @@ end
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
---- @return array array Array
+--- @return array array Array.
 local function ctor(self, ...)
 	local args = {...}
 	local array = {
@@ -48,7 +48,7 @@ function mt:__index(k)
 end
 
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
---- @param k any An index key
+--- @param k any An index key.
 --- @param v any A new value associated with the key.
 function mt:__newindex(k, v)
 	self.__data[k] = isplaintable(v) and ctor(self, v) or v
@@ -61,13 +61,13 @@ function mt:__len()
 end
 
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
---- inner `__data` plain table
+--- inner `__data` plain table.
 function mt:__pairs()
 	return pairs(self.__data)
 end
 
 --- Overloads calling to `ipairs` function. When the array is passed to `ipairs` function in for loop it simply iterates
---- inner `__data` plain table
+--- inner `__data` plain table.
 function mt:__ipairs()
 	return ipairs(self.__data)
 end
@@ -114,8 +114,8 @@ end
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
---- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default
---- @return array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved
+--- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default.
+--- @return array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved.
 function pt:filter(f, pk)
 	local rs = ctor()
 	if pk == nil then
@@ -136,7 +136,7 @@ end
 --- Applies given function to every element in the array and returns the new one with values returned by the function.
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): V, K Function to apply on each element. Returns new value and key.
---- @return array rs New array
+--- @return array rs New array.
 function pt:map(f)
 	local rs = ctor()
 	for k, v in pairs(self) do
@@ -169,7 +169,7 @@ function pt:keys()
 	return rs
 end -- TODO: Preserve keys orders
 
---- Returns array of values discarding keys
+--- Returns array of values discarding keys.
 function pt:values()
 	local rs = ctor()
 	for k, v in pairs(self) do
@@ -178,7 +178,7 @@ function pt:values()
 	return rs
 end -- TODO: Preserve keys orders
 
---- Joins all the elements into a string with specified separator,
+--- Joins all the elements into a string with specified separator.
 --- @return string rs Joined string.
 function pt:join(sep)
 	local rs = ""
@@ -200,8 +200,8 @@ function pt:swap()
 	return rs
 end
 
---- Checks if the array is empty
---- @return boolean rs `true` if the array contains no elements
+--- Checks if the array is empty.
+--- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
 	return #self.__data == 0
 end
@@ -218,7 +218,7 @@ end
 
 --- Returns mutable version of array. All operations made on mutable arrays applies directly to self instead of creating
 --- a new array.
---- @return array rs Array
+--- @return array rs Array.
 function static.mutable(...)
 	local rs = ctor("", ...)
 	rs.__mutable = true
