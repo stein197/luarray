@@ -363,6 +363,42 @@ TestArray = {
 		ae(getmetatable(array():filter(function () end)), getmetatable(array()))
 	end;
 
+	["test: map(): Mapping an empty array returns empty one"] = function ()
+		ae(array():map(function () return 1 end), {})
+	end;
+
+	["test: map(): Mapping an array with single element"] = function ()
+		ae(array(2):map(function (v) return v * 2 end), {4})
+	end;
+
+	["test: map(): Mapping an array with multiple items"] = function ()
+		ae(array({a = 1, b = 2, c = 3}):map(function (v, k) return v * 2, k..k end), {aa = 2, bb = 4, cc = 6})
+	end;
+
+	["test: map(): Mapping closure takes all arguments"] = function ()
+		local value, key, tbl
+		local a = array({a = 1})
+		a:map(function (v, k, t)
+			value = v
+			key = k
+			tbl = t
+		end)
+		ae(value, 1)
+		ae(key, "a")
+		at(tbl == a)
+	end;
+
+	["test: map(): Mapping returns different array"] = function ()
+		local a = array {1, 2, 3}
+		ane(a:map(function (v) return v * 2 end), a)
+	end;
+
+	["test: map(): Mapping does not modify self"] = function ()
+		local a = array {1, 2, 3}
+		a:map(function (v) return v * 2 end)
+		ae(a, {1, 2, 3})
+	end;
+
 	["test: each(): Closure accepts all arguments"] = function ()
 		local value, key, tbl
 		local a = array({a = 1})

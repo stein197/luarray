@@ -1,8 +1,8 @@
 -- TODO: Preserve order of addition?
--- TODO: Wrapping only table WITHOUT metatables and add tests for trying to wrap this kind of tables
 -- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
 -- TODO: Add __mutable flag
+-- TODO: Make every function accept key first only then value
 local mt = {}
 local pt = {}
 local static = {}
@@ -111,7 +111,7 @@ end
 
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
 --- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>) Predicate
+--- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default
 --- @return Array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved
 function pt:filter(f, pk)
@@ -126,6 +126,23 @@ function pt:filter(f, pk)
 			else
 				table.insert(rs.__data, v)
 			end
+		end
+	end
+	return rs
+end
+
+--- Applies given function to every element in the array and returns the new one with values returned by the function.
+--- @generic K, V
+--- @param f fun(v: V, k?: K, t?: table<K, V>): V, K Function to apply on each element. Returns new value and key.
+--- @return Array rs New array
+function pt:map(f)
+	local rs = ctor()
+	for k, v in pairs(self) do
+		local newv, newk = f(v, k, self)
+		if newk == nil then
+			table.insert(rs.__data, newv)
+		else
+			rs.__data[newk] = newv
 		end
 	end
 	return rs
@@ -168,7 +185,7 @@ function pt:join(sep)
 		k, v = next(self.__data, k)
 		rs = k ~= nil and rs..sep..tostring(v) or rs
 	until not k
-	return rs:sub(sep:len())
+	return rs:sub(sep:len() + 1)
 end
 
 --- Swaps keys with values in the array.
@@ -226,7 +243,6 @@ function pt:containskey(item) end -- TODO
 function pt:containsvalue(item) end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
-function pt:map(f) end -- TODO
 function pt:reducestart(f, init) end -- TODO
 function pt:reduceend(f, init) end -- TODO
 function pt:reverse() end -- TODO
