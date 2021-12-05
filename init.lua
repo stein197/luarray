@@ -72,6 +72,20 @@ function mt:__ipairs()
 	return ipairs(self.__data)
 end
 
+--- Overloads `==` operator. Deeply compares only arrays. Order of keys does not matter.
+--- @return boolean rs `true` if two arrays deeply equal.
+function mt:__eq(t)
+	if #self ~= #t then
+		return false
+	end
+	for k, v in pairs(self) do
+		if v ~= t[k] then
+			return false
+		end
+	end
+	return true
+end
+
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
@@ -247,7 +261,6 @@ function mt:__mul() end -- TODO: Intersection
 function mt:__sub() end -- TODO
 function mt:__call() end -- TODO
 function mt:__concat() end -- TODO
-function mt:__eq() end -- TODO
 function pt:find(f) end -- TODO
 function pt:findindex(f) end -- TODO
 function pt:containskey(item) end -- TODO
