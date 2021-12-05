@@ -72,7 +72,7 @@ function mt:__ipairs()
 	return ipairs(self.__data)
 end
 
---- Overloads `==` operator. Deeply compares only arrays. Order of keys does not matter.
+--- Overloads `==` operator. Deeply compares arrays. Order of keys does not matter.
 --- @return boolean rs `true` if two arrays deeply equal.
 function mt:__eq(t)
 	if #self ~= #t then
