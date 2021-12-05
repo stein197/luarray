@@ -226,10 +226,24 @@ function pt:values()
 end -- TODO: Preserve keys orders
 
 --- Returns the first key-value pair of the array. The behavior is determined only in arrays with numeric keys.
---- @return any k First key in the array.
---- @return any v First value in the array.
+--- @return any k The first key in the array.
+--- @return any v The first value in the array.
 function pt:first()
 	return next(self.__data)
+end
+
+--- Returns the last key-value pair of the array. The behavior is determined only in arrays with numeric keys.
+--- @return any k The last key in the array.
+--- @return any v The last value in the array.
+function pt:last()
+	local e, a, b, c = pcall(function ()
+		return next(self.__data, #self.__data - 1)
+	end)
+	if e then
+		return a, b
+	else
+		return b, c
+	end
 end
 
 --- Joins all the elements into a string with specified separator.
@@ -334,7 +348,6 @@ function pt:addstart() end -- TODO
 function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
-function pt:last() end -- TODO
 function pt:shuffle() end -- TODO
 function pt:pad() end -- TODO
 function pt:uniq() end -- TODO
