@@ -125,6 +125,19 @@ function pt:len()
 	return #self.__data
 end
 
+--- Returns the first entry that satisfies a predicate.
+--- @generic K, V
+--- @param f fun(k?: K, v?: V): boolean Predicate.
+--- @return K k Key that satisfies predicate.
+--- @return V v Value that satisfies predicate.
+function pt:find(f)
+	for k, v in pairs(self) do
+		if f(k, v) then
+			return k, v
+		end
+	end
+end
+
 --- Check if at least one element in the array satisfies the predicate.
 --- @generic K, V
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
@@ -361,7 +374,6 @@ end
 
 function mt:__mul() end -- TODO: Intersection
 function mt:__call() end -- TODO
-function pt:find(f) end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
@@ -377,7 +389,6 @@ function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:shuffle() end -- TODO
 function pt:pad() end -- TODO
-
 function pt:truncate() end -- TODO
 function static.range(n, f) end; -- TODO
 
