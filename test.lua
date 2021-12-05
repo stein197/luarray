@@ -9,7 +9,7 @@
 	- tables with custom metatables (object instances)
 	All functions should:
 	- return different array (if the function returns an array)
-	- modify or not modify self if __mutable == true/false
+	- not modify self
 	- not wrap tables with metatables
 	- modify only inner __data table
 ]]
