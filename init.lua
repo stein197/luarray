@@ -295,6 +295,19 @@ function pt:uniq()
 	return rs
 end
 
+--- Reverses the order of values in the array. Works correctly only with numeric keys.
+--- @return array rs Reversed array.
+function pt:reverse()
+	local rs = ctor()
+	local len = self:len()
+	for i = 1, len do
+		local v = self.__data[#self - i + 1]
+		rs.__data[i] = isarray(v) and v:clone() or v
+	end
+	return rs
+end
+
+
 --- Checks if the array has specified key.
 --- @return boolean rs `true` if the array has key.
 function pt:haskey(item)
@@ -353,7 +366,6 @@ function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
 function pt:reduceend(f, init) end -- TODO
-function pt:reverse() end -- TODO
 function pt:slice(from, to) end -- TODO
 function pt:sort(f) end -- TODO
 function pt:addstart(item) end -- TODO
