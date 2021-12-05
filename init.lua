@@ -1,13 +1,11 @@
 -- TODO: Preserve order of addition?
 -- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
--- TODO: Add __mutable flag
 -- TODO: Make every function accept key first only then value
 local mt = {}
 
 --- @class array
 --- @field private __data table
---- @field private __mutable boolean
 local pt = {}
 local static = {}
 
@@ -239,15 +237,6 @@ function pt:totable()
 		t[k] = isarray(v) and v:totable() or v
 	end
 	return t
-end
-
---- Returns mutable version of array. All operations made on mutable arrays applies directly to self instead of creating
---- a new array.
---- @return array rs Array.
-function static.mutable(...)
-	local rs = ctor("", ...)
-	rs.__mutable = true
-	return rs
 end
 
 --- Combines two tables into one by using the first one as keys and the second one as values.
