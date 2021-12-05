@@ -52,6 +52,15 @@ function mt:__newindex(k, v)
 	self.__data[k] = isplaintable(v) and ctor(self, v) or v
 end
 
+--- Adds a new value to the array. Instead of adding to the current array returns a new one.
+--- @param v any Value to add.
+--- @return array rs A new array.
+function mt:__add(v)
+	local rs = self:clone()
+	table.insert(rs.__data, isplaintable(v) and ctor(self, v) or v)
+	return rs
+end
+
 --- Overloads `#` operator.
 --- @return number len The length of the table.
 function mt:__len()
@@ -274,7 +283,6 @@ function static.combine(keys, values)
 	return rs
 end
 
-function mt:__add(v) table.insert(self.__data, isplaintable(v) and ctor(self, v) or v) end
 function mt:__mul() end -- TODO: Intersection
 function mt:__sub() end -- TODO
 function mt:__call() end -- TODO
