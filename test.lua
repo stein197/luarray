@@ -1,12 +1,13 @@
 --[[ 
-	All functions should be tested against:
+	Functions should be tested against:
 	- empty table
 	- table with single item
 	- table with multiple items
-	- primitives
+	- nil
+	- primitive
 	- plain table
 	- array
-	- tables with custom metatables (object instances)
+	- objects
 	All functions should:
 	- return different array (if the function returns an array)
 	- not modify self

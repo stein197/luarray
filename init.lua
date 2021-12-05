@@ -61,6 +61,32 @@ function mt:__add(v)
 	return rs
 end
 
+--- Concatenates the array with another one returning a new one. Can also be concatenated with plain arrays. Passing
+--- another types will raise an error. If the arrays have duplicating numeric indeces then the elements from the second
+--- array will be added to the first. Otherwise, if the arrays have duplicating non-numeric indeces then the elemenets
+--- from the second array will override the elements from the first one.
+--- @param t array | table Array to concatenate.
+--- @return array rs New array which is a result of concatenating the current array and another one.
+function mt:__concat(t)
+	if not isplaintable(t) and not isarray(t) then
+		error "Concatenation only allowed for tables and arrays"
+	end
+	local rs = self:clone()
+	for k, v in pairs(t) do
+		if isplaintable(v) then
+			v = ctor(self, v)
+		elseif isarray(v) then
+			v = v:clone()
+		end
+		if type(k) == "number" then
+			table.insert(rs.__data, v)
+		else
+			rs.__data[k] = v
+		end
+	end
+	return rs
+end
+
 --- Overloads `#` operator.
 --- @return number len The length of the table.
 function mt:__len()
@@ -284,9 +310,7 @@ function static.combine(keys, values)
 end
 
 function mt:__mul() end -- TODO: Intersection
-function mt:__sub() end -- TODO
 function mt:__call() end -- TODO
-function mt:__concat() end -- TODO
 function pt:find(f) end -- TODO
 function pt:findindex(f) end -- TODO
 function pt:firstindexof(item) end -- TODO
