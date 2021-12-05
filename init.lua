@@ -229,6 +229,18 @@ function pt:haskey(item)
 	return self[item] ~= nil
 end
 
+--- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
+--- types are compared by reference.
+--- @return boolean rs `true` if the array has value.
+function pt:hasvalue(item)
+	for k, v in pairs(self) do
+		if v == item then
+			return true
+		end
+	end
+	return false
+end
+
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
@@ -269,7 +281,6 @@ function mt:__call() end -- TODO
 function mt:__concat() end -- TODO
 function pt:find(f) end -- TODO
 function pt:findindex(f) end -- TODO
-function pt:hasvalue(item) end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
