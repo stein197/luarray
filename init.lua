@@ -225,6 +225,13 @@ function pt:values()
 	return rs
 end -- TODO: Preserve keys orders
 
+--- Returns the first key-value pair of the array. The behavior is determined only in arrays with numeric keys.
+--- @return any k First key in the array.
+--- @return any v First value in the array.
+function pt:first()
+	return next(self.__data)
+end
+
 --- Joins all the elements into a string with specified separator.
 --- @return string rs Joined string.
 function pt:join(sep)
@@ -327,7 +334,6 @@ function pt:addstart() end -- TODO
 function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
-function pt:first() end -- TODO
 function pt:last() end -- TODO
 function pt:shuffle() end -- TODO
 function pt:pad() end -- TODO
