@@ -214,6 +214,17 @@ function pt:swap()
 	return rs
 end
 
+--- Makes deep clone of the table. If keys' type is reference then they won't be cloned. If values' type isn't primitive
+--- nor array then they will be cloned only by reference.
+--- @return array rs Cloned array.
+function pt:clone()
+	local rs = ctor()
+	for k, v in pairs(self) do
+		rs.__data[k] = isarray(v) and v:clone() or v
+	end
+	return rs
+end
+
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
@@ -272,7 +283,6 @@ function pt:reduceend(f, init) end -- TODO
 function pt:reverse() end -- TODO
 function pt:slice(from, to) end -- TODO
 function pt:sort(f) end -- TODO
-function pt:clone() end -- TODO
 function pt:addend(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:delend() end -- TODO
