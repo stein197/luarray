@@ -279,6 +279,22 @@ function pt:clone()
 	return rs
 end
 
+--- Removes duplicates from the array.
+--- @return array rs Array with no duplicates.
+function pt:uniq()
+	local rs = ctor()
+	for k, v in pairs(self) do
+		if not rs:hasvalue(v) then
+			if type(k) == "number" then
+				table.insert(rs.__data, v)
+			else
+				rs.__data[k] = v
+			end
+		end
+	end
+	return rs
+end
+
 --- Checks if the array has specified key.
 --- @return boolean rs `true` if the array has key.
 function pt:haskey(item)
@@ -333,7 +349,6 @@ end
 function mt:__mul() end -- TODO: Intersection
 function mt:__call() end -- TODO
 function pt:find(f) end -- TODO
-function pt:findindex(f) end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
@@ -341,17 +356,16 @@ function pt:reduceend(f, init) end -- TODO
 function pt:reverse() end -- TODO
 function pt:slice(from, to) end -- TODO
 function pt:sort(f) end -- TODO
-function pt:addend(item) end -- TODO
+function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
-function pt:delend() end -- TODO
-function pt:addstart() end -- TODO
+function pt:addend(item) end -- TODO
+function pt:delend(item) end -- TODO
 function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:shuffle() end -- TODO
 function pt:pad() end -- TODO
-function pt:uniq() end -- TODO
-function pt:islist() end -- TODO
+
 function pt:truncate() end -- TODO
 function static.range(n, f) end; -- TODO
 
