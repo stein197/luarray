@@ -2,6 +2,7 @@
 -- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
 -- TODO: Make every function accept key first only then value
+-- TODO: Apply all functions to the current array?
 local mt = {}
 
 --- @class array
@@ -219,6 +220,16 @@ function pt:each(f)
 	end
 end
 
+--- Sorts the array. Works only with arrays with numeric keys
+--- @param f? fun(a: any, b: any): boolean Closure that should return true if `a` should come before `b`.
+--- @return array rs Sorted array.
+--- @see table.sort
+function pt:sort(f)
+	local rs = self:clone()
+	table.sort(rs.__data, f)
+	return rs
+end
+
 --- Returns array of keys.
 --- @return array rs Keys.
 function pt:keys()
@@ -379,7 +390,6 @@ function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
 function pt:reduceend(f, init) end -- TODO
 function pt:slice(from, to) end -- TODO
-function pt:sort(f) end -- TODO
 function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:addend(item) end -- TODO
