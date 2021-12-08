@@ -220,13 +220,26 @@ function pt:each(f)
 	end
 end
 
---- Sorts the array. Works only with arrays with numeric keys
+--- Sorts the array. Works only with arrays with numeric keys.
 --- @param f? fun(a: any, b: any): boolean Closure that should return true if `a` should come before `b`.
 --- @return array rs Sorted array.
 --- @see table.sort
 function pt:sort(f)
 	local rs = self:clone()
 	table.sort(rs.__data, f)
+	return rs
+end
+
+--- Shuffles the array. Works only with arrays with numeric keys.
+--- @return array rs Suffled array.
+function pt:shuffle()
+	local rs = self:clone()
+	local data = rs.__data
+	local len = #data
+	for i = 1, len do
+		local j = math.random(i, len)
+		data[i], data[j] = data[j], data[i]
+	end
 	return rs
 end
 
@@ -397,7 +410,6 @@ function pt:delend(item) end -- TODO
 function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
-function pt:shuffle() end -- TODO
 function pt:pad() end -- TODO
 function pt:truncate() end -- TODO
 function static.range(n, f) end; -- TODO
