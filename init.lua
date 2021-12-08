@@ -344,6 +344,25 @@ function pt:reverse()
 	return rs
 end
 
+--- Slices the part of the array. Works only with arrays with numeric keys.
+--- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
+---                    relative to the end of the array.
+--- @param to number End index of the sliced array. If negative index is supplied then the real index is calculated
+---                    relative to the end of the array.
+--- @return array rs Slice of the array.
+function pt:slice(from, to)
+	local len = #self.__data
+	from = from < 0 and len - from or from
+	to = to < 0 and len - to or to
+	if to < from then
+		error(string.format("Cannot slice the array from %d to %d index. %d is lesser than %d", from, to, to, from))
+	end
+	local rs = ctor()
+	for i = from, to do
+		table.insert(rs.__data, self.__data[i])
+	end
+	return rs
+end
 
 --- Checks if the array has specified key.
 --- @return boolean rs `true` if the array has key.
@@ -402,7 +421,6 @@ function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
 function pt:reducestart(f, init) end -- TODO
 function pt:reduceend(f, init) end -- TODO
-function pt:slice(from, to) end -- TODO
 function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:addend(item) end -- TODO
