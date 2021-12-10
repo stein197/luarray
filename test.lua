@@ -14,6 +14,7 @@
 	- not wrap tables with metatables
 	- modify only inner __data table
 ]]
+-- TODO: Add test cases list
 
 array = require ""
 luaunit = require "luaunit"

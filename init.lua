@@ -352,8 +352,8 @@ end
 --- @return array rs Slice of the array.
 function pt:slice(from, to)
 	local len = #self.__data
-	from = from < 0 and len - from or from
-	to = to < 0 and len - to or to
+	from = from == nil and 1 or from < 0 and len - from or from
+	to = to == nil and len or to < 0 and len - to or to
 	if to < from then
 		error(string.format("Cannot slice the array from %d to %d index. %d is lesser than %d", from, to, to, from))
 	end
