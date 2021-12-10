@@ -1,7 +1,6 @@
--- TODO: Preserve order of addition?
 -- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
--- TODO: Make every function accept key first only then value
+-- TODO: Mutable arrays
 -- TODO: Apply all functions to the current array?
 local mt = {}
 
@@ -305,6 +304,7 @@ function pt:swap()
 	return rs
 end
 
+-- TODO: Add shallow cloning that will copy references of inner arrays
 --- Makes deep clone of the table. If keys' type is reference then they won't be cloned. If values' type isn't primitive
 --- nor array then they will be cloned only by reference.
 --- @return array rs Cloned array.
