@@ -20,6 +20,22 @@ local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
 end
 
+local function reduce(self, f, init, isstart)
+	local from = init == nil and (isstart and 2 or #self - 1) or (isstart and 1 or #self)
+	local to = isstart and #self or 1
+	local step = isstart and 1 or -1
+	local rs
+	if init == nil then
+		rs = isstart and self[1] or self[#self]
+	else
+		rs = init
+	end
+	for i = from, to, step do
+		rs = f(rs, i, self[i])
+	end
+	return rs
+end
+
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
 --- @return array array Array.
@@ -313,18 +329,7 @@ end
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reducestart(f, init)
-	local start, rs
-	if init == nil then
-		start = 2
-		rs = self[1]
-	else
-		start = 1
-		rs = init
-	end
-	for i = start, #self do
-		rs = f(rs, i, self[i])
-	end
-	return rs
+	return reduce(self, f, init, true)
 end
 
 --- Applies the given function to each element from end to start in the array returning an accumulate value.
@@ -333,18 +338,7 @@ end
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reduceend(f, init)
-	local start, rs
-	if init == nil then
-		start = #self - 1
-		rs = self[#self]
-	else
-		start = #self
-		rs = init
-	end
-	for i = start, 1, -1 do
-		rs = f(rs, i, self[i])
-	end
-	return rs
+	return reduce(self, f, init, false)
 end
 
 -- TODO: Add shallow cloning that will copy references of inner arrays
