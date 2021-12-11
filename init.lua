@@ -1,3 +1,6 @@
+--[[
+	All function should be sorted in alphabetical order
+]]
 -- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
 -- TODO: Mutable arrays
@@ -338,7 +341,7 @@ function pt:reduceend(f, init)
 		start = #self
 		rs = init
 	end
-	for i = #self, start, -1 do
+	for i = start, 1, -1 do
 		rs = f(rs, i, self[i])
 	end
 	return rs
