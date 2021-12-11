@@ -428,8 +428,8 @@ function pt:delend(item) end -- TODO
 function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
-function pt:pad() end -- TODO
-function pt:truncate() end -- TODO
+function pt:padstart() end -- TODO
+function pt:padend() end -- TODO
 function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {
