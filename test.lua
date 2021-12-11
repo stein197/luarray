@@ -3,7 +3,7 @@
 	- empty table
 	- table with single item
 	- table with multiple items
-	- nil
+	- table with nil
 	- primitive
 	- plain table
 	- array

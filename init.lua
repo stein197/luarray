@@ -304,6 +304,46 @@ function pt:swap()
 	return rs
 end
 
+--- Applies the given function to each element from start to end in the array returning an accumulate value.
+--- @generic V
+--- @param f fun(rs: V, k: any, v: V): V Function to apply.
+--- @param init? V A value to start with.
+--- @return V rs Accumulated value.
+function pt:reducestart(f, init)
+	local start, rs
+	if init == nil then
+		start = 2
+		rs = self[1]
+	else
+		start = 1
+		rs = init
+	end
+	for i = start, #self do
+		rs = f(rs, i, self[i])
+	end
+	return rs
+end
+
+--- Applies the given function to each element from end to start in the array returning an accumulate value.
+--- @generic V
+--- @param f fun(rs: V, k: any, v: V): V Function to apply.
+--- @param init? V A value to start with.
+--- @return V rs Accumulated value.
+function pt:reduceend(f, init)
+	local start, rs
+	if init == nil then
+		start = #self - 1
+		rs = self[#self]
+	else
+		start = #self
+		rs = init
+	end
+	for i = #self, start, -1 do
+		rs = f(rs, i, self[i])
+	end
+	return rs
+end
+
 -- TODO: Add shallow cloning that will copy references of inner arrays
 --- Makes deep clone of the table. If keys' type is reference then they won't be cloned. If values' type isn't primitive
 --- nor array then they will be cloned only by reference.
@@ -415,12 +455,8 @@ function static.combine(keys, values)
 	return rs
 end
 
-function mt:__mul() end -- TODO: Intersection
-function mt:__call() end -- TODO
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
-function pt:reducestart(f, init) end -- TODO
-function pt:reduceend(f, init) end -- TODO
 function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:addend(item) end -- TODO
