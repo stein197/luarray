@@ -11,8 +11,8 @@ TestSlice = {
 		luaunit.assertEquals(array():slice(0, 0), {})
 	end;
 
-	["test: array():slice(0, 1) -> error"] = function ()
-		luaunit.assertError(function () array():slice(0, 1) end)
+	["test: array():slice(0, 1) == {}"] = function ()
+		luaunit.assertEquals(array():slice(0, 1), {})
 	end;
 
 	["test: array(\"a\"):slice() == {\"a\"}"] = function ()
@@ -35,8 +35,8 @@ TestSlice = {
 		luaunit.assertError(function () array("a"):slice(2) end)
 	end;
 
-	["test: array(\"a\"):slice(-2) -> error"] = function ()
-		luaunit.assertError(function () array("a"):slice(-2) end)
+	["test: array(\"a\"):slice(-2) == {\"a\"}"] = function ()
+		luaunit.assertEquals(array("a"):slice(-2), {"a"})
 	end;
 
 	["test: array(\"a\"):slice(0, 0) == {}"] = function ()
@@ -93,8 +93,8 @@ TestSlice = {
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-3), {"d", "e", "f"})
 	end;
 
-	["test: array(\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"):slice(-8) -> error"] = function ()
-		luaunit.assertError(function () array("a", "b", "c", "d", "e", "f"):slice(-8) end)
+	["test: array(\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"):slice(-8) == {\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"}"] = function ()
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-8), {"a", "b", "c", "d", "e", "f"})
 	end;
 
 	["test: array(\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"):slice(8) -> error"] = function ()
