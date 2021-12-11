@@ -461,7 +461,6 @@ function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:addend(item) end -- TODO
 function pt:delend(item) end -- TODO
-function pt:col() end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:padstart() end -- TODO
