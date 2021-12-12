@@ -419,6 +419,42 @@ function pt:hasvalue(item)
 	return false
 end
 
+--- Pads the array at the start with the given value to the given length.
+--- @param len number To which length pad the array.
+--- @param v any What item to add.
+--- @return array rs Padded array.
+function pt:padstart(len, v)
+	local rs = self:clone()
+	local oldlen = #self
+	local diff = len - oldlen
+	if diff <= 0 then
+		return rs
+	end
+	for i = oldlen, 1, -1 do
+		rs.__data[i + diff] = rs.__data[i]
+	end
+	for i = 1, diff do
+		rs.__data[i] = isplaintable(v) and ctor(self, v) or v
+	end
+	return rs
+end
+
+--- Pads the array at the end with the given value to the given length.
+--- @param len number To which length pad the array.
+--- @param v any What item to add.
+--- @return array rs Padded array.
+function pt:padend(len, v)
+	local rs = self:clone()
+	local diff = len - #self
+	if diff <= 0 then
+		return rs
+	end
+	for i = #self + 1, len do
+		table.insert(rs.__data, isplaintable(v) and ctor(self, v) or v)
+	end
+	return rs
+end
+
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
@@ -460,9 +496,6 @@ function pt:addend(item) end -- TODO
 function pt:delend(item) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
-function pt:padstart() end -- TODO
-function pt:padend() end -- TODO
-function static.range(n, f) end; -- TODO
 
 return setmetatable(static, {
 	__call = ctor
