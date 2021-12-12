@@ -1,10 +1,14 @@
 --[[
 	All function should be sorted in alphabetical order
+	Closures that accept key and value should accept them in that order only
+	Naming conventions:
+	- k for key
+	- v for value
+	- f for function
+	- rs for result
 ]]
--- TODO: Delete pt and replace with mt.__index:<fn>
 -- TODO: Annotate types to help IDE
 -- TODO: Mutable arrays
--- TODO: Apply all functions to the current array?
 local mt = {}
 
 --- @class array
@@ -54,6 +58,25 @@ local function ctor(self, ...)
 		end
 	end
 	return setmetatable(array, mt)
+end
+
+local function pad(self, len, v, isstart)
+	local rs, oldlen = self:clone(), #self
+	local diff = len - oldlen
+	if diff <= 0 then
+		return rs
+	end
+	if isstart then
+		for i = oldlen, 1, -1 do
+			rs.__data[i + diff] = rs.__data[i]
+		end
+	end
+	local from = isstart and 1 or #self + 1
+	local to = isstart and diff or len
+	for i = from, to do
+		rs.__data[i] = isplaintable(v) and ctor(self, v) or v
+	end
+	return rs
 end
 
 --- Overloads index access to the array. Redirects all calls to the internal `__data` table field if the key is not in
@@ -424,19 +447,7 @@ end
 --- @param v any What item to add.
 --- @return array rs Padded array.
 function pt:padstart(len, v)
-	local rs = self:clone()
-	local oldlen = #self
-	local diff = len - oldlen
-	if diff <= 0 then
-		return rs
-	end
-	for i = oldlen, 1, -1 do
-		rs.__data[i + diff] = rs.__data[i]
-	end
-	for i = 1, diff do
-		rs.__data[i] = isplaintable(v) and ctor(self, v) or v
-	end
-	return rs
+	return pad(self, len, v, true)
 end
 
 --- Pads the array at the end with the given value to the given length.
@@ -444,15 +455,7 @@ end
 --- @param v any What item to add.
 --- @return array rs Padded array.
 function pt:padend(len, v)
-	local rs = self:clone()
-	local diff = len - #self
-	if diff <= 0 then
-		return rs
-	end
-	for i = #self + 1, len do
-		table.insert(rs.__data, isplaintable(v) and ctor(self, v) or v)
-	end
-	return rs
+	return pad(self, len, v, false)
 end
 
 --- Checks if the array is empty.
