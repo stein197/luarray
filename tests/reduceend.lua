@@ -42,4 +42,10 @@ TestReduceEnd = {
 	["test: array(...):reduceend(f, init)"] = function ()
 		luaunit.assertEquals(array(1, 2, 3):reduceend(function (rs, k, v) return rs + v end, 1), 7)
 	end;
+
+	["test: array(...):reduceend(...) goes from end to the start"] = function ()
+		local value
+		array("a", "b", "c"):reduceend(function (rs, k, v) value = v end)
+		luaunit.assertEquals(value, "a")
+	end;
 }

@@ -42,4 +42,10 @@ TestReduceStart = {
 	["test: array(...):reducestart(f, init)"] = function ()
 		luaunit.assertEquals(array(1, 2, 3):reducestart(function (rs, k, v) return rs + v end, 1), 7)
 	end;
+
+	["test: array(...):reducestart(...) goes from start to the end"] = function ()
+		local value
+		array("a", "b", "c"):reducestart(function (rs, k, v) value = v end)
+		luaunit.assertEquals(value, "c")
+	end;
 }
