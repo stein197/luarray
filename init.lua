@@ -2,13 +2,13 @@
 	All function should be sorted in alphabetical order
 	Closures that accept key and value should accept them in that order only
 	Naming conventions:
-	- k for key
+	- i for index
 	- v for value
 	- f for function
 	- rs for result
 ]]
 -- TODO: Annotate types to help IDE
--- TODO: Mutable arrays
+-- TODO: Restrict array keys to numbers only
 local mt = {}
 
 --- @class array
@@ -43,7 +43,7 @@ end
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
 --- @return array array Array.
-local function ctor(self, ...)
+local function ctor(...)
 	local args = {...}
 	local array = {
 		__data = {} -- TODO: No need in __data? Store directly in array?
@@ -54,7 +54,7 @@ local function ctor(self, ...)
 		table.insert(array.__data, data)
 	else
 		for k, v in pairs(data) do
-			array.__data[k] = isplaintable(v) and ctor(self, v) or v
+			array.__data[k] = isplaintable(v) and ctor(v) or v
 		end
 	end
 	return setmetatable(array, mt)
@@ -74,7 +74,7 @@ local function pad(self, len, v, isstart)
 	local from = isstart and 1 or #self + 1
 	local to = isstart and diff or len
 	for i = from, to do
-		rs.__data[i] = isplaintable(v) and ctor(self, v) or v
+		rs.__data[i] = isplaintable(v) and ctor(v) or v
 	end
 	return rs
 end
@@ -91,7 +91,7 @@ end
 --- @param k any An index key.
 --- @param v any A new value associated with the key.
 function mt:__newindex(k, v)
-	self.__data[k] = isplaintable(v) and ctor(self, v) or v
+	self.__data[k] = isplaintable(v) and ctor(v) or v
 end
 
 --- Adds a new value to the array. Instead of adding to the current array returns a new one.
@@ -99,7 +99,7 @@ end
 --- @return array rs A new array.
 function mt:__add(v)
 	local rs = self:clone()
-	table.insert(rs.__data, isplaintable(v) and ctor(self, v) or v)
+	table.insert(rs.__data, isplaintable(v) and ctor(v) or v)
 	return rs
 end
 
@@ -116,7 +116,7 @@ function mt:__concat(t)
 	local rs = self:clone()
 	for k, v in pairs(t) do
 		if isplaintable(v) then
-			v = ctor(self, v)
+			v = ctor(v)
 		elseif isarray(v) then
 			v = v:clone()
 		end
@@ -284,25 +284,6 @@ function pt:shuffle()
 	return rs
 end
 
---- Returns array of keys.
---- @return array rs Keys.
-function pt:keys()
-	local rs = ctor()
-	for k in pairs(self) do
-		table.insert(rs.__data, k)
-	end
-	return rs
-end -- TODO: Preserve keys orders
-
---- Returns array of values discarding keys.
-function pt:values()
-	local rs = ctor()
-	for k, v in pairs(self) do
-		table.insert(rs.__data, v)
-	end
-	return rs
-end -- TODO: Preserve keys orders
-
 --- Returns the first key-value pair of the array. The behavior is determined only in arrays with numeric keys.
 --- @return any k The first key in the array.
 --- @return any v The first value in the array.
@@ -334,16 +315,6 @@ function pt:join(sep)
 		rs = k ~= nil and rs..sep..tostring(v) or rs
 	until not k
 	return rs:sub(sep:len() + 1)
-end
-
---- Swaps keys with values in the array.
---- @return array rs Array with swaped keys and values.
-function pt:swap()
-	local rs = ctor()
-	for k, v in pairs(self) do
-		rs.__data[v] = k
-	end
-	return rs
 end
 
 --- Applies the given function to each element from start to end in the array returning an accumulate value.
@@ -424,12 +395,6 @@ function pt:slice(from, to)
 	return rs
 end
 
---- Checks if the array has specified key.
---- @return boolean rs `true` if the array has key.
-function pt:haskey(item)
-	return self[item] ~= nil
-end
-
 --- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
 --- types are compared by reference.
 --- @return boolean rs `true` if the array has value.
@@ -474,25 +439,11 @@ function pt:totable()
 	return t
 end
 
---- Combines two tables into one by using the first one as keys and the second one as values.
---- @param keys table|array Keys.
---- @param values table|array Values.
---- @return array rs Combined array.
-function static.combine(keys, values)
-	if #keys ~= #values then
-		error(string.format("Keys and values tables have different lengths: %s against %s", #keys, #values))
-	end
-	keys = getmetatable(keys) == mt and keys.__data or keys
-	values = getmetatable(values) == mt and values.__data or values
-	local rs = ctor()
-	for i = 1, #keys do
-		rs.__data[keys[i]] = values[i]
-	end
-	return rs
-end
-
 function pt:firstindexof(item) end -- TODO
 function pt:lastindexof(item) end -- TODO
+function pt:addbefore(item) end -- TODO
+function pt:addafter(item) end -- TODO
+function pt:delat(i) end -- TODO
 function pt:addstart(item) end -- TODO
 function pt:delstart(item) end -- TODO
 function pt:addend(item) end -- TODO
@@ -500,6 +451,4 @@ function pt:delend(item) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 
-return setmetatable(static, {
-	__call = ctor
-})
+return ctor
