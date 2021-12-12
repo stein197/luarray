@@ -59,4 +59,8 @@ TestPadStart = {
 	["test: array(...):padstart(...) only modifies __data"] = function ()
 		luaunit.assertEquals(array("a", "b", "c"):padstart(4, "d").__data, {"d", "a", "b", "c"})
 	end;
+
+	["test: array(...):padstart(-3, item) returns the same array"] = function ()
+		luaunit.assertEquals(array("a", "b", "c"):padstart(-3, "d").__data, {"a", "b", "c"})
+	end;
 }

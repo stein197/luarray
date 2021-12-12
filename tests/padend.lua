@@ -59,4 +59,8 @@ TestPadEnd = {
 	["test: array(...):padend(...) only modifies __data"] = function ()
 		luaunit.assertEquals(array("a", "b", "c"):padend(4, "d").__data, {"a", "b", "c", "d"})
 	end;
+
+	["test: array(...):padend(-3, item) returns the same array"] = function ()
+		luaunit.assertEquals(array("a", "b", "c"):padend(-3, "d").__data, {"a", "b", "c"})
+	end;
 }
