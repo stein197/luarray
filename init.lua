@@ -9,6 +9,7 @@
 ]]
 -- TODO: Annotate types to help IDE
 -- TODO: Restrict array keys to numbers only
+-- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
 local mt = {}
 
 --- @class array
