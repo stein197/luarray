@@ -9,10 +9,12 @@
 ]]
 -- TODO: Annotate types to help IDE
 -- TODO: Restrict array keys to numbers only
+-- TODO: Remove __data and keep everything inside the array, replace pt with mt.__index:<fn>
 -- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
 local mt = {}
 
---- @class array
+--- @generic T
+--- @class array<T>
 --- @field private __data table
 local pt = {}
 local static = {}
@@ -39,6 +41,19 @@ local function reduce(self, f, init, isstart)
 		rs = f(rs, i, self[i])
 	end
 	return rs
+end
+
+local function indexof(self, v, i, isstart)
+	local len = #self
+	local from = i and i or (isstart and 1 or len)
+	local to = isstart and len or 1
+	local step = isstart and 1 or -1
+	for j = from, to, step do
+		if v == self[j] then
+			return j
+		end
+	end
+	return -1
 end
 
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
@@ -440,8 +455,24 @@ function pt:totable()
 	return t
 end
 
-function pt:firstindexof(item) end -- TODO
-function pt:lastindexof(item) end -- TODO
+--- Returns the first index at which the given value can be found.
+--- @generic V
+--- @param v V Value to find.
+--- @param i number At which index to start searching.
+--- @return number i First index at which the value found, otherwise -1.
+function pt:firstindexof(v, i)
+	return indexof(self, v, i, true)
+end
+
+--- Returns the last index at which the given value can be found.
+--- @generic V
+--- @param v V Value to find.
+--- @param i number At which index to start searching.
+--- @return number i Last index at which the value found, otherwise -1.
+function pt:lastindexof(v, i)
+	return indexof(self, v, i)
+end
+
 function pt:addbefore(item) end -- TODO
 function pt:addafter(item) end -- TODO
 function pt:delat(i) end -- TODO
