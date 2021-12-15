@@ -1,16 +1,14 @@
 --[[ 
-	Functions should be tested against:
-	- empty table
-	- table with single item
-	- table with multiple items
-	- table with nil
-	- primitive
+	Functions should at least be tested against:
+	- empty array
+	- array with single item
+	- array with multiple items
 	- plain table
+	- primitive
 	- array
-	- objects
-	All functions should:
-	- return different array (if the function returns an array)
-	- not modify self
+	- object
+	- nil
+	When possible, functions should:
 	- not wrap tables with metatables
 	- modify only inner __data table
 ]]

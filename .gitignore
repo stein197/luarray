@@ -1,7 +1,5 @@
-/luarocks
-/lua
-/luarocks.bat
-/lua.bat
+/luarocks*
+/lua*
 /lua_modules
 /.luarocks
 /*.rock
