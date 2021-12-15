@@ -19,6 +19,10 @@ local mt = {}
 local pt = {}
 local static = {}
 
+local function normalizeidx(len, i)
+	return i < 0 and len + i + 1 or i
+end
+
 local function isplaintable(t)
 	return type(t) == "table" and not getmetatable(t)
 end
