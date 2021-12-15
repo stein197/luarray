@@ -17,7 +17,6 @@ local mt = {}
 --- @class array<T>
 --- @field private __data table
 local pt = {}
-local static = {}
 
 local function normalizeidx(len, i)
 	return i < 0 and len + i + 1 or i
