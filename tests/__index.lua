@@ -1,6 +1,6 @@
 Test__index = {
 	setUp = function (self)
-		self.o = Class()
+		self.o = Object()
 	end;
 	
 	["test: Accessing an empty array returns nil"] = function ()

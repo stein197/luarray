@@ -16,12 +16,12 @@ TestHasValue = {
 	end;
 	
 	["test: Finding reference type"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertTrue(array(1, 2, o):hasvalue(o))
 	end;
 
 	["test: Finding same object but with different reference ewturns false"] = function ()
-		luaunit.assertFalse(array(1, 2, Class()):hasvalue(Class()))
+		luaunit.assertFalse(array(1, 2, Object()):hasvalue(Object()))
 	end;
 	
 	["test: Finding nonexistent value"] = function ()

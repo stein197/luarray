@@ -41,7 +41,7 @@ TestPadEnd = {
 	end;
 
 	["test: array(...):padend(n, obj) does not wrap the object"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertTrue(rawequal(array():padend(2, o)[1], o))
 	end;
 

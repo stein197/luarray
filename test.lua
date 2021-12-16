@@ -18,7 +18,7 @@
 array = require ""
 luaunit = require "luaunit"
 
-Class = setmetatable({}, {
+Object = setmetatable({}, {
 	__index = {
 		prop = "string";
 		method = function (self)
@@ -26,11 +26,11 @@ Class = setmetatable({}, {
 		end;
 	};
 	__call = function (self)
-		return setmetatable({}, ClassMt)
+		return setmetatable({}, ObjectMt)
 	end;
 })
-ClassMt = {
-	__index = Class
+ObjectMt = {
+	__index = Object
 }
 local command
 if package.config:sub(1, 1) == "/" then

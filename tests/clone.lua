@@ -20,7 +20,7 @@ TestClone = {
 	end;
 
 	["test: Cloning an array with object element"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertTrue(array(o):clone()[1] == o)
 	end;
 

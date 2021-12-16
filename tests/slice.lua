@@ -69,7 +69,7 @@ TestSlice = {
 	end;
 
 	["test: array(obj):slice(...) copies only reference"] = function ()
-		local a = array(Class(), 2, 3)
+		local a = array(Object(), 2, 3)
 		luaunit.assertTrue(rawequal(a[1], a:slice()[1]))
 	end;
 

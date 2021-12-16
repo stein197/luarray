@@ -6,6 +6,8 @@
 	- v: value
 	- f: function
 	- t: table
+	- o: object
+	- a: array
 	- rs: result
 ]]
 -- TODO: Annotate types to help IDE
