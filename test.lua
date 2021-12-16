@@ -19,12 +19,6 @@ array = require ""
 luaunit = require "luaunit"
 
 Object = setmetatable({}, {
-	__index = {
-		prop = "string";
-		method = function (self)
-			return self.prop
-		end;
-	};
 	__call = function (self)
 		return setmetatable({}, ObjectMt)
 	end;
