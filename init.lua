@@ -2,10 +2,11 @@
 	All function should be sorted in alphabetical order
 	Closures that accept key and value should accept them in that order only
 	Naming conventions:
-	- i for index
-	- v for value
-	- f for function
-	- rs for result
+	- i: index
+	- v: value
+	- f: function
+	- t: table
+	- rs: result
 ]]
 -- TODO: Annotate types to help IDE
 -- TODO: Restrict array keys to numbers only
@@ -478,6 +479,11 @@ function pt:lastindexof(v, i)
 	return util.indexof(self, v, i)
 end
 
+function mt:__band() end -- TODO: Intersection
+function mt:__bor() end -- TODO: Union
+function mt:__shl() end -- TODO: Shift left
+function mt:__shr() end -- TODO: Shifts right
+function mt:__sub(t) end -- TODO: Same as diff?
 function pt:addbefore(item) end -- TODO
 function pt:addafter(item) end -- TODO
 function pt:delat(i) end -- TODO
@@ -487,5 +493,6 @@ function pt:addend(item) end -- TODO
 function pt:delend(item) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
+function pt:union(f) end -- TODO
 
 return array

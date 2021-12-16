@@ -4,6 +4,7 @@
 	- array with single item
 	- array with multiple items
 	- plain table
+	- table with non-numeric keys
 	- primitive
 	- array
 	- object
