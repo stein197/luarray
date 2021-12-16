@@ -62,21 +62,21 @@ end
 --- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
 --- the function wraps it. Otherwise wraps all arguments as if it's a table.
 --- @return array array Array.
-local function ctor(...)
+local function array(...)
 	local args = {...}
-	local array = {
+	local a = {
 		__data = {} -- TODO: No need in __data? Store directly in array?
 	}
 	local issinglearg = #args == 1 and type(args[1]) == "table"
 	local data = issinglearg and args[1] or args
 	if issinglearg and not isplaintable(data) then
-		table.insert(array.__data, data)
+		table.insert(a.__data, data)
 	else
 		for k, v in pairs(data) do
-			array.__data[k] = isplaintable(v) and ctor(v) or v
+			a.__data[k] = isplaintable(v) and array(v) or v
 		end
 	end
-	return setmetatable(array, mt)
+	return setmetatable(a, mt)
 end
 
 local function pad(self, len, v, isstart)
@@ -93,7 +93,7 @@ local function pad(self, len, v, isstart)
 	local from = isstart and 1 or #self + 1
 	local to = isstart and diff or len
 	for i = from, to do
-		rs.__data[i] = isplaintable(v) and ctor(v) or v
+		rs.__data[i] = isplaintable(v) and array(v) or v
 	end
 	return rs
 end
@@ -110,7 +110,7 @@ end
 --- @param k any An index key.
 --- @param v any A new value associated with the key.
 function mt:__newindex(k, v)
-	self.__data[k] = isplaintable(v) and ctor(v) or v
+	self.__data[k] = isplaintable(v) and array(v) or v
 end
 
 --- Adds a new value to the array. Instead of adding to the current array returns a new one.
@@ -118,7 +118,7 @@ end
 --- @return array rs A new array.
 function mt:__add(v)
 	local rs = self:clone()
-	table.insert(rs.__data, isplaintable(v) and ctor(v) or v)
+	table.insert(rs.__data, isplaintable(v) and array(v) or v)
 	return rs
 end
 
@@ -135,7 +135,7 @@ function mt:__concat(t)
 	local rs = self:clone()
 	for k, v in pairs(t) do
 		if isplaintable(v) then
-			v = ctor(v)
+			v = array(v)
 		elseif isarray(v) then
 			v = v:clone()
 		end
@@ -238,7 +238,7 @@ end
 --- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default.
 --- @return array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved.
 function pt:filter(f, pk)
-	local rs = ctor()
+	local rs = array()
 	if pk == nil then
 		pk = true
 	end
@@ -259,7 +259,7 @@ end
 --- @param f fun(v: V, k?: K, t?: table<K, V>): V, K Function to apply on each element. Returns new value and key.
 --- @return array rs New array.
 function pt:map(f)
-	local rs = ctor()
+	local rs = array()
 	for k, v in pairs(self) do
 		local newv, newk = f(v, k, self)
 		if newk == nil then
@@ -359,7 +359,7 @@ end
 --- nor array then they will be cloned only by reference.
 --- @return array rs Cloned array.
 function pt:clone()
-	local rs = ctor()
+	local rs = array()
 	for k, v in pairs(self) do
 		rs.__data[k] = isarray(v) and v:clone() or v
 	end
@@ -369,7 +369,7 @@ end
 --- Removes duplicates from the array.
 --- @return array rs Array with no duplicates.
 function pt:uniq()
-	local rs = ctor()
+	local rs = array()
 	for k, v in pairs(self) do
 		if not rs:hasvalue(v) then
 			if type(k) == "number" then
@@ -385,7 +385,7 @@ end
 --- Reverses the order of values in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
 function pt:reverse()
-	local rs = ctor()
+	local rs = array()
 	local len = self:len()
 	for i = 1, len do
 		local v = self.__data[#self - i + 1]
@@ -407,7 +407,7 @@ function pt:slice(from, to)
 	if to < from then
 		error(string.format("Cannot slice the array from %d to %d index. %d is lesser than %d", from, to, to, from))
 	end
-	local rs = ctor()
+	local rs = array()
 	for i = from, to do
 		table.insert(rs.__data, isarray(self.__data[i]) and self.__data[i]:clone() or self.__data[i])
 	end
@@ -486,4 +486,4 @@ function pt:delend(item) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 
-return ctor
+return array
