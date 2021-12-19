@@ -14,7 +14,6 @@
 -- TODO: Restrict array keys to numbers only
 -- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
 -- TODO: Add deep flag to totable() function
-local util = {}
 local mt = {}
 
 --- @class array
@@ -28,22 +27,22 @@ local pt = {}
 --- @return array a Array.
 local function array(...)
 	local args = {...}
-	return setmetatable({__data = #args == 1 and util.isplaintable(args[1]) and args[1] or args}, mt)
+	return setmetatable({__data = #args == 1 and type(args[1]) == "table" and not getmetatable(args[1]) and args[1] or args}, mt)
 end
 
-function util.normalizeidx(len, i)
+local function normalizeidx(len, i)
 	return i < 0 and len + i + 1 or i
 end
 
-function util.isplaintable(t)
+local function isplaintable(t)
 	return type(t) == "table" and not getmetatable(t)
 end
 
-function util.isarray(t)
+local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
 end
 
-function util.reduce(self, f, init, isstart)
+local function reduce(self, f, init, isstart)
 	local from = init == nil and (isstart and 2 or #self - 1) or (isstart and 1 or #self)
 	local to = isstart and #self or 1
 	local step = isstart and 1 or -1
@@ -59,7 +58,7 @@ function util.reduce(self, f, init, isstart)
 	return rs
 end
 
-function util.indexof(self, v, i, isstart)
+local function indexof(self, v, i, isstart)
 	local len = #self
 	local from = i and i or (isstart and 1 or len)
 	local to = isstart and len or 1
@@ -72,7 +71,7 @@ function util.indexof(self, v, i, isstart)
 	return -1
 end
 
-function util.pad(self, len, v, isstart)
+local function pad(self, len, v, isstart)
 	local rs, oldlen = self:clone(), #self
 	local diff = len - oldlen
 	if diff <= 0 then
@@ -86,7 +85,7 @@ function util.pad(self, len, v, isstart)
 	local from = isstart and 1 or #self + 1
 	local to = isstart and diff or len
 	for i = from, to do
-		rs.__data[i] = util.isplaintable(v) and array(v) or v
+		rs.__data[i] = isplaintable(v) and array(v) or v
 	end
 	return rs
 end
@@ -96,7 +95,7 @@ end
 --- @param i number An index.
 --- @return any v The value associated with the index.
 function mt:__index(i)
-	return pt[i] or self.__data[util.normalizeidx(#self.__data, i)]
+	return pt[i] or self.__data[normalizeidx(#self.__data, i)]
 end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
@@ -105,7 +104,7 @@ end
 --- @param k any An index key.
 --- @param v any A new value associated with the key.
 function mt:__newindex(k, v)
-	self.__data[k] = util.isplaintable(v) and array(v) or v
+	self.__data[k] = isplaintable(v) and array(v) or v
 end
 
 --- Adds a new value to the array. Instead of adding to the current array returns a new one.
@@ -113,7 +112,7 @@ end
 --- @return array rs A new array.
 function mt:__add(v)
 	local rs = self:clone()
-	table.insert(rs.__data, util.isplaintable(v) and array(v) or v)
+	table.insert(rs.__data, isplaintable(v) and array(v) or v)
 	return rs
 end
 
@@ -124,14 +123,14 @@ end
 --- @param t array | table Array to concatenate.
 --- @return array rs New array which is a result of concatenating the current array and another one.
 function mt:__concat(t)
-	if not util.isplaintable(t) and not util.isarray(t) then
+	if not isplaintable(t) and not isarray(t) then
 		error "Concatenation only allowed for tables and arrays"
 	end
 	local rs = self:clone()
 	for k, v in pairs(t) do
-		if util.isplaintable(v) then
+		if isplaintable(v) then
 			v = array(v)
-		elseif util.isarray(v) then
+		elseif isarray(v) then
 			v = v:clone()
 		end
 		if type(k) == "number" then
@@ -335,7 +334,7 @@ end
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reducestart(f, init)
-	return util.reduce(self, f, init, true)
+	return reduce(self, f, init, true)
 end
 
 --- Applies the given function to each element from end to start in the array returning an accumulate value.
@@ -344,7 +343,7 @@ end
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reduceend(f, init)
-	return util.reduce(self, f, init, false)
+	return reduce(self, f, init, false)
 end
 
 -- TODO: Add shallow cloning that will copy references of inner arrays
@@ -354,7 +353,7 @@ end
 function pt:clone()
 	local rs = array()
 	for k, v in pairs(self) do
-		rs.__data[k] = util.isarray(v) and v:clone() or v
+		rs.__data[k] = isarray(v) and v:clone() or v
 	end
 	return rs
 end
@@ -382,7 +381,7 @@ function pt:reverse()
 	local len = self:len()
 	for i = 1, len do
 		local v = self.__data[#self - i + 1]
-		rs.__data[i] = util.isarray(v) and v:clone() or v
+		rs.__data[i] = isarray(v) and v:clone() or v
 	end
 	return rs
 end
@@ -402,7 +401,7 @@ function pt:slice(from, to)
 	end
 	local rs = array()
 	for i = from, to do
-		table.insert(rs.__data, util.isarray(self.__data[i]) and self.__data[i]:clone() or self.__data[i])
+		table.insert(rs.__data, isarray(self.__data[i]) and self.__data[i]:clone() or self.__data[i])
 	end
 	return rs
 end
@@ -424,7 +423,7 @@ end
 --- @param v any What item to add.
 --- @return array rs Padded array.
 function pt:padstart(len, v)
-	return util.pad(self, len, v, true)
+	return pad(self, len, v, true)
 end
 
 --- Pads the array at the end with the given value to the given length.
@@ -432,7 +431,7 @@ end
 --- @param v any What item to add.
 --- @return array rs Padded array.
 function pt:padend(len, v)
-	return util.pad(self, len, v, false)
+	return pad(self, len, v, false)
 end
 
 --- Checks if the array is empty.
@@ -446,7 +445,7 @@ end
 function pt:totable()
 	local t = {}
 	for k, v in pairs(self.__data) do
-		t[k] = util.isarray(v) and v:totable() or v
+		t[k] = isarray(v) and v:totable() or v
 	end
 	return t
 end
@@ -457,7 +456,7 @@ end
 --- @param i number At which index to start searching.
 --- @return number i First index at which the value found, otherwise -1.
 function pt:firstindexof(v, i)
-	return util.indexof(self, v, i, true)
+	return indexof(self, v, i, true)
 end
 
 --- Returns the last index at which the given value can be found.
@@ -466,7 +465,7 @@ end
 --- @param i number At which index to start searching.
 --- @return number i Last index at which the value found, otherwise -1.
 function pt:lastindexof(v, i)
-	return util.indexof(self, v, i)
+	return indexof(self, v, i)
 end
 
 function mt:__band() end -- TODO: Intersection
