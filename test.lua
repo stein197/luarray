@@ -11,7 +11,6 @@
 	- nil
 	- table with nil
 	When possible, functions should:
-	- not wrap tables with metatables
 	- modify only inner __data table
 ]]
 -- TODO: Add test cases list

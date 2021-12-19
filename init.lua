@@ -1,7 +1,7 @@
 --[[
-	All function should be sorted in alphabetical order
 	Closures that accept key and value should accept them in that order only
 	Naming conventions:
+	- k: key (for ordinary tables)
 	- i: index
 	- v: value
 	- f: function
@@ -12,35 +12,23 @@
 ]]
 -- TODO: Annotate types to help IDE
 -- TODO: Restrict array keys to numbers only
--- TODO: Remove __data and keep everything inside the array, replace pt with mt.__index:<fn>
 -- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
+-- TODO: Add deep flag to totable() function
 local util = {}
 local mt = {}
 
---- @generic T
---- @class array<T>
+--- @class array
 --- @field private __data table
 local pt = {}
 
-
---- Creates a new array from passed arguments. Accepts varargs. If there is only one argument and it's a table, then
---- the function wraps it. Otherwise wraps all arguments as if it's a table.
---- @return array array Array.
+--- Creates a new array from passed arguments. If there is only one argument and it's a plain table,
+--- then the function wraps it. Values with non-numeric keys will be discarded. Otherwise wraps all arguments as if it's
+--- a table. Does not wrap nested tables into arrays.
+--- @vararg any Elements from which to create an array.
+--- @return array a Array.
 local function array(...)
 	local args = {...}
-	local a = {
-		__data = {} -- TODO: No need in __data? Store directly in array?
-	}
-	local issinglearg = #args == 1 and type(args[1]) == "table"
-	local data = issinglearg and args[1] or args
-	if issinglearg and not util.isplaintable(data) then
-		table.insert(a.__data, data)
-	else
-		for k, v in pairs(data) do
-			a.__data[k] = util.isplaintable(v) and array(v) or v
-		end
-	end
-	return setmetatable(a, mt)
+	return setmetatable({__data = #args == 1 and util.isplaintable(args[1]) and args[1] or args}, mt)
 end
 
 function util.normalizeidx(len, i)
