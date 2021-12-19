@@ -99,6 +99,8 @@ function mt:__index(i)
 	return pt[i] or self.__data[util.normalizeidx(#self.__data, i)]
 end
 
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
+
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
 --- @param k any An index key.
 --- @param v any A new value associated with the key.
