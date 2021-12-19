@@ -227,14 +227,12 @@ end
 --- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
 function pt:every(f)
-	local rs = true
 	for k, v in pairs(self) do
-		rs = rs and f(v, k, self)
-		if not rs then
-			break
+		if not f(v, k, self) then
+			return false
 		end
 	end
-	return not not rs
+	return true
 end
 
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
