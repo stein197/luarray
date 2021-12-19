@@ -1,4 +1,9 @@
 TestArray = {
+
+	setUp = function (self)
+		self.o = Object()
+	end;
+	
 	["test: Should contain empty \"__data\" when passing no arguments"] = function ()
 		luaunit.assertEquals(array().__data, {})
 	end;
@@ -18,10 +23,9 @@ TestArray = {
 		luaunit.assertTrue(getmetatable(a1.__data[1]) == getmetatable(a1))
 	end;
 
-	["test: Should consider single argument as an element when passing an object"] = function ()
-		local o = Object()
-		luaunit.assertTrue(rawequal(array(o).__data[1], o));
-		luaunit.assertTrue(rawequal(array({o}).__data[1], o));
+	["test: Should consider single argument as an element when passing an object"] = function (self)
+		luaunit.assertTrue(rawequal(array(self.o).__data[1], self.o));
+		luaunit.assertTrue(rawequal(array({self.o}).__data[1], self.o));
 	end;
 
 	["test: Should contain empty \"__data\" table when passing nil as the only element"] = function ()
@@ -50,10 +54,9 @@ TestArray = {
 		luaunit.assertTrue(rawequal(getmetatable(a.__data[3]), getmetatable(a)))
 	end;
 
-	["test: Should consider an argument as is when passing an object"] = function ()
-		local o = Object()
-		luaunit.assertTrue(rawequal(array(1, 2, o).__data[3], o));
-		luaunit.assertTrue(rawequal(array({1, 2, o}).__data[3], o));
+	["test: Should consider an argument as is when passing an object"] = function (self)
+		luaunit.assertTrue(rawequal(array(1, 2, self.o).__data[3], self.o));
+		luaunit.assertTrue(rawequal(array({1, 2, self.o}).__data[3], self.o));
 	end;
 
 	["test: Should preserve nil when passing it as the first element"] = function ()
