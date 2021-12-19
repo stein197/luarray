@@ -1,54 +1,83 @@
 Test__index = {
-	setUp = function (self)
-		self.o = Object()
-	end;
-	
-	["test: Accessing an empty array returns nil"] = function ()
+	["test: Should return nil when accessing an empty array"] = function ()
 		luaunit.assertNil(array()[1])
+		luaunit.assertNil(array()[-1])
+		luaunit.assertNil(array({})[1])
+		luaunit.assertNil(array({})[-1])
 	end;
 
-	["test: Accessing an array with single element"] = function ()
-		luaunit.assertEquals(array(1)[1], 1)
+	["test: Should return nil when accessing with 0"] = function ()
+		luaunit.assertNil(array("a")[0])
 	end;
 
-	["test: Accessing an array with multiple elements"] = function ()
-		luaunit.assertEquals(array(1, 2, 3)[3], 3)
+	["test: Should return nil when accessing an element at large positive index"] = function ()
+		luaunit.assertNil(array("a", "b", "c")[100])
+		luaunit.assertNil(array({"a", "b", "c"})[100])
 	end;
 
-	["test: Accessing a key associated with an array returns the array"] = function ()
-		local a = array(1, 2, 3)
-		luaunit.assertTrue(array(1, 2, a)[3] == a)
-		luaunit.assertTrue(array(a)[1] == a)
-		luaunit.assertTrue(array({a})[1] == a)
+	["test: Should return nil when accessing an element at large negative index"] = function ()
+		luaunit.assertNil(array("a", "b", "c")[-100])
+		luaunit.assertNil(array({"a", "b", "c"})[-100])
 	end;
 
-	["test: Accessing a key associated with an object returns the object"] = function (self)
-		luaunit.assertTrue(array(1, 2, self.o)[3] == self.o)
-		luaunit.assertTrue(array(self.o)[1] == self.o)
-		luaunit.assertTrue(array({self.o})[1] == self.o)
-	end;
-
-	["test: Accessing by an not existing key returns nil"] = function ()
-		luaunit.assertNil(array(1, 2, 3)[0])
-	end;
-
-	["test: Accessing by number"] = function ()
+	["test: Should return the only element when accessing with 1"] = function ()
 		luaunit.assertEquals(array("a")[1], "a")
+		luaunit.assertEquals(array({"a"})[1], "a")
 	end;
 
-	["test: Accessing by string"] = function ()
-		luaunit.assertEquals(array({a = 1}).a, 1)
+	["test: Should return the only element when accessing with -1"] = function ()
+		luaunit.assertEquals(array("a")[-1], "a")
+		luaunit.assertEquals(array({"a"})[-1], "a")
 	end;
 
-	["test: Accessing by an object type"] = function (self)
-		luaunit.assertEquals(array({[self.o] = 1})[self.o], 1)
+	["test: Should return nil when accessing nil element in the start"] = function ()
+		luaunit.assertNil(array(nil, "b", "c")[1])
+		luaunit.assertNil(array({nil, "b", "c"})[1])
+		luaunit.assertNil(array(nil, "b", "c")[-3])
+		luaunit.assertNil(array({nil, "b", "c"})[-3])
 	end;
 
-	["test: Accessing __data field"] = function ()
-		luaunit.assertEquals(array(1, 2, 3).__data, {1, 2, 3})
+	["test: Should return nil when accessing nil element in the middle"] = function ()
+		luaunit.assertNil(array("a", nil, "c")[2])
+		luaunit.assertNil(array({"a", nil, "c"})[2])
+		luaunit.assertNil(array("a", nil, "c")[-2])
+		luaunit.assertNil(array({"a", nil, "c"})[-2])
 	end;
-	
-	["test: Access methods will return one"] = function ()
-		luaunit.assertEquals(type(array({1, 2, 3}).len), "function")
+
+	["test: Should return nil when accessing nil element in the end"] = function ()
+		luaunit.assertNil(array("a", "b", nil)[3])
+		luaunit.assertNil(array({"a", "b", nil})[3])
+	end;
+
+	["test: Should return prototype function when accessing function name"] = function ()
+		luaunit.assertEquals(type(array("a", "b", "c").len), "function")
+	end;
+
+	["test: Should return corresponding element when accessing with positive index"] = function ()
+		luaunit.assertEquals(array("a", "b", "c", "d")[3], "c")
+		luaunit.assertEquals(array({"a", "b", "c", "d"})[3], "c")
+	end;
+
+	["test: Should return corresponding element when accessing with negative index"] = function ()
+		luaunit.assertEquals(array("a", "b", "c", "d")[-3], "b")
+		luaunit.assertEquals(array({"a", "b", "c", "d"})[-3], "b")
+	end;
+
+	["test: Should return the last element when accessing with positive maximum index"] = function ()
+		luaunit.assertEquals(array("a", "b", "c")[3], "c")
+		luaunit.assertEquals(array({"a", "b", "c"})[3], "c")
+	end;
+
+	["test: Should return the first element when accessing with negative minimum index"] = function ()
+		luaunit.assertEquals(array("a", "b", "c")[-3], "a")
+		luaunit.assertEquals(array({"a", "b", "c"})[-3], "a")
+	end;
+
+	["test: Should return corresponding element after nil when accessing with positive index"] = function ()
+		luaunit.assertEquals(array("a", nil, "c")[3], "c")
+	end;
+
+	["test: Should return corresponding element before nil when accessing with negative index"] = function ()
+		luaunit.assertEquals(array("a", nil, "c")[-3], "a")
 	end;
 }

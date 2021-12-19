@@ -91,12 +91,12 @@ function util.pad(self, len, v, isstart)
 	return rs
 end
 
---- Overloads index access to the array. Redirects all calls to the internal `__data` table field if the key is not in
---- the proto table, otherwise returns function from it.
---- @param k any An index key.
---- @return any value The value associated with the key.
-function mt:__index(k)
-	return pt[k] or self.__data[k]
+--- Overloads index access to the array. Works the same as an accessing an arbitrary table but in addition to that it's
+--- also possible to access elements with negative indices. In such cases the counting starts from the end of the array.
+--- @param i number An index.
+--- @return any v The value associated with the index.
+function mt:__index(i)
+	return pt[i] or self.__data[util.normalizeidx(#self.__data, i)]
 end
 
 --- Overloads index assigning. Redirects all calls to the internal `__data` table field.
