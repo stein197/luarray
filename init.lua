@@ -31,7 +31,7 @@ local function array(...)
 end
 
 local function normalizeidx(len, i)
-	return i < 0 and len + i + 1 or i
+	return i ~= 0 and type(i) == "number" and (i < 0 and len + i + 1 or i) or nil
 end
 
 local function isplaintable(t)
@@ -90,22 +90,29 @@ local function pad(self, len, v, isstart)
 	return rs
 end
 
---- Overloads index access to the array. Works the same as an accessing an arbitrary table but in addition to that it's
---- also possible to access elements with negative indices. In such cases the counting starts from the end of the array.
+--- Overloads index access to the array. Works the same way as an accessing an arbitrary table but in addition to that
+--- it's also possible to access elements with negative indices. In such cases the counting starts from the end of the
+--- array.
 --- @param i number An index.
 --- @return any v The value associated with the index.
 function mt:__index(i)
 	return pt[i] or self.__data[normalizeidx(#self.__data, i)]
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Overloads index assigning. Redirects all calls to the internal `__data` table field.
---- @param k any An index key.
---- @param v any A new value associated with the key.
-function mt:__newindex(k, v)
-	self.__data[k] = isplaintable(v) and array(v) or v
+--- Overloads index assigning. Works the same way as an accessing an arbitrary table but in addition to that it's also
+--- possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does
+--- nothing if there's an attempt to assign at non numeric index.
+--- @param i number Index at which assign the value.
+--- @param v any Value to assign.
+function mt:__newindex(i, v)
+	i = normalizeidx(#self.__data, i)
+	if not i then
+		return
+	end
+	self.__data[i] = v
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Adds a new value to the array. Instead of adding to the current array returns a new one.
 --- @param v any Value to add.
