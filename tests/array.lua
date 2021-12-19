@@ -41,6 +41,7 @@ TestArray = {
 	["test: Should consider an argument as is when passing a plain table"] = function ()
 		luaunit.assertEquals(array({"a", "b", {"c"}}).__data, {"a", "b", {"c"}})
 		luaunit.assertEquals(array("a", "b", {"c"}).__data, {"a", "b", {"c"}})
+		luaunit.assertEquals(array({{"a"}, "b", "c"}).__data, {{"a"}, "b", "c"})
 		luaunit.assertEquals(array({"a"}, "b", "c").__data, {{"a"}, "b", "c"})
 	end;
 
@@ -61,14 +62,17 @@ TestArray = {
 
 	["test: Should preserve nil when passing it as the first element"] = function ()
 		luaunit.assertEquals(array(nil, "b", "c").__data, {nil, "b", "c"});
+		luaunit.assertEquals(array({nil, "b", "c"}).__data, {nil, "b", "c"});
 	end;
 
 	["test: Should preserve nil when passing it as the middle element"] = function ()
 		luaunit.assertEquals(array("a", nil, "c").__data, {"a", nil, "c"});
+		luaunit.assertEquals(array({"a", nil, "c"}).__data, {"a", nil, "c"});
 	end;
 
 	["test: Should preserve nil when passing it as the last element"] = function ()
 		luaunit.assertEquals(array("a", "b", nil).__data, {"a", "b", nil});
+		luaunit.assertEquals(array({"a", "b", nil}).__data, {"a", "b", nil});
 	end;
 
 	["test: Should preserve false when passing it as a first value"] = function ()
