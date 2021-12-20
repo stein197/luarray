@@ -114,15 +114,6 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Adds a new value to the array. Instead of adding to the current array returns a new one.
---- @param v any Value to add.
---- @return array rs A new array.
-function mt:__add(v)
-	local rs = self:clone()
-	table.insert(rs.__data, isplaintable(v) and array(v) or v)
-	return rs
-end
-
 --- Concatenates the array with another one returning a new one. Can also be concatenated with plain arrays. Passing
 --- another types will raise an error. If the arrays have duplicating numeric indeces then the elements from the second
 --- array will be added to the first. Otherwise, if the arrays have duplicating non-numeric indeces then the elemenets
