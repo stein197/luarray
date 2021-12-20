@@ -105,9 +105,16 @@ end
 --- @param i number Index at which assign the value.
 --- @param v any Value to assign.
 function mt:__newindex(i, v)
-	i = normalizeidx(#self.__data, i)
+	local len = #self.__data
+	i = normalizeidx(len, i)
 	if not i then
 		return
+	elseif i <= 0 then
+		local offset = -i + 1
+		i = 1
+		for j = len, 1, -1 do
+			self.__data[j + offset], self.__data[j] = self.__data[j], nil
+		end
 	end
 	self.__data[i] = v
 end

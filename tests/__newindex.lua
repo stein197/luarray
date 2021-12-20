@@ -1,4 +1,4 @@
--- TODO: Only fix failures
+-- TODO: There is a problem with length assertions. The length of sparse tables is undefined so the behavior of length operator should not rely on the inner length of table
 Test__newindex = {
 	setUp = function (self)
 		self.a1 = array("a", "b", "c")
@@ -26,7 +26,7 @@ Test__newindex = {
 	["test: Should increase \"__data\" table length at specified index when assigning in an empty array"] = function ()
 		local a = array()
 		a[4] = "d"
-		luaunit.assertEquals(#a.__data, 4)
+		luaunit.assertEquals(#a, 4)
 	end;
 
 	["test: Should do nothing when assigning at 0"] = function (self)
@@ -59,28 +59,28 @@ Test__newindex = {
 
 	["test: Should assign a value and increase \"__data\" table length when assigning at large positive index"] = function (self)
 		self.a1[10] = "j"
-		luaunit.assertEquals(#self.a1.__data, 10)
+		luaunit.assertEquals(#self.a1, 10)
 		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, "j"})
 		self.a2[10] = "j"
-		luaunit.assertEquals(#self.a2.__data, 10)
+		luaunit.assertEquals(#self.a2, 10)
 		luaunit.assertEquals(self.a2.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, "j"})
 	end;
 
 	["test: Should assign a value and increase \"__data\" table length when assigning at large negative index"] = function (self)
 		self.a1[-10] = "j"
-		luaunit.assertEquals(#self.a1.__data, 10)
+		luaunit.assertEquals(#self.a1, 10)
 		luaunit.assertEquals(self.a1.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 		self.a2[-10] = "j"
-		luaunit.assertEquals(#self.a2.__data, 10)
+		luaunit.assertEquals(#self.a2, 10)
 		luaunit.assertEquals(self.a2.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 	end;
 
 	["test: Should assign a value and increase \"__data\" table length when assigning nil at large negative index"] = function (self)
 		self.a1[-10] = nil
-		luaunit.assertEquals(#self.a1.__data, 10)
+		luaunit.assertEquals(#self.a1, 10)
 		luaunit.assertEquals(self.a1.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 		self.a2[-10] = nil
-		luaunit.assertEquals(#self.a2.__data, 10)
+		luaunit.assertEquals(#self.a2, 10)
 		luaunit.assertEquals(self.a2.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 	end;
 
@@ -185,12 +185,12 @@ Test__newindex = {
 		luaunit.assertEquals(a2.__data, {"a", "b", "c"})
 	end;
 
-	["test: Should set a value at the end when there is nil at -1"] = function ()
+	["test: Should override the last value at the end when there is nil at -1"] = function ()
 		local a1 = array("a", "b", nil)
 		a1[-1] = "c"
-		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+		luaunit.assertEquals(a1.__data, {"a", "c"})
 		local a2 = array({"a", "b", nil})
 		a2[-1] = "c"
-		luaunit.assertEquals(a2.__data, {"a", "b", "c"})
+		luaunit.assertEquals(a2.__data, {"a", "c"})
 	end;
 }
