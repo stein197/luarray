@@ -57,7 +57,7 @@ Test__newindex = {
 		luaunit.assertEquals(type(self.a2.len), "function")
 	end;
 
-	["test: Should assign a value and increase \"__data\" table length when accessing at large positive index"] = function (self)
+	["test: Should assign a value and increase \"__data\" table length when assigning at large positive index"] = function (self)
 		self.a1[10] = "j"
 		luaunit.assertEquals(#self.a1.__data, 10)
 		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, "j"})
@@ -66,13 +66,22 @@ Test__newindex = {
 		luaunit.assertEquals(self.a2.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, "j"})
 	end;
 
-	["test: Should assign a value and increase \"__data\" table length when accessing at large negative index"] = function (self)
+	["test: Should assign a value and increase \"__data\" table length when assigning at large negative index"] = function (self)
 		self.a1[-10] = "j"
 		luaunit.assertEquals(#self.a1.__data, 10)
 		luaunit.assertEquals(self.a1.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 		self.a2[-10] = "j"
 		luaunit.assertEquals(#self.a2.__data, 10)
 		luaunit.assertEquals(self.a2.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
+	end;
+
+	["test: Should assign a value and increase \"__data\" table length when assigning nil at large negative index"] = function (self)
+		self.a1[-10] = nil
+		luaunit.assertEquals(#self.a1.__data, 10)
+		luaunit.assertEquals(self.a1.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
+		self.a2[-10] = nil
+		luaunit.assertEquals(#self.a2.__data, 10)
+		luaunit.assertEquals(self.a2.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 	end;
 
 	["test: Should override a value when assigning at existing positive index"] = function (self)
