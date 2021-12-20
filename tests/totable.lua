@@ -8,10 +8,10 @@ TestToTable = {
 	end;
 
 	["test: totable(): Converting does not destructures inner tables with different metatables"] = function ()
-		local o = Class()
+		local o = Object()
 		local rs = array(1, 2, o):totable()
 		luaunit.assertEquals(rs, {1, 2, o})
-		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Class()))
+		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Object()))
 		luaunit.assertEquals(rs[3]:method(), "string")
 	end;
 

@@ -17,7 +17,7 @@ Test__add = {
 	end;
 
 	["test: Adding an object will just add it"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertEquals(array() + o, array(o))
 	end;
 

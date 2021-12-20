@@ -38,7 +38,7 @@ Test__concat = {
 	end;
 
 	["test: Concatenating with a table containing object will assign the reference"] = function ()
-		local a = Class()
+		local a = Object()
 		luaunit.assertEquals(array(1, 2, 3)..{a}, {1, 2, 3, a})
 		luaunit.assertTrue(rawequal(a, (array(1, 2, 3)..{a})[4]))
 	end;
@@ -56,13 +56,13 @@ Test__concat = {
 	end;
 
 	["test: Concatenating with an array containing object will assign the reference"] = function ()
-		local a = Class()
+		local a = Object()
 		luaunit.assertEquals(array(1, 2, 3)..array {a}, {1, 2, 3, a})
 		luaunit.assertTrue(rawequal(a, (array(1, 2, 3)..array {a})[4]))
 	end;
 
 	["test: Concatenating with an object raises an error"] = function ()
-		luaunit.assertError(function () return array(1, 2, 3)..Class() end)
+		luaunit.assertError(function () return array(1, 2, 3)..Object() end)
 	end;
 
 	["test: Concatenating with primitive raises an error"] = function ()

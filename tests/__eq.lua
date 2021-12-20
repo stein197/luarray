@@ -41,14 +41,14 @@ Test__eq = {
 	end;
 
 	["test: Arrays with the same object element are equal"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertTrue(array(o) == array({o}))
 		luaunit.assertTrue(array(o) == array(o))
 	end;
 
 	["test: Arrays with the different objects as the elements aren't equal"] = function ()
-		local o1 = Class()
-		local o2 = Class()
+		local o1 = Object()
+		local o2 = Object()
 		luaunit.assertFalse(array(o1) == array(o2))
 	end;
 }

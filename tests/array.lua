@@ -52,7 +52,7 @@ TestArray = {
 	end;
 
 	["test: Object as the only argument will be treated as an element instead of an array"] = function ()
-		local o = Class()
+		local o = Object()
 		luaunit.assertTrue(array(o)[1] == o)
 		luaunit.assertTrue(array({o})[1] == o)
 	end;
