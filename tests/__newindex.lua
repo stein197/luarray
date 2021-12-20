@@ -4,6 +4,24 @@ Test__newindex = {
 		self.a1 = array("a", "b", "c")
 		self.a2 = array({"a", "b", "c"})
 	end;
+
+	["test: Should add a value to an empty array when assigning at 1"] = function ()
+		local a1 = array()
+		a1[1] = "a"
+		luaunit.assertEquals(a1.__data, {"a"})
+		local a2 = array({})
+		a2[1] = "a"
+		luaunit.assertEquals(a2.__data, {"a"})
+	end;
+
+	["test: Should add a value to an empty array when assigning at -1"] = function ()
+		local a1 = array()
+		a1[-1] = "a"
+		luaunit.assertEquals(a1.__data, {"a"})
+		local a2 = array({})
+		a2[-1] = "a"
+		luaunit.assertEquals(a2.__data, {"a"})
+	end;
 	
 	["test: Should increase \"__data\" table length at specified index when assigning in an empty array"] = function ()
 		local a = array()
