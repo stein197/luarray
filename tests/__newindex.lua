@@ -188,9 +188,9 @@ Test__newindex = {
 	["test: Should override the last value at the end when there is nil at -1"] = function ()
 		local a1 = array("a", "b", nil)
 		a1[-1] = "c"
-		luaunit.assertEquals(a1.__data, {"a", "c"})
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
 		local a2 = array({"a", "b", nil})
 		a2[-1] = "c"
-		luaunit.assertEquals(a2.__data, {"a", "c"})
+		luaunit.assertEquals(a2.__data, {"a", "b", "c"})
 	end;
 }
