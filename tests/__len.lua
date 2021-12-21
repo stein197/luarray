@@ -1,9 +1,6 @@
+-- TODO: Add test case for each tested method that modifies an array
 Test__len = {
-	["test: __len(): Length of empty table is 0"] = function ()
+	["test: Should return 0 when empty table"] = function ()
 		luaunit.assertEquals(#array(), 0)
-	end;
-
-	["test: __len()"] = function ()
-		luaunit.assertEquals(#array(1, 2, 3), 3)
 	end;
 }
