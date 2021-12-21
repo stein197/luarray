@@ -21,14 +21,11 @@ local mt = {}
 --- @field private __len number
 local pt = {}
 
---- Creates a new array from passed arguments. If there is only one argument and it's a plain table,
---- then the function wraps it. Values with non-numeric keys will be discarded. Otherwise wraps all arguments as if it's
---- a table. Does not wrap nested tables into arrays.
+--- Creates a new array from passed arguments. Does not wrap nested tables into arrays.
 --- @vararg any Elements from which to create an array.
 --- @return array a Array.
 local function array(...)
-	local args = {...}
-	return setmetatable({__data = #args == 1 and type(args[1]) == "table" and not getmetatable(args[1]) and args[1] or args}, mt)
+	return setmetatable({__data = {...}, __len = select("#", ...)}, mt)
 end
 
 local function normalizeidx(len, i)
