@@ -103,18 +103,20 @@ end
 --- @param i number Index at which assign the value.
 --- @param v any Value to assign.
 function mt:__newindex(i, v)
-	local len = #self.__data
-	i = normalizeidx(len, i)
+	local oldlen = self.__len
+	i = normalizeidx(oldlen, i)
 	if not i then
 		return
 	elseif i <= 0 then
 		local offset = -i + 1
 		i = 1
-		for j = len, 1, -1 do
+		self.__len = oldlen + offset
+		for j = oldlen, 1, -1 do
 			self.__data[j + offset], self.__data[j] = self.__data[j], nil
 		end
 	end
 	self.__data[i] = v
+	self.__len = i > self.__len and i or self.__len
 end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
@@ -148,7 +150,7 @@ end
 --- Overloads `#` operator.
 --- @return number len The length of the table.
 function mt:__len()
-	return #self.__data
+	return self.__len
 end
 
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
@@ -180,7 +182,7 @@ end
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
-	return #self.__data
+	return self.__len
 end
 
 --- Returns the first entry that satisfies a predicate.
