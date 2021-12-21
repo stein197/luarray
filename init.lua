@@ -18,6 +18,7 @@ local mt = {}
 
 --- @class array
 --- @field private __data table
+--- @field private __len number
 local pt = {}
 
 --- Creates a new array from passed arguments. If there is only one argument and it's a plain table,
@@ -477,7 +478,6 @@ function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
 function mt:__shl() end -- TODO: Shift left
 function mt:__shr() end -- TODO: Shifts right
-function mt:__sub(t) end -- TODO: Same as diff?
 function mt:__call() end -- TODO: for v in array
 function pt:addbefore(item) end -- TODO
 function pt:addafter(item) end -- TODO
