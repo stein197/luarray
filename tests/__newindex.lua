@@ -96,12 +96,6 @@ Test__newindex = {
 		luaunit.assertEquals(self.a1.__data, {"d", "a", "b", "c"})
 	end;
 
-	["test: Should set a value at the start when there is nil at 1"] = function ()
-		local a1 = array(nil, "b", "c")
-		a1[1] = "a"
-		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
-	end;
-
 	["test: Should set a value at the start when there is nil at that negative index"] = function ()
 		local a1 = array(nil, "b", "c")
 		a1[-3] = "a"
