@@ -46,6 +46,11 @@ Test__newindex = {
 		luaunit.assertEquals(self.a1.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
 	end;
 
+	["test: Should assign a value when assigning nil at large positive index"] = function (self)
+		self.a1[10] = nil
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, nil})
+	end;
+
 	["test: Should assign a value when assigning nil at large negative index"] = function (self)
 		self.a1[-10] = nil
 		luaunit.assertEquals(self.a1.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
