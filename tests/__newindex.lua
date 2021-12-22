@@ -126,7 +126,13 @@ Test__newindex = {
 		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
 	end;
 
-	["test: Should override the last value at the end when there is nil at -1"] = function ()
+	["test: Should set a value at the start when there is nil at 1"] = function ()
+		local a1 = array(nil, "b", "c")
+		a1[1] = "a"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the end when there is nil at -1"] = function ()
 		local a1 = array("a", "b", nil)
 		a1[-1] = "c"
 		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
