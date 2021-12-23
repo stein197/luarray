@@ -9,6 +9,11 @@ Test__len = {
 		luaunit.assertEquals(array():len(), 0)
 	end;
 
+	["test: Should be 1 when an array was instantiated with only nil"] = function ()
+		luaunit.assertEquals(#array(nil), 1)
+		luaunit.assertEquals(array(nil):len(), 1)
+	end;
+
 	["test: Should be 1 when assigning a value in an empty array at 1"] = function ()
 		local a1 = array()
 		a1[1] = "a"
