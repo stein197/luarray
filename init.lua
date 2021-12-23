@@ -9,6 +9,7 @@
 	- o: object
 	- a: array
 	- rs: result
+	- len: length
 ]]
 -- TODO: Annotate types to help IDE
 -- TODO: Restrict array keys to numbers only
@@ -28,6 +29,19 @@ local function array(...)
 	return setmetatable({__data = {...}, __len = select("#", ...)}, mt)
 end
 
+--- @generic T
+--- @param cond boolean
+--- @param iftrue T
+--- @param iffalse T
+--- @return T rs
+local function ternary(cond, iftrue, iffalse)
+	if cond then
+		return iftrue
+	else
+		return iffalse
+	end
+end
+
 local function normalizeidx(len, i)
 	return i ~= 0 and type(i) == "number" and (i < 0 and len + i + 1 or i) or nil
 end
@@ -44,12 +58,7 @@ local function reduce(self, f, init, isstart)
 	local from = init == nil and (isstart and 2 or #self - 1) or (isstart and 1 or #self)
 	local to = isstart and #self or 1
 	local step = isstart and 1 or -1
-	local rs
-	if init == nil then
-		rs = isstart and self[1] or self[#self]
-	else
-		rs = init
-	end
+	local rs = ternary(init == nil, ternary(isstart, self[1], self[#self]), init)
 	for i = from, to, step do
 		rs = f(rs, i, self[i])
 	end
