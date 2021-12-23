@@ -151,12 +151,6 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
---- inner `__data` plain table.
-function mt:__pairs()
-	return pairs(self.__data)
-end
-
 --- Overloads calling to `ipairs` function. When the array is passed to `ipairs` function in for loop it simply iterates
 --- inner `__data` plain table.
 function mt:__ipairs()
