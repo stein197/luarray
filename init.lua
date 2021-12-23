@@ -134,8 +134,6 @@ function mt:__len()
 	return self.__len
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Concatenates the array with another one returning a new one. Passing another types will raise an error.
 --- @param a array Array to concatenate.
 --- @return array rs New array which is a result of concatenating the current array with another one.
@@ -150,6 +148,8 @@ function mt:__concat(a)
 	end
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
 --- inner `__data` plain table.
