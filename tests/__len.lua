@@ -2,6 +2,7 @@
 Test__len = {
 	setUp = function (self)
 		self.a1 = array("a", "b", "c")
+		self.a2 = array("d", "e", "f")
 	end;
 	
 	["test: Should return 0 when empty table"] = function ()
@@ -160,5 +161,55 @@ Test__len = {
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	-- TODO: Add test cases for __band, __bor, __concat, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, filter, intersect, map, padend, padstart, reverse, shuffle, slice, union, uniq methods
+	["test: Should be 0 when concatenating empty arrays"] = function ()
+		luaunit.assertEquals(#(array()..array()), 0)
+		luaunit.assertEquals((array()..array()):len(), 0)
+	end;
+
+	["test: Should be 1 when concatenating an array with single element with empty one"] = function ()
+		luaunit.assertEquals(#(array()..array("a")), 1)
+		luaunit.assertEquals((array()..array("a")):len(), 1)
+	end;
+
+	["test: Should be 1 when concatenating an array with nil with empty one"] = function ()
+		luaunit.assertEquals(#(array()..array(nil)), 1)
+		luaunit.assertEquals((array()..array(nil)):len(), 1)
+	end;
+
+	["test: Should be a sum of two arrays' lengths when concatenating arrays with intersecting values"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c")..array("a", "c")), 5)
+		luaunit.assertEquals((array("a", "b", "c")..array("a", "c")):len(), 5)
+	end;
+
+	["test: Should be increased 2 times when concatenating with self"] = function (self)
+		luaunit.assertEquals(#(self.a1..self.a1), 6)
+		luaunit.assertEquals((self.a1..self.a1):len(), 6)
+	end;
+
+	["test: Should be a sum of two arrays' lengths when concatenating arbitrary arrays"] = function (self)
+		luaunit.assertEquals(#(self.a1..self.a2), 6)
+		luaunit.assertEquals((self.a1..self.a2):len(), 6)
+	end;
+
+	["test: Should be a sum of two arrays' lengths when concatenating arrays with nils"] = function ()
+		luaunit.assertEquals(#(array("a", nil, "c")..array(nil, "e", "f")), 6)
+		luaunit.assertEquals((array("a", nil, "c")..array(nil, "e", "f")):len(), 6)
+	end;
+
+	["test: Should be a sum of two arrays' lengths when concatenating arrays of nils"] = function ()
+		luaunit.assertEquals(#(array(nil)..array(nil, nil, nil)), 4)
+		luaunit.assertEquals((array(nil)..array(nil, nil, nil)):len(), 4)
+	end;
+
+	["test: Should be a sum of arrays' lengths when concatenating more than two arrays"] = function (self)
+		luaunit.assertEquals(#(self.a1..self.a2..array("g", "h", "i")), 9)
+		luaunit.assertEquals((self.a1..self.a2..array("g", "h", "i")):len(), 9)
+	end;
+
+	["test: Should be a sum of two arrays' lengths when concatenating array of booleans"] = function ()
+		luaunit.assertEquals(#(array(false, true, false)..array(false, true, false)), 6)
+		luaunit.assertEquals((array(false, true, false)..array(false, true, false)):len(), 6)
+	end;
+
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, filter, intersect, map, padend, padstart, reverse, shuffle, slice, union, uniq methods
 }

@@ -136,28 +136,17 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Concatenates the array with another one returning a new one. Can also be concatenated with plain arrays. Passing
---- another types will raise an error. If the arrays have duplicating numeric indeces then the elements from the second
---- array will be added to the first. Otherwise, if the arrays have duplicating non-numeric indeces then the elemenets
---- from the second array will override the elements from the first one.
---- @param t array | table Array to concatenate.
---- @return array rs New array which is a result of concatenating the current array and another one.
-function mt:__concat(t)
-	if not isplaintable(t) and not isarray(t) then
-		error "Concatenation only allowed for tables and arrays"
+--- Concatenates the array with another one returning a new one. Passing another types will raise an error.
+--- @param a array Array to concatenate.
+--- @return array rs New array which is a result of concatenating the current array with another one.
+function mt:__concat(a)
+	if not isarray(a) then
+		error(string.format("Cannot concatenate array with %s", type(a)))
 	end
-	local rs = self:clone()
-	for k, v in pairs(t) do
-		if isplaintable(v) then
-			v = array(v)
-		elseif isarray(v) then
-			v = v:clone()
-		end
-		if type(k) == "number" then
-			table.insert(rs.__data, v)
-		else
-			rs.__data[k] = v
-		end
+	local rs = array()
+	rs.__len = #self + #a
+	for i = 1, rs.__len do
+		rs[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self])
 	end
 	return rs
 end
