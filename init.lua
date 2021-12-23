@@ -119,6 +119,12 @@ function mt:__newindex(i, v)
 	self.__len = i > self.__len and i or self.__len
 end
 
+--- Overloads `#` operator. Same as `len()` method.
+--- @return number len The length of the table.
+function mt:__len()
+	return self.__len
+end
+
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Concatenates the array with another one returning a new one. Can also be concatenated with plain arrays. Passing
@@ -145,12 +151,6 @@ function mt:__concat(t)
 		end
 	end
 	return rs
-end
-
---- Overloads `#` operator.
---- @return number len The length of the table.
-function mt:__len()
-	return self.__len
 end
 
 --- Overloads calling to `pairs` function. When the array is passed to `pairs` function in for loop it simply iterates
