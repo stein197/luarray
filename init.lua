@@ -151,12 +151,6 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Overloads calling to `ipairs` function. When the array is passed to `ipairs` function in for loop it simply iterates
---- inner `__data` plain table.
-function mt:__ipairs()
-	return ipairs(self.__data)
-end
-
 --- Overloads `==` operator. Deeply compares arrays. Order of keys does not matter.
 --- @return boolean rs `true` if two arrays deeply equal.
 function mt:__eq(t)
