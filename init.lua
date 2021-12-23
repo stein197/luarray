@@ -475,8 +475,6 @@ end
 
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
-function mt:__shl() end -- TODO: Shift left
-function mt:__shr() end -- TODO: Shifts right
 function mt:__call() end -- TODO: for v in array
 function pt:addbefore(item) end -- TODO
 function pt:addafter(item) end -- TODO
