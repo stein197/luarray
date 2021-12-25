@@ -149,16 +149,15 @@ function mt:__concat(a)
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Overloads `==` operator. Deeply compares arrays. Order of keys does not matter.
---- @return boolean rs `true` if two arrays deeply equal.
+--- Overloads `==` operator. Deeply compares arrays.
+--- @param t array An array to compare with.
+--- @return boolean rs `true` if two arrays are deeply equal.
 function mt:__eq(t)
-	if #self ~= #t then
+	if not isarray(t) or #self ~= #t then
 		return false
 	end
-	for k, v in pairs(self) do
-		if v ~= t[k] then
+	for i = 1, self.__len do
+		if self.__data[i] ~= t.__data[i] then
 			return false
 		end
 	end
@@ -170,6 +169,8 @@ end
 function pt:len()
 	return self.__len
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Returns the first entry that satisfies a predicate.
 --- @generic K, V
