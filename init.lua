@@ -220,24 +220,20 @@ function pt:filter(f)
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Applies given function to every element in the array and returns the new one with values returned by the function.
---- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>): V, K Function to apply on each element. Returns new value and key.
+--- @generic T Type of value the array contains.
+--- @param f fun(i: number, v: T): T Function to apply on each element. Returns new value.
 --- @return array rs New array.
 function pt:map(f)
 	local rs = array()
-	for k, v in pairs(self) do
-		local newv, newk = f(v, k, self)
-		if newk == nil then
-			table.insert(rs.__data, newv)
-		else
-			rs.__data[newk] = newv
-		end
+	for i = 1, self.__len do
+		rs.__data[i] = f(i, self.__data[i])
 	end
+	rs.__len = self.__len
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Applies passed closure to all elements.
 --- @generic K, V

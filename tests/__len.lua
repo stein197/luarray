@@ -241,5 +241,29 @@ Test__len = {
 		luaunit.assertEquals(self.a1:filter(function () return false end):len(), 0)
 	end;
 
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, intersect, map, padend, padstart, reverse, shuffle, slice, union, uniq methods
+	["test: Should be 0 when mapping an empty array"] = function ()
+		luaunit.assertEquals(#array():map(function () return 1 end), 0)
+		luaunit.assertEquals(array():map(function () return 1 end):len(), 0)
+	end;
+
+	["test: Should be 1 when mapping an array with single element"] = function ()
+		luaunit.assertEquals(#array("a"):map(function (i, v) return v:upper() end), 1)
+		luaunit.assertEquals(array("a"):map(function (i, v) return v:upper() end):len(), 1)
+	end;
+
+	["test: Should be equal to the initial array's length when mapping an arbitrary array"] = function (self)
+		luaunit.assertEquals(#self.a1:map(function (i, v) return v:upper() end), 3)
+		luaunit.assertEquals(self.a1:map(function (i, v) return v:upper() end):len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when mapping an array with nil"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end), 3)
+		luaunit.assertEquals(array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end):len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when mapping an array full of nils"] = function ()
+		luaunit.assertEquals(#array(nil, nil, nil):map(function (i, v) return i * 2 end), 3)
+		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end):len(), 3)
+	end;
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, intersect, padend, padstart, reverse, shuffle, slice, union, uniq methods
 }
