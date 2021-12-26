@@ -182,22 +182,19 @@ function pt:find(f)
 	end
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Check if at least one element in the array satisfies the predicate.
---- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
+--- @param f fun(i: number, v: any): boolean Predicate.
 --- @return boolean rs `true` if at least one element satisfies the predicate.
 function pt:some(f)
-	local rs = false
-	for k, v in pairs(self) do
-		rs = rs or f(v, k, self)
-		if rs then
-			break
+	for i = 1, self.__len do
+		if f(i, self.__data[i]) then
+			return true
 		end
 	end
-	return not not rs
+	return false
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Checks if every element in the array satisfies the passed predicate.
 --- ```lua

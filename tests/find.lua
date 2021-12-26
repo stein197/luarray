@@ -29,6 +29,12 @@ TestFind = {
 	end;
 
 	["test: Should return corrent index when finding nil"] = function ()
-		luaunit.assertEquals(array("a", nil, "b"):find(function (i, v) return v == nil end), 2)
+		luaunit.assertEquals(array("a", nil, "c"):find(function (i, v) return v == nil end), 2)
+	end;
+
+	["test: Should return correct value when it goes after nil"] = function ()
+		local idx, val = array("a", nil, "c"):find(function (i, v) return i == 3 end)
+		luaunit.assertEquals(idx, 3)
+		luaunit.assertEquals(val, "c")
 	end;
 }
