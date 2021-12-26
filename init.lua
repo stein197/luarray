@@ -194,23 +194,19 @@ function pt:some(f)
 	return false
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Checks if every element in the array satisfies the passed predicate.
---- ```lua
---- array(1, 2, 3):every(function (v, k, self) return v > 2 and type(k) ~= "string" end)
---- ```
---- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
+--- @param f fun(i: number, v: any): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
 function pt:every(f)
-	for k, v in pairs(self) do
-		if not f(v, k, self) then
+	for i = 1, self.__len do
+		if not f(i, self.__data[i]) then
 			return false
 		end
 	end
 	return true
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
 --- @generic K, V

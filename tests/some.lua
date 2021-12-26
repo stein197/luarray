@@ -21,8 +21,7 @@ TestSome = {
 
 	["test: Should pass index and key arguments to closure"] = function ()
 		local index, value, last
-		local a = array("a")
-		a:some(function (i, v, l)
+		array("a"):some(function (i, v, l)
 			index = i
 			value = v
 			last = l
