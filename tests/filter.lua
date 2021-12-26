@@ -1,53 +1,50 @@
 TestFilter = {
-	["test: filter()"] = function ()
-		luaunit.assertEquals(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end), {[2] = 2, [4] = 4})
+	setUp = function (self)
+		self.a = array("a", "b", "c")
+	end;
+	
+	["test: Should return correct result"] = function (self)
+		luaunit.assertEquals(self.a:filter(function (i, v) return i % 2 == 1 end).__data, {"a", "c"})
 	end;
 
-	["test: filter(): Filtering an empty array returns empty one"] = function ()
-		luaunit.assertEquals(array():filter(function (v) end), {})
+	["test: Should return an empty array when filtering an empty one"] = function ()
+		luaunit.assertEquals(array():filter(function (v) end).__data, {})
 	end;
 
-	["test: filter(): Filtered am array preserves keys"] = function ()
-		luaunit.assertEquals(array({a = 1, b = 2, c = 3, d = 4}):filter(function (v) return v % 2 == 0 end), {b = 2, d = 4})
+	["test: Should return a new array"] = function (self)
+		luaunit.assertFalse(rawequal(self.a, self.a:filter(function (i) return i % 2 == 2 end)))
 	end;
 
-	["test: filter(): Filtration returns new array"] = function ()
-		local a = array(1, 2, 3)
-		luaunit.assertNotEquals(a:filter(function (v) return v % 2 == 2 end), a)
+	["test: Should not modify the initial array"] = function (self)
+		self.a:filter(function (i) return i % 2 == 2 end)
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;
 
-	["test: filter(): Filtration does not modify the initial array"] = function ()
-		local a = array(1, 2, 3)
-		a:filter(function (v) return v % 2 == 2 end)
-		luaunit.assertEquals(a, array(1, 2, 3))
-	end;
-
-	["test: filter(): Closure accepts all arguments"] = function ()
-		local value, key, tbl
-		local a = array({a = 1})
-		a:filter(function (v, k, t)
+	["test: Should pass index and value arguments to the closure"] = function (self)
+		local index, value, last
+		self.a:filter(function (i, v, l)
+			index = i
 			value = v
-			key = k
-			tbl = t
+			last = l
 		end)
-		luaunit.assertEquals(value, 1)
-		luaunit.assertEquals(key, "a")
-		luaunit.assertTrue(tbl == a)
+		luaunit.assertEquals(index, 3)
+		luaunit.assertEquals(value, "c")
+		luaunit.assertNil(last)
 	end;
 
-	["test: filter(): Filtration preserves keys by default"] = function ()
-		luaunit.assertEquals(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end), {[2] = 2, [4] = 4})
+	["test: Should return correct result when there're nils in predicate"] = function ()
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return i >= 2 end).__data, {nil, "c"})
 	end;
 
-	["test: filter(): Filtration preserves keys when \"preservekeys\" is explicitly true"] = function ()
-		luaunit.assertEquals(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end, true), {[2] = 2, [4] = 4})
+	["test: Should return correct result when predicate returns true for nil"] = function ()
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return v == nil end).__data, {nil})
 	end;
 
-	["test: filter(): Filtration discards keys when \"preservekeys\" is explicitly false"] = function ()
-		luaunit.assertEquals(array(1, 2, 3, 4):filter(function (v) return v % 2 == 0 end, false), {2, 4})
+	["test: Should return the copy of the array when predicate returns true for every value"] = function (self)
+		luaunit.assertEquals(self.a:filter(function () return true end).__data, {"a", "b", "c"})
 	end;
 
-	["test: filter(): Returned value is an array"] = function ()
-		luaunit.assertTrue(getmetatable(array():filter(function () end)) == getmetatable(array()))
+	["test: Should return an empty array when predicate returns false for every value"] = function (self)
+		luaunit.assertEquals(self.a:filter(function () return false end).__data, {})
 	end;
 }

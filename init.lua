@@ -206,29 +206,21 @@ function pt:every(f)
 	return true
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
---- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>): boolean Predicate.
---- @param pk boolean Set to `true` to preserve keys, otherwise keys will be discarded. `true` by default.
---- @return array<K, V> rs New array containing every element that satisfies the predicate. Keys stay preserved.
-function pt:filter(f, pk)
+--- @param f fun(i: number, v: any): boolean Predicate.
+--- @return array rs New array containing every element that satisfies the predicate. Keys stay preserved.
+function pt:filter(f)
 	local rs = array()
-	if pk == nil then
-		pk = true
-	end
-	for k, v in pairs(self) do
-		if f(v, k, self) then
-			if pk then
-				rs.__data[k] = v
-			else
-				table.insert(rs.__data, v)
-			end
+	for i = 1, self.__len do
+		if f(i, self.__data[i]) then
+			rs.__len = rs.__len + 1
+			rs.__data[rs.__len] = self.__data[i]
 		end
 	end
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Applies given function to every element in the array and returns the new one with values returned by the function.
 --- @generic K, V

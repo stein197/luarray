@@ -211,5 +211,35 @@ Test__len = {
 		luaunit.assertEquals((array(false, true, false)..array(false, true, false)):len(), 6)
 	end;
 
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, filter, intersect, map, padend, padstart, reverse, shuffle, slice, union, uniq methods
+	["test: Should be correct when filtering an arbitrary array"] = function (self)
+		luaunit.assertEquals(#self.a1:filter(function (i, v) return i % 2 == 1 end), 2)
+		luaunit.assertEquals(self.a1:filter(function (i, v) return i % 2 == 1 end):len(), 2)
+	end;
+
+	["test: Should be 0 when filtering an empty array"] = function ()
+		luaunit.assertEquals(#array():filter(function (v) end), 0)
+		luaunit.assertEquals(array():filter(function (v) end):len(), 0)
+	end;
+
+	["test: Should be correct when filtering an array with nils are allowed in predicate"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, v) return i >= 2 end), 2)
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return i >= 2 end):len(), 2)
+	end;
+
+	["test: Should be correct when filtering an array with only nils allowed in the predicate"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, v) return v == nil end), 1)
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return v == nil end):len(), 1)
+	end;
+
+	["test: Should be equal to the initial array's length when filtering by predicate that returns true for every value"] = function (self)
+		luaunit.assertEquals(#self.a1:filter(function () return true end), 3)
+		luaunit.assertEquals(self.a1:filter(function () return true end):len(), 3)
+	end;
+
+	["test: Should be 0 when filtering by predicate that returns false for every value"] = function (self)
+		luaunit.assertEquals(#self.a1:filter(function () return false end), 0)
+		luaunit.assertEquals(self.a1:filter(function () return false end):len(), 0)
+	end;
+
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, intersect, map, padend, padstart, reverse, shuffle, slice, union, uniq methods
 }
