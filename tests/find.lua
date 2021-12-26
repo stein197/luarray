@@ -1,29 +1,34 @@
 TestFind = {
-	["test: Finding value in empty array returns nil"] = function ()
+	["test: Should return nil, nil when finding in an empty array"] = function ()
 		luaunit.assertNil(array():find(function () return true end))
 	end;
 
-	["test: Closure accepts key and value arguments"] = function ()
-		local key, value, last
-		array {a = 1}: find(function (k, v, l)
-			key = k
+	["test: Should pass expected arguments to closure"] = function ()
+		local index, value, last
+		array("a"):find(function (i, v, l)
+			index = i
 			value = v
 			last = l
 		end)
-		luaunit.assertEquals(key, "a")
-		luaunit.assertEquals(value, 1)
+		luaunit.assertEquals(index, 1)
+		luaunit.assertEquals(value, "a")
 		luaunit.assertNil(last)
 	end;
 
-	["test: Finding by value returns both key and value"] = function ()
-		local k, v = array {a = 1, b = 2, c = 3} :find(function (k, v) return v == 2 end)
-		luaunit.assertEquals(k, "b")
-		luaunit.assertEquals(v, 2)
+	["test: Should return index and value when finding in an arbitrary array"] = function ()
+		local index, value = array("a", "b", "c"):find(function (i, v) return i % 2 == 0 or v == "b" end)
+		luaunit.assertEquals(index, 2)
+		luaunit.assertEquals(value, "b")
 	end;
 
-	["test: Finding by key returns both key and value"] = function ()
-		local k, v = array {a = 1, b = 2, c = 3} :find(function (k, v) return k == "b" end)
-		luaunit.assertEquals(k, "b")
-		luaunit.assertEquals(v, 2)
+	["test: Should not call closure when finding in an empty array"] = function ()
+		local a = "a"
+		local closure = function () a = "b" end
+		array():find(closure)
+		luaunit.assertEquals(a, "a")
+	end;
+
+	["test: Should return corrent index when finding nil"] = function ()
+		luaunit.assertEquals(array("a", nil, "b"):find(function (i, v) return v == nil end), 2)
 	end;
 }

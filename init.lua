@@ -170,20 +170,19 @@ function pt:len()
 	return self.__len
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Returns the first entry that satisfies a predicate.
---- @generic K, V
---- @param f fun(k?: K, v?: V): boolean Predicate.
---- @return K k Key that satisfies predicate.
---- @return V v Value that satisfies predicate.
+--- @param f fun(i: number, v: any): boolean Predicate.
+--- @return number i Index of the value that satisfies predicate.
+--- @return any v Value that satisfies predicate.
 function pt:find(f)
-	for k, v in pairs(self) do
-		if f(k, v) then
-			return k, v
+	for i = 1, self.__len do
+		if f(i, self.__data[i]) then
+			return i, self.__data[i]
 		end
 	end
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Check if at least one element in the array satisfies the predicate.
 --- @generic K, V
