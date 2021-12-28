@@ -335,7 +335,7 @@ end
 function pt:uniq()
 	local rs = array()
 	for k, v in pairs(self) do
-		if not rs:hasvalue(v) then
+		if not rs:contains(v) then
 			if type(k) == "number" then
 				table.insert(rs.__data, v)
 			else
@@ -381,13 +381,8 @@ end
 --- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
 --- types are compared by reference.
 --- @return boolean rs `true` if the array has value.
-function pt:hasvalue(item)
-	for k, v in pairs(self) do
-		if v == item then
-			return true
-		end
-	end
-	return false
+function pt:contains(v)
+	return self:some(function (i, val) return val == v end)
 end
 
 --- Pads the array at the start with the given value to the given length.
