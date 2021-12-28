@@ -226,9 +226,7 @@ end
 --- @return array rs New array.
 function pt:map(f)
 	local rs = array()
-	for i = 1, self.__len do
-		rs.__data[i] = f(i, self.__data[i])
-	end
+	self:each(function (i, v) rs.__data[i] = f(i, v) end)
 	rs.__len = self.__len
 	return rs
 end
