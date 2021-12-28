@@ -182,6 +182,7 @@ function pt:find(f)
 	end
 end
 
+-- TODO: Add a test case that checks the closure stops being called after first truthy value
 --- Check if at least one element in the array satisfies the predicate.
 --- @param f fun(i: number, v: any): boolean Predicate.
 --- @return boolean rs `true` if at least one element satisfies the predicate.
@@ -194,6 +195,7 @@ function pt:some(f)
 	return false
 end
 
+-- TODO: Add a test case that checks the closure stops being called after first falsy value
 --- Checks if every element in the array satisfies the passed predicate.
 --- @param f fun(i: number, v: any): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
