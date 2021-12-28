@@ -170,6 +170,7 @@ function pt:len()
 	return self.__len
 end
 
+-- TODO: Add a test case that checks the closure stops being called after first matching value
 --- Returns the first entry that satisfies a predicate.
 --- @param f fun(i: number, v: any): boolean Predicate.
 --- @return number i Index of the value that satisfies predicate.
