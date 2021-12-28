@@ -233,16 +233,16 @@ function pt:map(f)
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Applies passed closure to all elements.
---- @generic K, V
---- @param f fun(v: V, k?: K, t?: table<K, V>) Closure.
+--- @generic T Type of value the array contains.
+--- @param f fun(i: number, v: T) Closure.
 function pt:each(f)
-	for k, v in pairs(self) do
-		f(v, k, self)
+	for i = 1, self.__len do
+		f(i, self.__data[i])
 	end
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Sorts the array. Works only with arrays with numeric keys.
 --- @param f? fun(a: any, b: any): boolean Closure that should return true if `a` should come before `b`.
