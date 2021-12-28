@@ -242,6 +242,18 @@ function pt:each(f)
 	end
 end
 
+--- Makes a clone of the table.
+--- @param deep boolean Nested arrays will be deeply cloned if this value is set to `true`. By default `false`. Other
+---                     methods that use cloning method performs a shallow one.
+--- @return array rs Cloned array.
+function pt:clone(deep)
+	deep = ternary(deep == nil, false, deep)
+	local rs = array()
+	rs.__len = self.__len
+	self:each(function (i, v) rs.__data[i] = deep and isarray(v) and v:clone() or v end)
+	return rs
+end
+
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Sorts the array. Works only with arrays with numeric keys.
@@ -316,18 +328,6 @@ end
 --- @return V rs Accumulated value.
 function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
-end
-
--- TODO: Add shallow cloning that will copy references of inner arrays
---- Makes deep clone of the table. If keys' type is reference then they won't be cloned. If values' type isn't primitive
---- nor array then they will be cloned only by reference.
---- @return array rs Cloned array.
-function pt:clone()
-	local rs = array()
-	for k, v in pairs(self) do
-		rs.__data[k] = isarray(v) and v:clone() or v
-	end
-	return rs
 end
 
 --- Removes duplicates from the array.

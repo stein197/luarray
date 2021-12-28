@@ -265,5 +265,45 @@ Test__len = {
 		luaunit.assertEquals(#array(nil, nil, nil):map(function (i, v) return i * 2 end), 3)
 		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end):len(), 3)
 	end;
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, clone, delat, delend, delstart, diff, intersect, padend, padstart, reverse, shuffle, slice, union, uniq methods
+
+	["test: Should be 0 when cloning an empty one"] = function ()
+		luaunit.assertEquals(#array():clone(), 0)
+		luaunit.assertEquals(array():clone():len(), 0)
+	end;
+
+	["test: Should be 1 when cloning an array with single element"] = function ()
+		luaunit.assertEquals(#array("a"):clone(), 1)
+		luaunit.assertEquals(array("a"):clone():len(), 1)
+	end;
+
+	["test: Should be equal to the initial array's length when cloning an array with multuple elements"] = function (self)
+		luaunit.assertEquals(#self.a1:clone(), 3)
+		luaunit.assertEquals(self.a1:clone():len(), 3)
+	end;
+	
+	["test: Should be equal to the initial array's length when cloning an array containing nil"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):clone(), 3)
+		luaunit.assertEquals(array("a", nil, "c"):clone():len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when cloning an array of nils"] = function ()
+		luaunit.assertEquals(#array(nil, nil, nil):clone(), 3)
+		luaunit.assertEquals(array(nil, nil, nil):clone():len(), 3)
+	end;
+
+	["test: Should be equal to the initial's nested array's length when cloning nested array and flag is set to true"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c", array("d", "e", "f")):clone(true).__data[4], 3)
+		luaunit.assertEquals(array("a", "b", "c", array("d", "e", "f")):clone(true).__data[4]:len(), 3)
+	end;
+
+	["test: Should be equal to the initial's nested array's length when cloning nested array and flag is set to false"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c", array("d", "e", "f")):clone(false).__data[4], 3)
+		luaunit.assertEquals(array("a", "b", "c", array("d", "e", "f")):clone(false).__data[4]:len(), 3)
+	end;
+
+	["test: Should be equal to the initial's nested array's length when cloning nested array and flag is not set"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c", array("d", "e", "f")):clone().__data[4], 3)
+		luaunit.assertEquals(array("a", "b", "c", array("d", "e", "f")):clone().__data[4]:len(), 3)
+	end;
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, shuffle, slice, union, uniq methods
 }

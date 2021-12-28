@@ -10,8 +10,8 @@
 	- object
 	- nil
 	- table with nil
-	When possible, functions should:
-	- modify only inner __data table
+	When function should return an array, make sure it really does
+	When function should (not) modify inner __data table, make sure it really does (not)
 ]]
 -- TODO: Add test cases list
 
