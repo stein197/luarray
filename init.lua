@@ -151,15 +151,7 @@ end
 --- @param t array An array to compare with.
 --- @return boolean rs `true` if two arrays are deeply equal.
 function mt:__eq(t)
-	if not isarray(t) or #self ~= #t then
-		return false
-	end
-	for i = 1, self.__len do
-		if self.__data[i] ~= t.__data[i] then
-			return false
-		end
-	end
-	return true
+	return isarray(t) and self.__len == t.__len and self:every(function (i, v) return v == t.__data[i] end)
 end
 
 --- Returns length of the table. Same as `#` operator.
