@@ -242,9 +242,7 @@ end
 --- @return array rs Cloned array.
 function pt:clone(deep)
 	deep = ternary(deep == nil, false, deep)
-	local rs = alloc(self.__len)
-	self:each(function (i, v) rs.__data[i] = deep and isarray(v) and v:clone() or v end)
-	return rs
+	return self:map(function (i, v) return deep and isarray(v) and v:clone() or v end)
 end
 
 --- Sorts the array.
