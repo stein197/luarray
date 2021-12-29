@@ -327,14 +327,8 @@ end
 
 --- Reverses the order of values in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
-function pt:reverse()
-	local rs = array()
-	local len = self:len()
-	for i = 1, len do
-		local v = self.__data[#self - i + 1]
-		rs.__data[i] = isarray(v) and v:clone() or v
-	end
-	return rs
+function pt:reverse() -- TODO: Clone arrays or not?
+	return self:map(function (i, v) return isarray(self.__data[self.__len - i + 1]) and self.__data[self.__len - i + 1]:clone() or self.__data[self.__len - i + 1] end)
 end
 
 --- Slices the part of the array. Works only with arrays with numeric keys.
