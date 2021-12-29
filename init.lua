@@ -45,6 +45,10 @@ local function ternary(cond, iftrue, iffalse)
 	end
 end
 
+local function alloc(len)
+	return setmetatable({__data = {}, __len = len}, mt)
+end
+
 local function normalizeidx(len, i)
 	return i ~= 0 and type(i) == "number" and (i < 0 and len + i + 1 or i) or nil
 end
@@ -144,8 +148,7 @@ function mt:__concat(a)
 	if not isarray(a) then
 		error(string.format("Cannot concatenate array with %s", type(a)))
 	end
-	local rs = array()
-	rs.__len = #self + #a
+	local rs = alloc(self.__len + a.__len)
 	rs:each(function (i, v) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
 	return rs
 end
@@ -219,7 +222,7 @@ end
 --- @param f fun(i: number, v: T): T Function to apply on each element. Returns new value.
 --- @return array rs New array.
 function pt:map(f)
-	local rs = setmetatable({__data = {}, __len = self.len}, mt)
+	local rs = alloc(self.__len)
 	self:each(function (i, v) rs.__data[i] = f(i, v) end)
 	return rs
 end
@@ -239,8 +242,7 @@ end
 --- @return array rs Cloned array.
 function pt:clone(deep)
 	deep = ternary(deep == nil, false, deep)
-	local rs = array()
-	rs.__len = self.__len
+	local rs = alloc(self.__len)
 	self:each(function (i, v) rs.__data[i] = deep and isarray(v) and v:clone() or v end)
 	return rs
 end
