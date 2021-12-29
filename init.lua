@@ -265,7 +265,7 @@ end
 --- @return number i The first index of the array. Usually 1 but it could be -1 if the array is empty.
 --- @return T v The first value of the array.
 function pt:first()
-	return self:empty() and -1 or 1, self.__data[1]
+	return self:isempty() and -1 or 1, self.__data[1]
 end
 
 --- Returns the last index and value of the array.
@@ -274,7 +274,7 @@ end
 ---                  array is empty.
 --- @return T v The last value of the array.
 function pt:last()
-	return self:empty() and -1 or self.__len, self.__data[self.__len]
+	return self:isempty() and -1 or self.__len, self.__data[self.__len]
 end
 
 --- Joins all the elements into a string with specified separator.
@@ -327,7 +327,7 @@ end
 
 --- Reverses the order of values in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
-function pt:reverse() -- TODO: Clone arrays or not?
+function pt:reverse() -- TODO: Clone arrays or not? reverse() -> rev()?
 	return self:map(function (i, v) return isarray(self.__data[self.__len - i + 1]) and self.__data[self.__len - i + 1]:clone() or self.__data[self.__len - i + 1] end)
 end
 
@@ -369,7 +369,7 @@ end
 
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
-function pt:empty()
+function pt:isempty()
 	return self.__len == 0
 end
 
