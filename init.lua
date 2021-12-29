@@ -282,21 +282,14 @@ end
 --- @return any k The first key in the array.
 --- @return any v The first value in the array.
 function pt:first()
-	return next(self.__data)
+	return 1, self.__data[1]
 end
 
 --- Returns the last key-value pair of the array. The behavior is determined only in arrays with numeric keys.
 --- @return any k The last key in the array.
 --- @return any v The last value in the array.
 function pt:last()
-	local e, a, b, c = pcall(function ()
-		return next(self.__data, #self.__data - 1)
-	end)
-	if e then
-		return a, b
-	else
-		return b, c
-	end
+	return self.__len, self.__data[self.__len]
 end
 
 --- Joins all the elements into a string with specified separator.
@@ -403,16 +396,15 @@ end
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
-	return #self.__data == 0
+	return self.__len == 0
 end
 
 --- Converts the array into ordinary Lua table.
 --- @return table ts Table.
-function pt:totable()
+function pt:totable(deep)
+	deep = ternary(deep == nil, false, deep)
 	local t = {}
-	for k, v in pairs(self.__data) do
-		t[k] = isarray(v) and v:totable() or v
-	end
+	self:each(function (i, v) t[i] = deep and isarray(v) and v:totable() or v end)
 	return t
 end
 
