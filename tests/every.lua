@@ -26,4 +26,13 @@ TestEvery = {
 		luaunit.assertEquals(value, "a")
 		luaunit.assertNil(last)
 	end;
+
+	["test: Should stop executing closure after finding first falsy value"] = function ()
+		local index = 0
+		array("a", "b", "c"):every(function (i, v)
+			index = index + 1
+			return v == "a"
+		end)
+		luaunit.assertEquals(index, 2)
+	end;
 }

@@ -38,4 +38,13 @@ TestSome = {
 	["test: Should return true when searching for an element that goes after nil"] = function ()
 		luaunit.assertTrue(array("a", nil, "c"):some(function (i, v) return v == "c" end))
 	end;
+
+	["test: Should stop executing closure after finding first truthy value"] = function ()
+		local index = 0
+		array("a", "b", "c"):some(function (i, v)
+			index = index + 1
+			return v == "b"
+		end)
+		luaunit.assertEquals(index, 2)
+	end;
 }

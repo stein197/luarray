@@ -13,7 +13,6 @@
 	When function should return an array, make sure it really does
 	When function should (not) modify inner __data table, make sure it really does (not)
 ]]
--- TODO: Add test cases list
 
 array = require ""
 luaunit = require "luaunit"

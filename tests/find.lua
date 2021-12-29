@@ -37,4 +37,13 @@ TestFind = {
 		luaunit.assertEquals(idx, 3)
 		luaunit.assertEquals(val, "c")
 	end;
+
+	["test: Should stop executing closure after finding first matching value"] = function ()
+		local index = 0
+		array("a", "b", "c"):find(function (i, v)
+			index = index + 1
+			return v == "b"
+		end)
+		luaunit.assertEquals(index, 2)
+	end;
 }
