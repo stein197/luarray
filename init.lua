@@ -69,7 +69,7 @@ local function reduce(self, f, init, isstart)
 	return rs
 end
 
-local function indexof(self, v, i, isstart)
+local function indexof(self, i, v, isstart)
 	for j = i and i or (isstart and 1 or self.__len), isstart and self.__len or 1, isstart and 1 or -1 do
 		if v == self[j] then
 			return j
@@ -310,21 +310,20 @@ function pt:contains(v)
 	return self:some(function (i, val) return val == v end)
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Removes duplicates from the array.
---- @return array rs Array with no duplicates.
+--- @return array rs Array without duplicates.
 function pt:uniq()
 	local rs = array()
-	for k, v in pairs(self) do
-		if not rs:contains(v) then
-			if type(k) == "number" then
-				table.insert(rs.__data, v) -- TODO: Add check for nils, add an ability to preserve gaps by nil
-			end
+	for i = 1, self.__len do
+		if not rs:contains(self.__data[i]) then
+			rs.__len = rs.__len + 1
+			rs.__data[rs.__len] = self.__data[i]
 		end
 	end
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Reverses the order of values in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
@@ -394,8 +393,8 @@ end
 --- @param v V Value to find.
 --- @param i number At which index to start searching.
 --- @return number i First index at which the value found, otherwise -1.
-function pt:firstindexof(v, i)
-	return indexof(self, v, i, true)
+function pt:firstindexof(i, v)
+	return indexof(self, i, v, true)
 end
 
 --- Returns the last index at which the given value can be found.
@@ -403,8 +402,8 @@ end
 --- @param v V Value to find.
 --- @param i number At which index to start searching.
 --- @return number i Last index at which the value found, otherwise -1.
-function pt:lastindexof(v, i)
-	return indexof(self, v, i)
+function pt:lastindexof(i, v)
+	return indexof(self, i, v, false)
 end
 
 function mt:__band() end -- TODO: Intersection

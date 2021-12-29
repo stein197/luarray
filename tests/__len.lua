@@ -6,6 +6,7 @@ Test__len = {
 		self.a3 = array("a", "b", "c", "d", "e", "f")
 	end;
 	
+	-- array()
 	["test: Should return 0 when empty table"] = function ()
 		luaunit.assertEquals(#array(), 0)
 		luaunit.assertEquals(array():len(), 0)
@@ -16,6 +17,7 @@ Test__len = {
 		luaunit.assertEquals(array(nil):len(), 1)
 	end;
 
+	-- __newindex(), []
 	["test: Should be 1 when assigning a value in an empty array at 1"] = function ()
 		local a1 = array()
 		a1[1] = "a"
@@ -162,6 +164,7 @@ Test__len = {
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
+	-- __concat(), ..
 	["test: Should be 0 when concatenating empty arrays"] = function ()
 		luaunit.assertEquals(#(array()..array()), 0)
 		luaunit.assertEquals((array()..array()):len(), 0)
@@ -212,6 +215,7 @@ Test__len = {
 		luaunit.assertEquals((array(false, true, false)..array(false, true, false)):len(), 6)
 	end;
 
+	-- filter()
 	["test: Should be correct when filtering an arbitrary array"] = function (self)
 		luaunit.assertEquals(#self.a1:filter(function (i, v) return i % 2 == 1 end), 2)
 		luaunit.assertEquals(self.a1:filter(function (i, v) return i % 2 == 1 end):len(), 2)
@@ -242,6 +246,7 @@ Test__len = {
 		luaunit.assertEquals(self.a1:filter(function () return false end):len(), 0)
 	end;
 
+	-- map()
 	["test: Should be 0 when mapping an empty array"] = function ()
 		luaunit.assertEquals(#array():map(function () return 1 end), 0)
 		luaunit.assertEquals(array():map(function () return 1 end):len(), 0)
@@ -267,6 +272,7 @@ Test__len = {
 		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end):len(), 3)
 	end;
 
+	-- clone()
 	["test: Should be 0 when cloning an empty one"] = function ()
 		luaunit.assertEquals(#array():clone(), 0)
 		luaunit.assertEquals(array():clone():len(), 0)
@@ -307,6 +313,7 @@ Test__len = {
 		luaunit.assertEquals(array("a", "b", "c", array("d", "e", "f")):clone().__data[4]:len(), 3)
 	end;
 
+	-- sort()
 	["test: Should be 0 when sorting an empty array"] = function ()
 		luaunit.assertEquals(#array():sort(), 0)
 		luaunit.assertEquals(array():sort():len(), 0)
@@ -357,6 +364,7 @@ Test__len = {
 		luaunit.assertEquals(array(nil, nil, nil):sort():len(), 3)
 	end;
 
+	-- shuffle()
 	["test: Should be equal to the initial array's length when shuffling"] = function (self)
 		luaunit.assertEquals(#self.a3:shuffle(), 6)
 		luaunit.assertEquals(self.a3:shuffle():len(), 6)
@@ -381,6 +389,37 @@ Test__len = {
 		luaunit.assertItemsEquals(#array(nil, nil, nil):shuffle(), 3)
 		luaunit.assertItemsEquals(array(nil, nil, nil):shuffle():len(), 3)
 	end;
+
+	-- uniq()
+	["test: Should be 0 when uniqueizing an empty array"] = function ()
+		luaunit.assertEquals(#array():uniq(), 0)
+		luaunit.assertEquals(array():uniq():len(), 0)
+	end;
+
+	["test: Should be 1 when uniqueizing an array with one value"] = function ()
+		luaunit.assertEquals(#array("a"):uniq(), 1)
+		luaunit.assertEquals(array("a"):uniq():len(), 1)
+	end;
+
+	["test: Should be correct when uniqueizing an array with duplicates"] = function ()
+		luaunit.assertEquals(#array("a", "b", "b", "c", "c", "c"):uniq(), 3)
+		luaunit.assertEquals(array("a", "b", "b", "c", "c", "c"):uniq():len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when uniqueizing an array without duplicates"] = function (self)
+		luaunit.assertEquals(#self.a1:uniq(), 3)
+		luaunit.assertEquals(self.a1:uniq():len(), 3)
+	end;
+
+	["test: Should be correct when uniqueizing an array with nils"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c", nil):uniq(), 3)
+		luaunit.assertEquals(array("a", nil, "c", nil):uniq():len(), 3)
+	end;
+
+	["test: Should be 1 when uniqueizing an array full of nils"] = function ()
+		luaunit.assertEquals(#array(nil, nil, nil):uniq(), 1)
+		luaunit.assertEquals(array(nil, nil, nil):uniq():len(), 1)
+	end;
 	
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, slice, union, uniq methods
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, slice, union, methods
 }
