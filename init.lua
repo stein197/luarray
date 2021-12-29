@@ -143,9 +143,7 @@ function mt:__concat(a)
 	end
 	local rs = array()
 	rs.__len = #self + #a
-	for i = 1, rs.__len do
-		rs[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self])
-	end
+	rs:each(function (i, v) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
 	return rs
 end
 
