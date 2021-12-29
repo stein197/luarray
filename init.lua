@@ -312,9 +312,7 @@ function pt:uniq()
 	for k, v in pairs(self) do
 		if not rs:contains(v) then
 			if type(k) == "number" then
-				table.insert(rs.__data, v)
-			else
-				rs.__data[k] = v
+				table.insert(rs.__data, v) -- TODO: Add check for nils, add an ability to preserve gaps by nil
 			end
 		end
 	end
