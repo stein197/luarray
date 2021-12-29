@@ -1,6 +1,6 @@
 TestFind = {
-	["test: Should return nil, nil when finding in an empty array"] = function ()
-		luaunit.assertNil(array():find(function () return true end))
+	["test: Should return -1, nil when finding in an empty array"] = function ()
+		luaunit.assertEquals(array():find(function () return true end), -1)
 	end;
 
 	["test: Should pass expected arguments to closure"] = function ()

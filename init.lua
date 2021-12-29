@@ -170,6 +170,7 @@ function pt:find(f)
 			return i, self.__data[i]
 		end
 	end
+	return -1
 end
 
 --- Check if at least one element in the array satisfies the predicate.
