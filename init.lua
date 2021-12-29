@@ -283,25 +283,27 @@ function pt:join(sep)
 	return self:reducestart(function (rs, i, v) return v == nil and rs or (i == 1 and tostring(v) or rs..sep..tostring(v)) end, "")
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Applies the given function to each element from start to end in the array returning an accumulate value.
---- @generic V
---- @param f fun(rs: V, k: any, v: V): V Function to apply.
+--- Applies the given function to each element from the start to the end in the array returning an accumulate value.
+--- @generic T Type of value the array contains.
+--- @generic V Type of an accumulated value.
+--- @param f fun(rs: V, i: number, v: T): V Function to apply.
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reducestart(f, init)
 	return reduce(self, f, init, true)
 end
 
---- Applies the given function to each element from end to start in the array returning an accumulate value.
---- @generic V
---- @param f fun(rs: V, k: any, v: V): V Function to apply.
+--- Applies the given function to each element from the end to the start in the array returning an accumulate value.
+--- @generic T Type of value the array contains.
+--- @generic V Type of an accumulated value.
+--- @param f fun(rs: V, i: number, v: T): V Function to apply.
 --- @param init? V A value to start with.
 --- @return V rs Accumulated value.
 function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Removes duplicates from the array.
 --- @return array rs Array with no duplicates.
