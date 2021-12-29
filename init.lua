@@ -271,7 +271,7 @@ end
 --- @return number i The first index of the array. Usually 1 but it could be -1 if the array is empty.
 --- @return T v The first value of the array.
 function pt:first()
-	return self:isempty() and -1 or 1, self.__data[1]
+	return self:empty() and -1 or 1, self.__data[1]
 end
 
 --- Returns the last index and value of the array.
@@ -280,7 +280,7 @@ end
 ---                  array is empty.
 --- @return T v The last value of the array.
 function pt:last()
-	return self:isempty() and -1 or self.__len, self.__data[self.__len]
+	return self:empty() and -1 or self.__len, self.__data[self.__len]
 end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
@@ -388,7 +388,7 @@ end
 
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
-function pt:isempty()
+function pt:empty()
 	return self.__len == 0
 end
 
