@@ -62,11 +62,8 @@ local function isarray(t)
 end
 
 local function reduce(self, f, init, isstart)
-	local from = init == nil and (isstart and 2 or #self - 1) or (isstart and 1 or #self)
-	local to = isstart and #self or 1
-	local step = isstart and 1 or -1
 	local rs = ternary(init == nil, ternary(isstart, self[1], self[#self]), init)
-	for i = from, to, step do
+	for i = init == nil and (isstart and 2 or #self - 1) or (isstart and 1 or #self), isstart and #self or 1, isstart and 1 or -1 do
 		rs = f(rs, i, self[i])
 	end
 	return rs
