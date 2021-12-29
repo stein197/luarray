@@ -252,10 +252,9 @@ function pt:clone(deep)
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Sorts the array. Works only with arrays with numeric keys.
---- @param f? fun(a: any, b: any): boolean Closure that should return true if `a` should come before `b`.
+--- Sorts the array.
+--- @generic T Type of values the array contains.
+--- @param f? fun(a: T, b: T): boolean Closure that should return true if `a` should come before `b`.
 --- @return array rs Sorted array.
 --- @see table.sort
 function pt:sort(f)
@@ -263,6 +262,8 @@ function pt:sort(f)
 	table.sort(rs.__data, f)
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Shuffles the array. Works only with arrays with numeric keys.
 --- @return array rs Suffled array.

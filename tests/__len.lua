@@ -305,5 +305,55 @@ Test__len = {
 		luaunit.assertEquals(#array("a", "b", "c", array("d", "e", "f")):clone().__data[4], 3)
 		luaunit.assertEquals(array("a", "b", "c", array("d", "e", "f")):clone().__data[4]:len(), 3)
 	end;
+
+	["test: Should be 0 when sorting an empty array"] = function ()
+		luaunit.assertEquals(#array():sort(), 0)
+		luaunit.assertEquals(array():sort():len(), 0)
+	end;
+
+	["test: Should be 1 when sorting an array with single item"] = function ()
+		luaunit.assertEquals(#array("a"):sort(), 1)
+		luaunit.assertEquals(array("a"):sort():len(), 1)
+	end;
+
+	["test: Should be equal to the initial array's length when sorting an array with multiple items and omitted sorting function"] = function ()
+		luaunit.assertEquals(#array("a", "c", "b"):sort(), 3)
+		luaunit.assertEquals(array("a", "c", "b"):sort():len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length sorting an array with multiple items and custom sorting function"] = function ()
+		luaunit.assertEquals(#array("a", "c", "b"):sort(function (a, b) return a > b end), 3)
+		luaunit.assertEquals(array("a", "c", "b"):sort(function (a, b) return a > b end):len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when sorting already sorted array"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):sort(), 3)
+		luaunit.assertEquals(array("a", "b", "c"):sort():len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when sorting nils to the start"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):sort(function (a, b) return a == nil or a < b end), 3)
+		luaunit.assertEquals(array("a", nil, "c"):sort(function (a, b) return a == nil or a < b end):len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when sorting nils to the end"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):sort(function (a, b)
+			if a == nil then
+				return false
+			end
+			return a < b
+		end), 3)
+		luaunit.assertEquals(array("a", nil, "c"):sort(function (a, b)
+			if a == nil then
+				return false
+			end
+			return a < b
+		end):len(), 3)
+	end;
+
+	["test: Should be equal to the initial array's length when sorting an array of nils"] = function ()
+		luaunit.assertEquals(#array(nil, nil, nil):sort(), 3)
+		luaunit.assertEquals(array(nil, nil, nil):sort():len(), 3)
+	end;
 	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, shuffle, slice, union, uniq methods
 }
