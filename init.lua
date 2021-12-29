@@ -219,9 +219,8 @@ end
 --- @param f fun(i: number, v: T): T Function to apply on each element. Returns new value.
 --- @return array rs New array.
 function pt:map(f)
-	local rs = array()
+	local rs = setmetatable({__data = {}, __len = self.len}, mt)
 	self:each(function (i, v) rs.__data[i] = f(i, v) end)
-	rs.__len = self.__len
 	return rs
 end
 
