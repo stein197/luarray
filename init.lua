@@ -266,21 +266,24 @@ function pt:shuffle()
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Returns the first key-value pair of the array. The behavior is determined only in arrays with numeric keys.
---- @return any k The first key in the array.
---- @return any v The first value in the array.
+--- Returns the first index and value of the array.
+--- @generic T Type of values the array contains.
+--- @return number i The first index of the array. Usually 1 but it could be -1 if the array is empty.
+--- @return T v The first value of the array.
 function pt:first()
-	return 1, self.__data[1]
+	return self:isempty() and -1 or 1, self.__data[1]
 end
 
---- Returns the last key-value pair of the array. The behavior is determined only in arrays with numeric keys.
---- @return any k The last key in the array.
---- @return any v The last value in the array.
+--- Returns the last index and value of the array.
+--- @generic T Type of values the array contains.
+--- @return number i The last index of the array. Usually equals to the length of the array but it could be -1 if the
+---                  array is empty.
+--- @return T v The last value of the array.
 function pt:last()
-	return self.__len, self.__data[self.__len]
+	return self:isempty() and -1 or self.__len, self.__data[self.__len]
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Joins all the elements into a string with specified separator.
 --- @return string rs Joined string.
