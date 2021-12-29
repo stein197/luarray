@@ -12,6 +12,10 @@ Via LuaRocks:
 luarocks install luarray
 ```
 
+## Feautures
+- Negative indexing
+- Considering `nil` as a regular value
+
 ## API
 
 > To get more detailed documentation refer to the sources.
