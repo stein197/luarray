@@ -303,6 +303,13 @@ function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
 end
 
+--- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
+--- types are compared by reference.
+--- @return boolean rs `true` if the array has value.
+function pt:contains(v)
+	return self:some(function (i, val) return val == v end)
+end
+
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Removes duplicates from the array.
@@ -349,13 +356,6 @@ function pt:slice(from, to)
 		table.insert(rs.__data, isarray(self.__data[i]) and self.__data[i]:clone() or self.__data[i])
 	end
 	return rs
-end
-
---- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
---- types are compared by reference.
---- @return boolean rs `true` if the array has value.
-function pt:contains(v)
-	return self:some(function (i, val) return val == v end)
 end
 
 --- Pads the array at the start with the given value to the given length.
