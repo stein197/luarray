@@ -8,6 +8,8 @@
 	- t: table
 	- o: object
 	- a: array
+	- s: string
+	- n: number
 	- rs: result
 	- len: length
 ]]
@@ -283,19 +285,13 @@ function pt:last()
 	return self:empty() and -1 or self.__len, self.__data[self.__len]
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Joins all the elements into a string with specified separator.
---- @return string rs Joined string.
+--- @return string s Joined string.
 function pt:join(sep)
-	local rs = ""
-	local k, v
-	repeat
-		k, v = next(self.__data, k)
-		rs = k ~= nil and rs..sep..tostring(v) or rs
-	until not k
-	return rs:sub(sep:len() + 1)
+	return self:reducestart(function (rs, i, v) return v == nil and rs or (i == 1 and tostring(v) or rs..sep..tostring(v)) end, "")
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Applies the given function to each element from start to end in the array returning an accumulate value.
 --- @generic V
