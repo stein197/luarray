@@ -70,11 +70,7 @@ local function reduce(self, f, init, isstart)
 end
 
 local function indexof(self, v, i, isstart)
-	local len = #self
-	local from = i and i or (isstart and 1 or len)
-	local to = isstart and len or 1
-	local step = isstart and 1 or -1
-	for j = from, to, step do
+	for j = i and i or (isstart and 1 or self.__len), isstart and self.__len or 1, isstart and 1 or -1 do
 		if v == self[j] then
 			return j
 		end
