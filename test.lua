@@ -10,8 +10,8 @@
 	- object
 	- nil
 	- table with nil
-	When function should return an array, make sure it really does
-	When function should (not) modify inner __data table, make sure it really does (not)
+	When function should return an array, make sure it really does (Should return a new array)
+	When function should (not) modify inner __data table, make sure it really does (not) (Should [not] modify self)
 ]]
 
 array = require ""

@@ -3,6 +3,7 @@ Test__len = {
 	setUp = function (self)
 		self.a1 = array("a", "b", "c")
 		self.a2 = array("d", "e", "f")
+		self.a3 = array("a", "b", "c", "d", "e", "f")
 	end;
 	
 	["test: Should return 0 when empty table"] = function ()
@@ -355,5 +356,31 @@ Test__len = {
 		luaunit.assertEquals(#array(nil, nil, nil):sort(), 3)
 		luaunit.assertEquals(array(nil, nil, nil):sort():len(), 3)
 	end;
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, shuffle, slice, union, uniq methods
+
+	["test: Should be equal to the initial array's length when shuffling"] = function (self)
+		luaunit.assertEquals(#self.a3:shuffle(), 6)
+		luaunit.assertEquals(self.a3:shuffle():len(), 6)
+	end;
+
+	["test: Should be 0 when shuffling an empty array"] = function ()
+		luaunit.assertEquals(#array():shuffle(), 0)
+		luaunit.assertEquals(array():shuffle():len(), 0)
+	end;
+
+	["test: Should be 1 when shuffling an array with single element"] = function ()
+		luaunit.assertEquals(#array("a"):shuffle(), 1)
+		luaunit.assertEquals(array("a"):shuffle():len(), 1)
+	end;
+
+	["test: Should be equal to the initial array's length when shuffling an array with nils"] = function ()
+		luaunit.assertItemsEquals(#array("a", nil, "c", nil, "e", nil):shuffle(), 6)
+		luaunit.assertItemsEquals(array("a", nil, "c", nil, "e", nil):shuffle():len(), 6)
+	end;
+
+	["test: Should be equal to the initial array's length when shuffling an array of nils"] = function ()
+		luaunit.assertItemsEquals(#array(nil, nil, nil):shuffle(), 3)
+		luaunit.assertItemsEquals(array(nil, nil, nil):shuffle():len(), 3)
+	end;
+	
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, slice, union, uniq methods
 }

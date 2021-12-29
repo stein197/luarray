@@ -15,6 +15,7 @@
 -- TODO: Restrict array keys to numbers only
 -- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
 -- TODO: Add deep flag to totable() function
+-- TODO: Make generic docblocks
 local mt = {}
 
 --- @class array
@@ -254,20 +255,18 @@ function pt:sort(f)
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Shuffles the array. Works only with arrays with numeric keys.
 --- @return array rs Suffled array.
 function pt:shuffle()
 	local rs = self:clone()
-	local data = rs.__data
-	local len = #data
-	for i = 1, len do
-		local j = math.random(i, len)
-		data[i], data[j] = data[j], data[i]
+	for i = 1, rs.__len do
+		local j = math.random(i, rs.__len)
+		rs.__data[i], rs.__data[j] = rs.__data[j], rs.__data[i]
 	end
 	return rs
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Returns the first key-value pair of the array. The behavior is determined only in arrays with numeric keys.
 --- @return any k The first key in the array.
