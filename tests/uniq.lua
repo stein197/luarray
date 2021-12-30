@@ -7,7 +7,7 @@ TestUniq = {
 		luaunit.assertEquals(array():uniq().__data, {})
 	end;
 
-	["test: Should return an array equal to the original when the array contains only one value"] = function ()
+	["test: Should return an array equal to the original when the array contains only one element"] = function ()
 		luaunit.assertEquals(array("a"):uniq().__data, {"a"})
 	end;
 
@@ -15,7 +15,7 @@ TestUniq = {
 		luaunit.assertEquals(array("a", "b", "b", "c", "c", "c"):uniq().__data, {"a", "b", "c"})
 	end;
 
-	["test: Should preserve order and the first matching value when the array contains duplicates"] = function ()
+	["test: Should preserve order and the first matching element when the array contains duplicates"] = function ()
 		luaunit.assertEquals(array("a", "c", "b", "b", "c"):uniq().__data, {"a", "c", "b"})
 	end;
 
@@ -41,16 +41,16 @@ TestUniq = {
 		luaunit.assertEquals(array(nil, nil, nil):uniq().__data, {nil})
 	end;
 
-	["test: Should preserve only one value when the array contains duplicating arrays"] = function ()
+	["test: Should preserve only one element when the array contains duplicating arrays"] = function ()
 		luaunit.assertEquals(array("a", "b", array("c"), array("c")):uniq().__data, {"a", "b", array("c")})
 	end;
 
-	["test: Should preserve only one value when the array contains duplicating references to the same object"] = function ()
+	["test: Should preserve only one element when the array contains duplicating references to the same object"] = function ()
 		local o = Object()
 		luaunit.assertEquals(array(o, "b", o):uniq().__data, {{}, "b"})
 	end;
 
-	["test: Should preserve all values when the array contains cloned objects"] = function ()
+	["test: Should preserve all elements when the array contains cloned objects"] = function ()
 		local o1 = Object()
 		local o2 = Object()
 		luaunit.assertEquals(array(o1, "b", o2):uniq().__data, {o1, "b", o2})

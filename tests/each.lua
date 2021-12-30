@@ -11,21 +11,21 @@ TestEach = {
 
 	["test: Should iterate over all elements"] = function (self)
 		local rs = {}
-		self.a:each(function (i, v) rs[i] = v end)
+		self.a:each(function (i, elt) rs[i] = elt end)
 		luaunit.assertEquals(rs, {"a", "b", "c"})
 	end;
 
 	["test: Should iterate over all elements when there are nils"] = function ()
 		local a = array("a", nil, "c")
 		local rs = {}
-		a:each(function (i, v) rs[i] = v end)
+		a:each(function (i, elt) rs[i] = elt end)
 		luaunit.assertEquals(rs, {"a", nil, "c"})
 	end;
 
 	["test: Should iterate over all elements when an array is full of nils"] = function ()
 		local a = array(nil, nil, nil)
 		local rs = {}
-		a:each(function (i, v) rs[i] = v end)
+		a:each(function (i, elt) rs[i] = elt end)
 		luaunit.assertEquals(rs, {nil, nil, nil})
 	end;
 
@@ -34,15 +34,15 @@ TestEach = {
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;
 
-	["test: Should pass index and value arguments to the closure"] = function (self)
-		local index, value, last
-		self.a:each(function (i, v, l)
+	["test: Should pass index and element arguments to the closure"] = function (self)
+		local index, element, last
+		self.a:each(function (i, elt, l)
 			index = i
-			value = v
+			element = elt
 			last = l
 		end)
 		luaunit.assertEquals(index, 3)
-		luaunit.assertEquals(value, "c")
+		luaunit.assertEquals(element, "c")
 		luaunit.assertNil(last)
 	end;
 }

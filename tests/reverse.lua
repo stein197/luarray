@@ -7,7 +7,7 @@ TestReverse = {
 		luaunit.assertEquals(array():reverse().__data, {})
 	end;
 
-	["test: Should return an array equal to the original one when the array has only one value"] = function ()
+	["test: Should return an array equal to the original one when the array has only one element"] = function ()
 		luaunit.assertEquals(array("a"):reverse().__data, {"a"})
 	end;
 

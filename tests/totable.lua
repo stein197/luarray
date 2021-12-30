@@ -20,7 +20,7 @@ TestToTable = {
 		luaunit.assertEquals(array(array(a):totable()), a)
 	end;
 
-	["test: totable(): Returned value is a plain table"] = function ()
+	["test: totable(): Returned element is a plain table"] = function ()
 		luaunit.assertNil(getmetatable(array():totable()))
 	end;
 

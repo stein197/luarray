@@ -12,7 +12,7 @@
 	- table with nil
 	Testing methods naming convention:
 	- "Should ... when the array is empty" when the function is tested against empty arrays
-	- "Should ... when the array has only one value" when the function is tested against arrays with single value
+	- "Should ... when the array has only one element" when the function is tested against arrays with single element
 	- "Should return a new array" when the function should return a new instance of array
 	- "Should [not] modify self" when the function should (not) modify inner __data table
 	- "Should return correct result" when the function is tested against ordinary cases

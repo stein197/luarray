@@ -6,7 +6,7 @@ TestSlice = {
 		luaunit.assertEquals(array():slice(0, 1).__data, {})
 	end;
 
-	["test: Should always return an array equal to the original one regardless of the arguments when the array has only one value"] = function ()
+	["test: Should always return an array equal to the original one regardless of the arguments when the array has only one element"] = function ()
 		luaunit.assertEquals(array("a"):slice().__data, {"a"})
 		luaunit.assertEquals(array("a"):slice(0).__data, {"a"})
 		luaunit.assertEquals(array("a"):slice(1).__data, {"a"})

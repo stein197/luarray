@@ -47,7 +47,7 @@ TestClone = {
 		luaunit.assertFalse(rawequal(array("a", "b", "c", a):clone(true).__data[4], a))
 	end;
 
-	["test: Should contain an array with the same values when flag is set to true"] = function ()
+	["test: Should contain an array with the same elements when flag is set to true"] = function ()
 		local a = array("d", "e", "f")
 		luaunit.assertEquals(array("a", "b", "c", a):clone(true).__data[4].__data, {"d", "e", "f"})
 	end;

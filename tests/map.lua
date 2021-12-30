@@ -8,27 +8,27 @@ TestMap = {
 	end;
 
 	["test: Should return correct result when mapping an array with single element"] = function ()
-		luaunit.assertEquals(array("a"):map(function (i, v) return v:upper() end).__data, {"A"})
+		luaunit.assertEquals(array("a"):map(function (i, elt) return elt:upper() end).__data, {"A"})
 	end;
 
 	["test: Should return correct result when mapping an arbitrary array"] = function (self)
-		luaunit.assertEquals(self.a:map(function (i, v) return v:upper() end).__data, {"A", "B", "C"})
+		luaunit.assertEquals(self.a:map(function (i, elt) return elt:upper() end).__data, {"A", "B", "C"})
 	end;
 
-	["test: Should pass index and value arguments to the closure"] = function (self)
-		local key, value, last
-		self.a:map(function (i, v, l)
+	["test: Should pass index and element arguments to the closure"] = function (self)
+		local key, element, last
+		self.a:map(function (i, elt, l)
 			key = i
-			value = v
+			element = elt
 			last = l
 		end)
 		luaunit.assertEquals(key, 3)
-		luaunit.assertEquals(value, "c")
+		luaunit.assertEquals(element, "c")
 		luaunit.assertNil(last)
 	end;
 
 	["test: Should return a new array array"] = function (self)
-		luaunit.assertFalse(rawequal(self.a:map(function (i, v) return i * 2 end), self.a))
+		luaunit.assertFalse(rawequal(self.a:map(function (i, elt) return i * 2 end), self.a))
 	end;
 
 	["test: Should not modify self"] = function (self)
@@ -37,10 +37,10 @@ TestMap = {
 	end;
 
 	["test: Should return correct result when mapping an array with nil"] = function ()
-		luaunit.assertEquals(array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end).__data, {"A", "nil", "C"})
+		luaunit.assertEquals(array("a", nil, "c"):map(function (i, elt) return elt ~= nil and elt:upper() or "nil" end).__data, {"A", "nil", "C"})
 	end;
 
 	["test: Should return correct result when mapping an array full of nils"] = function ()
-		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end).__data, {2, 4, 6})
+		luaunit.assertEquals(array(nil, nil, nil):map(function (i, elt) return i * 2 end).__data, {2, 4, 6})
 	end;
 }

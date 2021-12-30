@@ -1,9 +1,9 @@
 --[[
-	Closures that accept key and value should accept them in that order only
+	Closures that accept key and element should accept them in that order only
 	Naming conventions:
 	- k: key (for ordinary tables)
 	- i: index
-	- v: value
+	- elt: element
 	- f: function
 	- t: table
 	- o: object
@@ -69,16 +69,16 @@ local function reduce(self, f, init, isstart)
 	return rs
 end
 
-local function indexof(self, i, v, isstart)
+local function indexof(self, i, elt, isstart)
 	for j = i and i or (isstart and 1 or self.__len), isstart and self.__len or 1, isstart and 1 or -1 do
-		if v == self[j] then
+		if elt == self[j] then
 			return j
 		end
 	end
 	return -1
 end
 
-local function pad(self, len, v, isstart)
+local function pad(self, len, elt, isstart)
 	local rs, oldlen = self:clone(), #self
 	local diff = len - oldlen
 	if diff <= 0 then
@@ -92,7 +92,7 @@ local function pad(self, len, v, isstart)
 	local from = isstart and 1 or #self + 1
 	local to = isstart and diff or len
 	for i = from, to do
-		rs.__data[i] = isplaintable(v) and array(v) or v
+		rs.__data[i] = isplaintable(elt) and array(elt) or elt
 	end
 	return rs
 end
@@ -101,7 +101,7 @@ end
 --- it's also possible to access elements with negative indices. In such cases the counting starts from the end of the
 --- array.
 --- @param i number An index.
---- @return any v The value associated with the index.
+--- @return any elt The element associated with the index.
 function mt:__index(i)
 	return pt[i] or self.__data[normalizeidx(#self.__data, i)]
 end
@@ -109,9 +109,9 @@ end
 --- Overloads index assigning. Works the same way as an accessing an arbitrary table but in addition to that it's also
 --- possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does
 --- nothing if there's an attempt to assign at non numeric index.
---- @param i number Index at which assign the value.
---- @param v any Value to assign.
-function mt:__newindex(i, v)
+--- @param i number Index at which assign the element.
+--- @param elt any Value to assign.
+function mt:__newindex(i, elt)
 	local oldlen = self.__len
 	i = normalizeidx(oldlen, i)
 	if not i then
@@ -124,7 +124,7 @@ function mt:__newindex(i, v)
 			self.__data[j + offset], self.__data[j] = self.__data[j], nil
 		end
 	end
-	self.__data[i] = v
+	self.__data[i] = elt
 	self.__len = i > self.__len and i or self.__len
 end
 
@@ -142,7 +142,7 @@ function mt:__concat(a)
 		error(string.format("Cannot concatenate array with %s", type(a)))
 	end
 	local rs = alloc(self.__len + a.__len)
-	rs:each(function (i, v) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
+	rs:each(function (i, elt) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
 	return rs
 end
 
@@ -150,7 +150,7 @@ end
 --- @param t array An array to compare with.
 --- @return boolean rs `true` if two arrays are deeply equal.
 function mt:__eq(t)
-	return isarray(t) and self.__len == t.__len and self:every(function (i, v) return v == t.__data[i] end)
+	return isarray(t) and self.__len == t.__len and self:every(function (i, elt) return elt == t.__data[i] end)
 end
 
 --- Returns length of the table. Same as `#` operator.
@@ -160,9 +160,9 @@ function pt:len()
 end
 
 --- Returns the first entry that satisfies a predicate.
---- @param f fun(i: number, v: any): boolean Predicate.
---- @return number i Index of the value that satisfies predicate.
---- @return any v Value that satisfies predicate.
+--- @param f fun(i: number, elt: any): boolean Predicate.
+--- @return number i Index of the element that satisfies predicate.
+--- @return any elt Value that satisfies predicate.
 function pt:find(f)
 	for i = 1, self.__len do
 		if f(i, self.__data[i]) then
@@ -173,7 +173,7 @@ function pt:find(f)
 end
 
 --- Check if at least one element in the array satisfies the predicate.
---- @param f fun(i: number, v: any): boolean Predicate.
+--- @param f fun(i: number, elt: any): boolean Predicate.
 --- @return boolean rs `true` if at least one element satisfies the predicate.
 function pt:some(f)
 	for i = 1, self.__len do
@@ -185,7 +185,7 @@ function pt:some(f)
 end
 
 --- Checks if every element in the array satisfies the passed predicate.
---- @param f fun(i: number, v: any): boolean Predicate.
+--- @param f fun(i: number, elt: any): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
 function pt:every(f)
 	for i = 1, self.__len do
@@ -197,7 +197,7 @@ function pt:every(f)
 end
 
 --- Filters all the elements preserving only those that pass the predicate. Returns new array.
---- @param f fun(i: number, v: any): boolean Predicate.
+--- @param f fun(i: number, elt: any): boolean Predicate.
 --- @return array rs New array containing every element that satisfies the predicate. Keys stay preserved.
 function pt:filter(f)
 	local rs = array()
@@ -210,19 +210,19 @@ function pt:filter(f)
 	return rs
 end
 
---- Applies given function to every element in the array and returns the new one with values returned by the function.
---- @generic T Type of value the array contains.
---- @param f fun(i: number, v: T): T Function to apply on each element. Returns new value.
+--- Applies given function to every element in the array and returns the new one with elements returned by the function.
+--- @generic T Type of element the array contains.
+--- @param f fun(i: number, elt: T): T Function to apply on each element. Returns new element.
 --- @return array rs New array.
 function pt:map(f)
 	local rs = alloc(self.__len)
-	self:each(function (i, v) rs.__data[i] = f(i, v) end)
+	self:each(function (i, elt) rs.__data[i] = f(i, elt) end)
 	return rs
 end
 
 --- Applies passed closure to all elements.
---- @generic T Type of value the array contains.
---- @param f fun(i: number, v: T) Closure.
+--- @generic T Type of element the array contains.
+--- @param f fun(i: number, elt: T) Closure.
 function pt:each(f)
 	for i = 1, self.__len do
 		f(i, self.__data[i])
@@ -230,16 +230,16 @@ function pt:each(f)
 end
 
 --- Makes a clone of the table.
---- @param deep boolean Nested arrays will be deeply cloned if this value is set to `true`. By default `false`. Other
+--- @param deep boolean Nested arrays will be deeply cloned if this element is set to `true`. By default `false`. Other
 ---                     methods that use cloning method performs a shallow one.
 --- @return array rs Cloned array.
 function pt:clone(deep)
 	deep = ternary(deep == nil, false, deep)
-	return self:map(function (i, v) return deep and isarray(v) and v:clone() or v end)
+	return self:map(function (i, elt) return deep and isarray(elt) and elt:clone() or elt end)
 end
 
 --- Sorts the array.
---- @generic T Type of values the array contains.
+--- @generic T Type of elements the array contains.
 --- @param f? fun(a: T, b: T): boolean Closure that should return true if `a` should come before `b`.
 --- @return array rs Sorted array.
 --- @see table.sort
@@ -260,19 +260,19 @@ function pt:shuffle()
 	return rs
 end
 
---- Returns the first index and value of the array.
---- @generic T Type of values the array contains.
+--- Returns the first index and element of the array.
+--- @generic T Type of elements the array contains.
 --- @return number i The first index of the array. Usually 1 but it could be -1 if the array is empty.
---- @return T v The first value of the array.
+--- @return T elt The first element of the array.
 function pt:first()
 	return self:isempty() and -1 or 1, self.__data[1]
 end
 
---- Returns the last index and value of the array.
---- @generic T Type of values the array contains.
+--- Returns the last index and element of the array.
+--- @generic T Type of elements the array contains.
 --- @return number i The last index of the array. Usually equals to the length of the array but it could be -1 if the
 ---                  array is empty.
---- @return T v The last value of the array.
+--- @return T elt The last element of the array.
 function pt:last()
 	return self:isempty() and -1 or self.__len, self.__data[self.__len]
 end
@@ -280,34 +280,34 @@ end
 --- Joins all the elements into a string with specified separator.
 --- @return string s Joined string.
 function pt:join(sep)
-	return self:reducestart(function (rs, i, v) return v == nil and rs or (i == 1 and tostring(v) or rs..sep..tostring(v)) end, "")
+	return self:reducestart(function (rs, i, elt) return elt == nil and rs or (i == 1 and tostring(elt) or rs..sep..tostring(elt)) end, "")
 end
 
---- Applies the given function to each element from the start to the end in the array returning an accumulate value.
---- @generic T Type of value the array contains.
---- @generic V Type of an accumulated value.
---- @param f fun(rs: V, i: number, v: T): V Function to apply.
---- @param init? V A value to start with.
---- @return V rs Accumulated value.
+--- Applies the given function to each element from the start to the end in the array returning an accumulate element.
+--- @generic T Type of element the array contains.
+--- @generic V Type of an accumulated element.
+--- @param f fun(rs: V, i: number, elt: T): V Function to apply.
+--- @param init? V A element to start with.
+--- @return V rs Accumulated element.
 function pt:reducestart(f, init)
 	return reduce(self, f, init, true)
 end
 
---- Applies the given function to each element from the end to the start in the array returning an accumulate value.
---- @generic T Type of value the array contains.
---- @generic V Type of an accumulated value.
---- @param f fun(rs: V, i: number, v: T): V Function to apply.
---- @param init? V A value to start with.
---- @return V rs Accumulated value.
+--- Applies the given function to each element from the end to the start in the array returning an accumulate element.
+--- @generic T Type of element the array contains.
+--- @generic V Type of an accumulated element.
+--- @param f fun(rs: V, i: number, elt: T): V Function to apply.
+--- @param init? V A element to start with.
+--- @return V rs Accumulated element.
 function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
 end
 
---- Checks if the array has specified value. Primitive types and arrays are compared by value while other reference
+--- Checks if the array has specified element. Primitive types and arrays are compared by element while other reference
 --- types are compared by reference.
---- @return boolean rs `true` if the array has value.
-function pt:contains(v)
-	return self:some(function (i, val) return val == v end)
+--- @return boolean rs `true` if the array has element.
+function pt:contains(elt)
+	return self:some(function (i, val) return val == elt end)
 end
 
 --- Removes duplicates from the array.
@@ -323,10 +323,10 @@ function pt:uniq()
 	return rs
 end
 
---- Reverses the order of values in the array. Works correctly only with numeric keys.
+--- Reverses the order of elements in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
 function pt:reverse()
-	return self:map(function (i, v) return self.__data[self.__len - i + 1] end)
+	return self:map(function (i, elt) return self.__data[self.__len - i + 1] end)
 end
 
 --- Slices the part of the array.
@@ -346,20 +346,20 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Pads the array at the start with the given value to the given length.
+--- Pads the array at the start with the given element to the given length.
 --- @param len number To which length pad the array.
---- @param v any What item to add.
+--- @param elt any What item to add.
 --- @return array rs Padded array.
-function pt:padstart(len, v)
-	return pad(self, len, v, true)
+function pt:padstart(len, elt)
+	return pad(self, len, elt, true)
 end
 
---- Pads the array at the end with the given value to the given length.
+--- Pads the array at the end with the given element to the given length.
 --- @param len number To which length pad the array.
---- @param v any What item to add.
+--- @param elt any What item to add.
 --- @return array rs Padded array.
-function pt:padend(len, v)
-	return pad(self, len, v, false)
+function pt:padend(len, elt)
+	return pad(self, len, elt, false)
 end
 
 --- Checks if the array is empty.
@@ -373,31 +373,31 @@ end
 function pt:totable(deep)
 	deep = ternary(deep == nil, false, deep)
 	local t = {}
-	self:each(function (i, v) t[i] = deep and isarray(v) and v:totable() or v end)
+	self:each(function (i, elt) t[i] = deep and isarray(elt) and elt:totable() or elt end)
 	return t
 end
 
---- Returns the first index at which the given value can be found.
+--- Returns the first index at which the given element can be found.
 --- @generic V
---- @param v V Value to find.
+--- @param elt V Value to find.
 --- @param i number At which index to start searching.
---- @return number i First index at which the value found, otherwise -1.
-function pt:firstindexof(i, v)
-	return indexof(self, i, v, true)
+--- @return number i First index at which the element found, otherwise -1.
+function pt:firstindexof(i, elt)
+	return indexof(self, i, elt, true)
 end
 
---- Returns the last index at which the given value can be found.
+--- Returns the last index at which the given element can be found.
 --- @generic V
---- @param v V Value to find.
+--- @param elt V Value to find.
 --- @param i number At which index to start searching.
---- @return number i Last index at which the value found, otherwise -1.
-function pt:lastindexof(i, v)
-	return indexof(self, i, v, false)
+--- @return number i Last index at which the element found, otherwise -1.
+function pt:lastindexof(i, elt)
+	return indexof(self, i, elt, false)
 end
 
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
-function mt:__call() end -- TODO: for v in array
+function mt:__call() end -- TODO: for elt in array
 function pt:addbefore(item) end -- TODO
 function pt:addafter(item) end -- TODO
 function pt:delat(i) end -- TODO

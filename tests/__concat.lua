@@ -47,7 +47,7 @@ Test__concat = {
 		luaunit.assertEquals(self.a2.__data, {"d", "e", "f"})
 	end;
 
-	["test: Should not remove duplicate values when concatenating arrays with intersecting values"] = function ()
+	["test: Should not remove duplicate elements when concatenating arrays with intersecting elements"] = function ()
 		luaunit.assertEquals((array("a", "b", "c")..array("a", "c")).__data, {"a", "b", "c", "a", "c"})
 	end;
 

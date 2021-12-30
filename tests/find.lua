@@ -4,21 +4,21 @@ TestFind = {
 	end;
 
 	["test: Should pass expected arguments to closure"] = function ()
-		local index, value, last
-		array("a"):find(function (i, v, l)
+		local index, element, last
+		array("a"):find(function (i, elt, l)
 			index = i
-			value = v
+			element = elt
 			last = l
 		end)
 		luaunit.assertEquals(index, 1)
-		luaunit.assertEquals(value, "a")
+		luaunit.assertEquals(element, "a")
 		luaunit.assertNil(last)
 	end;
 
-	["test: Should return index and value when finding in an arbitrary array"] = function ()
-		local index, value = array("a", "b", "c"):find(function (i, v) return i % 2 == 0 or v == "b" end)
+	["test: Should return index and element when finding in an arbitrary array"] = function ()
+		local index, element = array("a", "b", "c"):find(function (i, elt) return i % 2 == 0 or elt == "b" end)
 		luaunit.assertEquals(index, 2)
-		luaunit.assertEquals(value, "b")
+		luaunit.assertEquals(element, "b")
 	end;
 
 	["test: Should not call closure when finding in an empty array"] = function ()
@@ -29,20 +29,20 @@ TestFind = {
 	end;
 
 	["test: Should return corrent index when finding nil"] = function ()
-		luaunit.assertEquals(array("a", nil, "c"):find(function (i, v) return v == nil end), 2)
+		luaunit.assertEquals(array("a", nil, "c"):find(function (i, elt) return elt == nil end), 2)
 	end;
 
-	["test: Should return correct value when it goes after nil"] = function ()
-		local idx, val = array("a", nil, "c"):find(function (i, v) return i == 3 end)
+	["test: Should return correct element when it goes after nil"] = function ()
+		local idx, val = array("a", nil, "c"):find(function (i, elt) return i == 3 end)
 		luaunit.assertEquals(idx, 3)
 		luaunit.assertEquals(val, "c")
 	end;
 
-	["test: Should stop executing closure after finding first matching value"] = function ()
+	["test: Should stop executing closure after finding first matching element"] = function ()
 		local index = 0
-		array("a", "b", "c"):find(function (i, v)
+		array("a", "b", "c"):find(function (i, elt)
 			index = index + 1
-			return v == "b"
+			return elt == "b"
 		end)
 		luaunit.assertEquals(index, 2)
 	end;

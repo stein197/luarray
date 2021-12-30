@@ -18,14 +18,14 @@ Test__len = {
 	end;
 
 	-- __newindex(), []
-	["test: Should be 1 when assigning a value in an empty array at 1"] = function ()
+	["test: Should be 1 when assigning a element in an empty array at 1"] = function ()
 		local a1 = array()
 		a1[1] = "a"
 		luaunit.assertEquals(#a1, 1)
 		luaunit.assertEquals(a1:len(), 1)
 	end;
 
-	["test: Should be 1 when assigning a value in an empty array at -1"] = function ()
+	["test: Should be 1 when assigning a element in an empty array at -1"] = function ()
 		local a1 = array()
 		a1[-1] = "a"
 		luaunit.assertEquals(#a1, 1)
@@ -50,13 +50,13 @@ Test__len = {
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should be equal to a new index when assigning a value at large positive index"] = function (self)
+	["test: Should be equal to a new index when assigning a element at large positive index"] = function (self)
 		self.a1[10] = "j"
 		luaunit.assertEquals(#self.a1, 10)
 		luaunit.assertEquals(self.a1:len(), 10)
 	end;
 
-	["test: Should be equal to a new index when assigning a value at large negative index"] = function (self)
+	["test: Should be equal to a new index when assigning a element at large negative index"] = function (self)
 		self.a1[-10] = "j"
 		luaunit.assertEquals(#self.a1, 10)
 		luaunit.assertEquals(self.a1:len(), 10)
@@ -74,19 +74,19 @@ Test__len = {
 		luaunit.assertEquals(self.a1:len(), 10)
 	end;
 
-	["test: Should not change when reassigning a value at existing positive index"] = function (self)
+	["test: Should not change when reassigning a element at existing positive index"] = function (self)
 		self.a1[2] = "B"
 		luaunit.assertEquals(#self.a1, 3)
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should not change when reassigning a value at existing negative index"] = function (self)
+	["test: Should not change when reassigning a element at existing negative index"] = function (self)
 		self.a1[-2] = "B"
 		luaunit.assertEquals(#self.a1, 3)
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should not change when reassigning the first value at 1"] = function (self)
+	["test: Should not change when reassigning the first element at 1"] = function (self)
 		self.a1[1] = "A"
 		luaunit.assertEquals(#self.a1, 3)
 		luaunit.assertEquals(self.a1:len(), 3)
@@ -98,66 +98,66 @@ Test__len = {
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should not change when reassigning the last value at positive max index"] = function (self)
+	["test: Should not change when reassigning the last element at positive max index"] = function (self)
 		self.a1[3] = "C"
 		luaunit.assertEquals(#self.a1, 3)
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should not change when reassigning the last value at -1"] = function (self)
+	["test: Should not change when reassigning the last element at -1"] = function (self)
 		self.a1[-1] = "C"
 		luaunit.assertEquals(#self.a1, 3)
 		luaunit.assertEquals(self.a1:len(), 3)
 	end;
 
-	["test: Should be increased by 1 when assigning a value at length + 1 index"] = function (self)
+	["test: Should be increased by 1 when assigning a element at length + 1 index"] = function (self)
 		self.a1[4] = "d"
 		luaunit.assertEquals(#self.a1, 4)
 		luaunit.assertEquals(self.a1:len(), 4)
 	end;
 
-	["test: Should be increased by 1 when assigning a value at -length - 1 index"] = function (self)
+	["test: Should be increased by 1 when assigning a element at -length - 1 index"] = function (self)
 		self.a1[-4] = "d"
 		luaunit.assertEquals(#self.a1, 4)
 		luaunit.assertEquals(self.a1:len(), 4)
 	end;
 
-	["test: Should not change when assigning a value at the start and there is nil at that negative index"] = function ()
+	["test: Should not change when assigning a element at the start and there is nil at that negative index"] = function ()
 		local a1 = array(nil, "b", "c")
 		a1[-3] = "a"
 		luaunit.assertEquals(#a1, 3)
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	["test: Should not change when assigning a value at the middle and there is nil at that positive index"] = function ()
+	["test: Should not change when assigning a element at the middle and there is nil at that positive index"] = function ()
 		local a1 = array("a", nil, "c")
 		a1[2] = "b"
 		luaunit.assertEquals(#a1, 3)
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	["test: Should not change when assigning a value at the middle and there is nil at that negative index"] = function ()
+	["test: Should not change when assigning a element at the middle and there is nil at that negative index"] = function ()
 		local a1 = array("a", nil, "c")
 		a1[-2] = "b"
 		luaunit.assertEquals(#a1, 3)
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	["test: Should not change when assigning a value at the end and there is nil at that positive index"] = function ()
+	["test: Should not change when assigning a element at the end and there is nil at that positive index"] = function ()
 		local a1 = array("a", "b", nil)
 		a1[3] = "c"
 		luaunit.assertEquals(#a1, 3)
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	["test: Should not change when assigning a value at the start and there is nil at 1"] = function ()
+	["test: Should not change when assigning a element at the start and there is nil at 1"] = function ()
 		local a1 = array(nil, "b", "c")
 		a1[1] = "a"
 		luaunit.assertEquals(#a1, 3)
 		luaunit.assertEquals(a1:len(), 3)
 	end;
 
-	["test: Should not change when assigning a value at the end and there is nil at -1"] = function ()
+	["test: Should not change when assigning a element at the end and there is nil at -1"] = function ()
 		local a1 = array("a", "b", nil)
 		a1[-1] = "c"
 		luaunit.assertEquals(#a1, 3)
@@ -180,7 +180,7 @@ Test__len = {
 		luaunit.assertEquals((array()..array(nil)):len(), 1)
 	end;
 
-	["test: Should be a sum of two arrays' lengths when concatenating arrays with intersecting values"] = function ()
+	["test: Should be a sum of two arrays' lengths when concatenating arrays with intersecting elements"] = function ()
 		luaunit.assertEquals(#(array("a", "b", "c")..array("a", "c")), 5)
 		luaunit.assertEquals((array("a", "b", "c")..array("a", "c")):len(), 5)
 	end;
@@ -217,31 +217,31 @@ Test__len = {
 
 	-- filter()
 	["test: Should be correct when filtering an arbitrary array"] = function (self)
-		luaunit.assertEquals(#self.a1:filter(function (i, v) return i % 2 == 1 end), 2)
-		luaunit.assertEquals(self.a1:filter(function (i, v) return i % 2 == 1 end):len(), 2)
+		luaunit.assertEquals(#self.a1:filter(function (i, elt) return i % 2 == 1 end), 2)
+		luaunit.assertEquals(self.a1:filter(function (i, elt) return i % 2 == 1 end):len(), 2)
 	end;
 
 	["test: Should be 0 when filtering an empty array"] = function ()
-		luaunit.assertEquals(#array():filter(function (v) end), 0)
-		luaunit.assertEquals(array():filter(function (v) end):len(), 0)
+		luaunit.assertEquals(#array():filter(function (elt) end), 0)
+		luaunit.assertEquals(array():filter(function (elt) end):len(), 0)
 	end;
 
 	["test: Should be correct when filtering an array with nils are allowed in predicate"] = function ()
-		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, v) return i >= 2 end), 2)
-		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return i >= 2 end):len(), 2)
+		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, elt) return i >= 2 end), 2)
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, elt) return i >= 2 end):len(), 2)
 	end;
 
 	["test: Should be correct when filtering an array with only nils allowed in the predicate"] = function ()
-		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, v) return v == nil end), 1)
-		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, v) return v == nil end):len(), 1)
+		luaunit.assertEquals(#array("a", nil, "c"):filter(function (i, elt) return elt == nil end), 1)
+		luaunit.assertEquals(array("a", nil, "c"):filter(function (i, elt) return elt == nil end):len(), 1)
 	end;
 
-	["test: Should be equal to the initial array's length when filtering by predicate that returns true for every value"] = function (self)
+	["test: Should be equal to the initial array's length when filtering by predicate that returns true for every element"] = function (self)
 		luaunit.assertEquals(#self.a1:filter(function () return true end), 3)
 		luaunit.assertEquals(self.a1:filter(function () return true end):len(), 3)
 	end;
 
-	["test: Should be 0 when filtering by predicate that returns false for every value"] = function (self)
+	["test: Should be 0 when filtering by predicate that returns false for every element"] = function (self)
 		luaunit.assertEquals(#self.a1:filter(function () return false end), 0)
 		luaunit.assertEquals(self.a1:filter(function () return false end):len(), 0)
 	end;
@@ -253,23 +253,23 @@ Test__len = {
 	end;
 
 	["test: Should be 1 when mapping an array with single element"] = function ()
-		luaunit.assertEquals(#array("a"):map(function (i, v) return v:upper() end), 1)
-		luaunit.assertEquals(array("a"):map(function (i, v) return v:upper() end):len(), 1)
+		luaunit.assertEquals(#array("a"):map(function (i, elt) return elt:upper() end), 1)
+		luaunit.assertEquals(array("a"):map(function (i, elt) return elt:upper() end):len(), 1)
 	end;
 
 	["test: Should be equal to the initial array's length when mapping an arbitrary array"] = function (self)
-		luaunit.assertEquals(#self.a1:map(function (i, v) return v:upper() end), 3)
-		luaunit.assertEquals(self.a1:map(function (i, v) return v:upper() end):len(), 3)
+		luaunit.assertEquals(#self.a1:map(function (i, elt) return elt:upper() end), 3)
+		luaunit.assertEquals(self.a1:map(function (i, elt) return elt:upper() end):len(), 3)
 	end;
 
 	["test: Should be equal to the initial array's length when mapping an array with nil"] = function ()
-		luaunit.assertEquals(#array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end), 3)
-		luaunit.assertEquals(array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end):len(), 3)
+		luaunit.assertEquals(#array("a", nil, "c"):map(function (i, elt) return elt ~= nil and elt:upper() or "nil" end), 3)
+		luaunit.assertEquals(array("a", nil, "c"):map(function (i, elt) return elt ~= nil and elt:upper() or "nil" end):len(), 3)
 	end;
 
 	["test: Should be equal to the initial array's length when mapping an array full of nils"] = function ()
-		luaunit.assertEquals(#array(nil, nil, nil):map(function (i, v) return i * 2 end), 3)
-		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end):len(), 3)
+		luaunit.assertEquals(#array(nil, nil, nil):map(function (i, elt) return i * 2 end), 3)
+		luaunit.assertEquals(array(nil, nil, nil):map(function (i, elt) return i * 2 end):len(), 3)
 	end;
 
 	-- clone()
@@ -396,7 +396,7 @@ Test__len = {
 		luaunit.assertEquals(array():uniq():len(), 0)
 	end;
 
-	["test: Should be 1 when uniqueizing an array with one value"] = function ()
+	["test: Should be 1 when uniqueizing an array with one element"] = function ()
 		luaunit.assertEquals(#array("a"):uniq(), 1)
 		luaunit.assertEquals(array("a"):uniq():len(), 1)
 	end;
@@ -427,7 +427,7 @@ Test__len = {
 		luaunit.assertEquals(array():reverse():len(), 0)
 	end;
 
-	["test: Should be 1 when reversing an array with only one value"] = function ()
+	["test: Should be 1 when reversing an array with only one element"] = function ()
 		luaunit.assertEquals(#array("a"):reverse(), 1)
 		luaunit.assertEquals(array("a"):reverse():len(), 1)
 	end;
@@ -464,7 +464,7 @@ Test__len = {
 		luaunit.assertEquals(array():slice(0, 1):len(), 0)
 	end;
 
-	["test: Should be 1 when slicing an array with only one value"] = function ()
+	["test: Should be 1 when slicing an array with only one element"] = function ()
 		luaunit.assertEquals(#array("a"):slice(), 1)
 		luaunit.assertEquals(array("a"):slice():len(), 1)
 		luaunit.assertEquals(#array("a"):slice(0), 1)

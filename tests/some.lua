@@ -3,16 +3,16 @@ TestSome = {
 		luaunit.assertFalse(array():some(function () return true end))
 	end;
 
-	["test: Should return true when searchin in an array with single truthy value"] = function ()
-		luaunit.assertTrue(array("a", "b", "c"):some(function (i, v) return v == "b" end))
+	["test: Should return true when searchin in an array with single truthy element"] = function ()
+		luaunit.assertTrue(array("a", "b", "c"):some(function (i, elt) return elt == "b" end))
 	end;
 
-	["test: Should return false when searching in array with all falsy values"] = function ()
-		luaunit.assertFalse(array("a", "b", "c"):some(function (i, v) return type(v) == "number" end))
+	["test: Should return false when searching in array with all falsy elements"] = function ()
+		luaunit.assertFalse(array("a", "b", "c"):some(function (i, elt) return type(elt) == "number" end))
 	end;
 
-	["test: Should return true when all values in an array are thuthy"] = function ()
-		luaunit.assertTrue(array("a", "b", "c"):some(function (i, v) return type(v) == "string" end))
+	["test: Should return true when all elements in an array are thuthy"] = function ()
+		luaunit.assertTrue(array("a", "b", "c"):some(function (i, elt) return type(elt) == "string" end))
 	end;
 
 	["test: Should return false when closure doesn't return anything"] = function ()
@@ -20,30 +20,30 @@ TestSome = {
 	end;
 
 	["test: Should pass index and key arguments to closure"] = function ()
-		local index, value, last
-		array("a"):some(function (i, v, l)
+		local index, element, last
+		array("a"):some(function (i, elt, l)
 			index = i
-			value = v
+			element = elt
 			last = l
 		end)
 		luaunit.assertEquals(index, 1)
-		luaunit.assertEquals(value, "a")
+		luaunit.assertEquals(element, "a")
 		luaunit.assertNil(last)
 	end;
 
 	["test: Should return true when searching for nil and there's nil in an array"] = function ()
-		luaunit.assertTrue(array("a", nil, "c"):some(function (i, v) return v == "c" end))
+		luaunit.assertTrue(array("a", nil, "c"):some(function (i, elt) return elt == "c" end))
 	end;
 
 	["test: Should return true when searching for an element that goes after nil"] = function ()
-		luaunit.assertTrue(array("a", nil, "c"):some(function (i, v) return v == "c" end))
+		luaunit.assertTrue(array("a", nil, "c"):some(function (i, elt) return elt == "c" end))
 	end;
 
-	["test: Should stop executing closure after finding first truthy value"] = function ()
+	["test: Should stop executing closure after finding first truthy element"] = function ()
 		local index = 0
-		array("a", "b", "c"):some(function (i, v)
+		array("a", "b", "c"):some(function (i, elt)
 			index = index + 1
-			return v == "b"
+			return elt == "b"
 		end)
 		luaunit.assertEquals(index, 2)
 	end;

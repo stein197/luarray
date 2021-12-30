@@ -4,7 +4,7 @@ Test__eq = {
 		luaunit.assertFalse(array() ~= array())
 	end;
 
-	["test: Should return true when comparing arrays with single value"] = function ()
+	["test: Should return true when comparing arrays with single element"] = function ()
 		luaunit.assertTrue(array("a") == array("a"))
 		luaunit.assertFalse(array("a") ~= array("a"))
 	end;
@@ -33,7 +33,7 @@ Test__eq = {
 		luaunit.assertTrue(array("a", "b", "c") ~= o)
 	end;
 
-	["test: Should return false when comparing arrays with same values and different order"] = function ()
+	["test: Should return false when comparing arrays with same elements and different order"] = function ()
 		luaunit.assertFalse(array("a", "b", "c") == array("c", "b", "a"))
 		luaunit.assertTrue(array("a", "b", "c") ~= array("c", "b", "a"))
 	end;

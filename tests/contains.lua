@@ -7,11 +7,11 @@ TestContains = {
 		luaunit.assertFalse(array():contains("a"))
 	end;
 
-	["test: Should return true when the array contains value"] = function (self)
+	["test: Should return true when the array contains element"] = function (self)
 		luaunit.assertTrue(self.a:contains("c"))
 	end;
 
-	["test: Should return false when the array does not contain value"] = function (self)
+	["test: Should return false when the array does not contain element"] = function (self)
 		luaunit.assertFalse(self.a:contains("f"))
 	end;
 

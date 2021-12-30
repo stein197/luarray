@@ -62,7 +62,7 @@ TestArray = {
 		luaunit.assertEquals(array("a", "b", nil).__data, {"a", "b", nil});
 	end;
 
-	["test: Should preserve false when passing it as a first value"] = function ()
+	["test: Should preserve false when passing it as a first element"] = function ()
 		luaunit.assertEquals(array(false, true).__data, {false, true})
 	end;
 
