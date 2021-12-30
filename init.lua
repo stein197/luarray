@@ -331,23 +331,20 @@ end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
---- Slices the part of the array. Works only with arrays with numeric keys.
+--- Slices the part of the array.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
 ---                    relative to the end of the array.
 --- @param to number End index of the sliced array. If negative index is supplied then the real index is calculated
 ---                    relative to the end of the array.
 --- @return array rs Slice of the array.
 function pt:slice(from, to)
-	local len = #self.__data
-	from = from == nil and 0 or from < 0 and len + from + 1 or from
-	to = to == nil and len or to < 0 and len + to + 1 or to
+	from = from == nil and 1 or from < 0 and self.__len + from + 1 or from
+	to = to == nil and self.__len or to < 0 and self.__len + to + 1 or to
 	if to < from then
-		error(string.format("Cannot slice the array from %d to %d index. %d is lesser than %d", from, to, to, from))
+		error(string.format("Cannot slice the array from %d to %d index: %d is lesser than %d", from, to, to, from))
 	end
-	local rs = array()
-	for i = from, to do
-		table.insert(rs.__data, isarray(self.__data[i]) and self.__data[i]:clone() or self.__data[i])
-	end
+	local rs = alloc(from - to + 1)
+	rs.__data = table.unpack(self.__data, from, to)
 	return rs
 end
 
