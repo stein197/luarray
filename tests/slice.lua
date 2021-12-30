@@ -1,4 +1,5 @@
 -- TODO: Tests for preserving nils
+-- TODO: Add tests for passing 0
 TestSlice = {
 	["test: array():slice() == {}"] = function ()
 		luaunit.assertEquals(array():slice(), {})
