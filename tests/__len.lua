@@ -451,5 +451,81 @@ Test__len = {
 		luaunit.assertEquals(#array("a", "b", nil):reverse(), 3)
 		luaunit.assertEquals(array("a", "b", nil):reverse():len(), 3)
 	end;
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, slice, union, methods
+
+	-- slice()
+	["test: Should be 0 when slicing an empty array"] = function ()
+		luaunit.assertEquals(#array():slice(), 0)
+		luaunit.assertEquals(array():slice():len(), 0)
+		luaunit.assertEquals(#array():slice(0), 0)
+		luaunit.assertEquals(array():slice(0):len(), 0)
+		luaunit.assertEquals(#array():slice(0, 0), 0)
+		luaunit.assertEquals(array():slice(0, 0):len(), 0)
+		luaunit.assertEquals(#array():slice(0, 1), 0)
+		luaunit.assertEquals(array():slice(0, 1):len(), 0)
+	end;
+
+	["test: Should be 1 when slicing an array with only one value"] = function ()
+		luaunit.assertEquals(#array("a"):slice(), 1)
+		luaunit.assertEquals(array("a"):slice():len(), 1)
+		luaunit.assertEquals(#array("a"):slice(0), 1)
+		luaunit.assertEquals(array("a"):slice(0):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(1), 1)
+		luaunit.assertEquals(array("a"):slice(1):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(-1), 1)
+		luaunit.assertEquals(array("a"):slice(-1):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(1, 1), 1)
+		luaunit.assertEquals(array("a"):slice(1, 1):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(-1, -1), 1)
+		luaunit.assertEquals(array("a"):slice(-1, -1):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(1, -1), 1)
+		luaunit.assertEquals(array("a"):slice(1, -1):len(), 1)
+		luaunit.assertEquals(#array("a"):slice(-1, 1), 1)
+		luaunit.assertEquals(array("a"):slice(-1, 1):len(), 1)
+	end;
+
+	["test: Should be correct when slicing an array"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice():len(), 6)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(0), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0):len(), 6)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(1), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1):len(), 6)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(3), 4)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(3):len(), 4)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(-3), 3)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-3):len(), 3)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(-8), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-8):len(), 6)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(0, 0), 0)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0, 0):len(), 0)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(1, 4), 4)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 4):len(), 4)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(-5, 5), 4)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-5, 5):len(), 4)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(1, 6), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 6):len(), 6)
+		luaunit.assertEquals(#array("a", "b", "c", "d", "e", "f"):slice(-6, -1), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-6, -1):len(), 6)
+	end;
+
+	["test: Should return correct result when slicing the array full of nils"] = function ()
+		luaunit.assertEquals(#array(nil, nil, nil, nil, nil, nil):slice(2, -2), 4)
+		luaunit.assertEquals(array(nil, nil, nil, nil, nil, nil):slice(2, -2):len(), 4)
+	end;
+
+	["test: Should return corrent result when slicing the array with nils"] = function ()
+		luaunit.assertEquals(#array("a", "b", nil, nil, "e", "f"):slice(2, -2), 4)
+		luaunit.assertEquals(array("a", "b", nil, nil, "e", "f"):slice(2, -2):len(), 4)
+	end;
+
+	["test: Should return corrent result when slicing the array after nil"] = function ()
+		luaunit.assertEquals(#array("a", "b", nil, "e", "f"):slice(3), 3)
+		luaunit.assertEquals(array("a", "b", nil, "e", "f"):slice(3):len(), 3)
+	end;
+
+	["test: Should return corrent result when slicing the array before nil"] = function ()
+		luaunit.assertEquals(#array("a", "b", nil, "e", "f"):slice(1, 3), 3)
+		luaunit.assertEquals(array("a", "b", nil, "e", "f"):slice(1, 3):len(), 3)
+	end;
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, union, methods
 }

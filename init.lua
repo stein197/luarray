@@ -329,8 +329,6 @@ function pt:reverse()
 	return self:map(function (i, v) return self.__data[self.__len - i + 1] end)
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Slices the part of the array.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
 ---                    relative to the end of the array.
@@ -345,6 +343,8 @@ function pt:slice(from, to)
 	end
 	return array(table.unpack(self.__data, from, to))
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Pads the array at the start with the given value to the given length.
 --- @param len number To which length pad the array.

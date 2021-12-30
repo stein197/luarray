@@ -10,8 +10,12 @@
 	- object
 	- nil
 	- table with nil
-	When function should return an array, make sure it really does (Should return a new array)
-	When function should (not) modify inner __data table, make sure it really does (not) (Should [not] modify self)
+	Testing methods naming convention:
+	- "Should ... when the array is empty" when the function is tested against empty arrays
+	- "Should ... when the array has only one value" when the function is tested against arrays with single value
+	- "Should return a new array" when the function should return a new instance of array
+	- "Should [not] modify self" when the function should (not) modify inner __data table
+	- "Should return correct result" when the function is tested against ordinary cases
 ]]
 
 array = require ""
