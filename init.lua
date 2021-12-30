@@ -398,13 +398,13 @@ end
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
 function mt:__call() end -- TODO: for elt in array
-function pt:addbefore(item) end -- TODO
-function pt:addafter(item) end -- TODO
+function pt:addbefore(elt) end -- TODO
+function pt:addafter(elt) end -- TODO
+function pt:addstart(elt) end -- TODO
+function pt:addend(elt) end -- TODO
 function pt:delat(i) end -- TODO
-function pt:addstart(item) end -- TODO
-function pt:delstart(item) end -- TODO
-function pt:addend(item) end -- TODO
-function pt:delend(item) end -- TODO
+function pt:delstart(elt) end -- TODO
+function pt:delend(elt) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:union(f) end -- TODO
