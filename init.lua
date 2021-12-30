@@ -343,9 +343,7 @@ function pt:slice(from, to)
 	if to < from then
 		error(string.format("Cannot slice the array from %d to %d index: %d is lesser than %d", from, to, to, from))
 	end
-	local rs = alloc(to - from + 1)
-	rs.__data = {table.unpack(self.__data, from, to)}
-	return rs
+	return array(table.unpack(self.__data, from, to))
 end
 
 --- Pads the array at the start with the given value to the given length.
