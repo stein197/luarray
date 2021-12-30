@@ -1,4 +1,3 @@
--- TODO: array(...) -> Should
 TestSlice = {
 	["test: Should always return an empty array regardless of the arguments when the array is empty"] = function ()
 		luaunit.assertEquals(array():slice().__data, {})
@@ -32,8 +31,7 @@ TestSlice = {
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1).__data, {"a", "b", "c", "d", "e", "f"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(3).__data, {"c", "d", "e", "f"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-3).__data, {"d", "e", "f"})
-		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-8).__data, {"a", "b", "c", "d", "e", "f"})
-		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0, 0).__data, {})
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0, 0).__data, {"a"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 4).__data, {"a", "b", "c", "d"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-5, 5).__data, {"b", "c", "d", "e"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 6).__data, {"a", "b", "c", "d", "e", "f"})
