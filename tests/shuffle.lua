@@ -3,32 +3,32 @@ TestShuffle = {
 		self.a = array("a", "b", "c", "d", "e", "f")
 	end;
 	
-	["test: shuffle()"] = function (self)
+	["test: Should be correct"] = function (self)
 		luaunit.assertNotEquals(self.a:shuffle(), {"a", "b", "c", "d", "e", "f"})
 	end;
 
-	["test: Shuffling an empty array return empty one"] = function ()
-		luaunit.assertEquals(array():shuffle(), {})
+	["test: Should return an empty array when shuffling an empty one"] = function ()
+		luaunit.assertEquals(array():shuffle().__data, {})
 	end;
 
-	["test: Shuffling an array with single element returns equal one"] = function ()
-		luaunit.assertEquals(array("a"):shuffle(), {"a"})
+	["test: Should return an array equal to the initial one when shuffling an array with single element"] = function ()
+		luaunit.assertEquals(array("a"):shuffle().__data, {"a"})
 	end;
 
-	["test: Shuffling does not modify the current array"] = function (self)
+	["test: Should not modify self"] = function (self)
 		self.a:shuffle()
-		luaunit.assertEquals(self.a, {"a", "b", "c", "d", "e", "f"})
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c", "d", "e", "f"})
 	end;
 
-	["test: Shuffling returns a new array"] = function (self)
-		luaunit.assertNotEquals(rawequal(self.a, self.a:shuffle()))
+	["test: Should return a new array"] = function (self)
+		luaunit.assertFalse(rawequal(self.a, self.a:shuffle()))
 	end;
 
-	["test: Shuffling returns an array with the same amount of items"] = function (self)
-		luaunit.assertEquals(self.a:shuffle():len(), 6)
+	["test: Should return an array with the same items of the initial one"] = function (self)
+		luaunit.assertItemsEquals(self.a:shuffle().__data, {"a", "b", "c", "d", "e", "f"})
 	end;
 
-	["test: Shuffling returns an array with the same items"] = function (self)
-		luaunit.assertItemsEquals(self.a:shuffle(), {"a", "b", "c", "d", "e", "f"})
+	["test: Should preserve nils when shuffling an array with nils"] = function ()
+		luaunit.assertItemsEquals(array("a", nil, "c", nil, "e", nil):shuffle().__data, {nil, nil, nil, "a", "c", "e"})
 	end;
 }

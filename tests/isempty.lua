@@ -1,4 +1,4 @@
-TestIsEmpty = {
+TestEmpty = {
 	["test: isempty(): Empty table is empty"] = function ()
 		luaunit.assertTrue(array():isempty())
 	end;

@@ -1,56 +1,134 @@
+-- TODO: There is a problem with length assertions. The length of sparse tables is undefined so the behavior of length operator should not rely on the inner length of table. Add length assertions
 Test__newindex = {
-	["test: __newindex(): Setting at numberic index"] = function ()
-		local a = array()
-		a[1] = "a"
-		luaunit.assertEquals(a[1], "a")
+	setUp = function (self)
+		self.a1 = array("a", "b", "c")
 	end;
 
-	["test: __newindex(): Setting at string index"] = function ()
-		local a = array()
-		a.a = 1
-		luaunit.assertEquals(a.a, 1)
+	["test: Should add a value to an empty array when assigning at 1"] = function ()
+		local a1 = array()
+		a1[1] = "a"
+		luaunit.assertEquals(a1.__data, {"a"})
 	end;
 
-	["test: __newindex(): Setting at complex type index"] = function ()
-		local a = array()
-		local i = {1}
-		a[i] = 1
-		luaunit.assertEquals(a[i], 1)
+	["test: Should add a value to an empty array when assigning at -1"] = function ()
+		local a1 = array()
+		a1[-1] = "a"
+		luaunit.assertEquals(a1.__data, {"a"})
 	end;
 
-	["test: __newindex(): Setting at meta index will write the value to __data field"] = function ()
-		local a = array()
-		a.__index = 1
-		luaunit.assertEquals(a.__data, {__index = 1})
+	["test: Should do nothing when assigning at 0"] = function (self)
+		self.a1[0] = "d"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c"})
 	end;
 
-	["test: __newindex(): Setting at proto index will write the value to __data field"] = function ()
-		local a = array()
-		a.len = 1
-		luaunit.assertEquals(a.__data, {len = 1})
+	["test: Should do nothing when assigning at non numeric index"] = function (self)
+		self.a1["string"] = "d"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c"})
 	end;
 
-	["test: __newindex(): Setting table value will wrap it"] = function ()
-		local a = array()
-		a.t = {}
-		luaunit.assertEquals(a.__data, {t = {}})
-		luaunit.assertTrue(getmetatable(a.t) == getmetatable(a))
-		a = array()
-		a.t = {1}
-		luaunit.assertEquals(a.__data, {t = {1}})
-		luaunit.assertTrue(getmetatable(a.t) == getmetatable(a))
+	["test: Should do nothing when assigning at index with existing method name"] = function (self)
+		self.a1["len"] = "d"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c"})
 	end;
 
-	["test: __newindex(): Setting array value will assign it"] = function ()
-		local a = array()
-		a.t = array()
-		luaunit.assertEquals(a.t.__data, {})
-		a = array()
-		a.t = {1}
-		luaunit.assertEquals(a.t.__data, {1})
+	["test: Should not override a method when assigning at index with existing method name"] = function (self)
+		self.a1["len"] = "d"
+		luaunit.assertEquals(type(self.a1.len), "function")
 	end;
 
-	["test: __newindex(): Can access values through direct __data access"] = function ()
-		luaunit.assertEquals(array({a = 1}).__data.a, 1)
+	["test: Should assign a value when assigning at large positive index"] = function (self)
+		self.a1[10] = "j"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, "j"})
+	end;
+
+	["test: Should assign a value when assigning at large negative index"] = function (self)
+		self.a1[-10] = "j"
+		luaunit.assertEquals(self.a1.__data, {"j", nil, nil, nil, nil, nil, nil, "a", "b", "c"})
+	end;
+
+	["test: Should assign a value when assigning nil at large positive index"] = function (self)
+		self.a1[10] = nil
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", nil, nil, nil, nil, nil, nil, nil})
+	end;
+
+	["test: Should assign a value when assigning nil at large negative index"] = function (self)
+		self.a1[-10] = nil
+		luaunit.assertEquals(self.a1.__data, {nil, nil, nil, nil, nil, nil, nil, "a", "b", "c"})
+	end;
+
+	["test: Should override a value when assigning at existing positive index"] = function (self)
+		self.a1[2] = "B"
+		luaunit.assertEquals(self.a1.__data, {"a", "B", "c"})
+	end;
+
+	["test: Should override a value when assigning at existing negative index"] = function (self)
+		self.a1[-2] = "B"
+		luaunit.assertEquals(self.a1.__data, {"a", "B", "c"})
+	end;
+
+	["test: Should override the first value when assigning at positive min index"] = function (self)
+		self.a1[1] = "A"
+		luaunit.assertEquals(self.a1.__data, {"A", "b", "c"})
+	end;
+
+	["test: Should override the first value when assigning at negative max index"] = function (self)
+		self.a1[-3] = "A"
+		luaunit.assertEquals(self.a1.__data, {"A", "b", "c"})
+	end;
+
+	["test: Should override the last value when assigning at positive max index"] = function (self)
+		self.a1[3] = "C"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "C"})
+	end;
+
+	["test: Should override the last value when assigning at negative min index"] = function (self)
+		self.a1[-1] = "C"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "C"})
+	end;
+
+	["test: Should add a value to the end when assigning at length + 1 index"] = function (self)
+		self.a1[4] = "d"
+		luaunit.assertEquals(self.a1.__data, {"a", "b", "c", "d"})
+	end;
+
+	["test: Should add a value to the start when assigning at -length - 1 index"] = function (self)
+		self.a1[-4] = "d"
+		luaunit.assertEquals(self.a1.__data, {"d", "a", "b", "c"})
+	end;
+
+	["test: Should set a value at the start when there is nil at that negative index"] = function ()
+		local a1 = array(nil, "b", "c")
+		a1[-3] = "a"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the middle when there is nil at that positive index"] = function ()
+		local a1 = array("a", nil, "c")
+		a1[2] = "b"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the middle when there is nil at that negative index"] = function ()
+		local a1 = array("a", nil, "c")
+		a1[-2] = "b"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the end when there is nil at that positive index"] = function ()
+		local a1 = array("a", "b", nil)
+		a1[3] = "c"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the start when there is nil at 1"] = function ()
+		local a1 = array(nil, "b", "c")
+		a1[1] = "a"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should set a value at the end when there is nil at -1"] = function ()
+		local a1 = array("a", "b", nil)
+		a1[-1] = "c"
+		luaunit.assertEquals(a1.__data, {"a", "b", "c"})
 	end;
 }

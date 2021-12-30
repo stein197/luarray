@@ -1,54 +1,55 @@
 Test__eq = {
-	["test: Empty arrays are equal"] = function ()
-		luaunit.assertTrue(array({}) == array({}))
+	["test: Should return true when comparing empty arrays"] = function ()
+		luaunit.assertTrue(array() == array())
+		luaunit.assertFalse(array() ~= array())
 	end;
 
-	["test: Plain arrays with the same entries are equal"] = function ()
-		luaunit.assertTrue(array({1}) == array({1}))
-		luaunit.assertTrue(array({1, 2, 3}) == array({1, 2, 3}))
+	["test: Should return true when comparing arrays with single value"] = function ()
+		luaunit.assertTrue(array("a") == array("a"))
+		luaunit.assertFalse(array("a") ~= array("a"))
+	end;
+	
+	["test: Should return true when comparing ordinary arrays"] = function ()
+		luaunit.assertTrue(array("a", "b", "c") == array("a", "b", "c"))
+		luaunit.assertFalse(array("a", "b", "c") ~= array("a", "b", "c"))
 	end;
 
-	["test: Arrays with mismatching lengths aren't equal"] = function ()
-		luaunit.assertFalse(array({1}) == array({1, 2, 3}))
+	["test: Should return false when comparing with primitive"] = function ()
+		luaunit.assertFalse(array() == "a")
+		luaunit.assertTrue(array() ~= "a")
 	end;
 
-	["test: Arrays with unordered entries are equal"] = function ()
-		luaunit.assertTrue(array({a = 1, b = 2, c = 3}) == array({c = 3, a = 1, b = 2}))
+	["test: Should return false when comparing an array with plain table"] = function ()
+		luaunit.assertFalse(array() == {})
+		luaunit.assertTrue(array() ~= {})
 	end;
 
-	["test: Arrays with the same values but different keys aren't equal"] = function ()
-		luaunit.assertFalse(array({a = 1, b = 2, c = 3}) == array({a = 1, b = 2, d = 3}))
-	end;
-
-	["test: Arrays with the same imdeces but different values aren't equal"] = function ()
-		luaunit.assertFalse(array({a = 1, b = 2, c = 3}) == array({a = 1, b = 2, c = 4}))
-	end;
-
-	["test: Array and the same plain table are equal"] = function ()
-		luaunit.assertTrue(array({1, 2, 3, {3, {a = 1}}}) == {1, 2, 3, {3, {a = 1}}})
-	end;
-
-	["test: Nested arrays are equal"] = function ()
-		luaunit.assertTrue(array(1, 2, {3, 4}) == array(1, 2, array(3, 4)))
-	end;
-
-	["test: Nested arrays accessed by index are equal"] = function ()
-		luaunit.assertTrue(array(1, 2, {3, 4})[3] == array(1, 2, array(3, 4))[3])
-	end;
-
-	["test: Nested arrays with mismatching lengths aren't equal"] = function ()
-		luaunit.assertFalse(array({1, 2, {3}}) == array({1, 2, {3, 4}}))
-	end;
-
-	["test: Arrays with the same object element are equal"] = function ()
+	["test: Should return false when comparing with object with the same data"] = function ()
 		local o = Object()
-		luaunit.assertTrue(array(o) == array({o}))
-		luaunit.assertTrue(array(o) == array(o))
+		o[1] = "a"
+		o[2] = "b"
+		o[3] = "c"
+		luaunit.assertFalse(array("a", "b", "c") == o)
+		luaunit.assertTrue(array("a", "b", "c") ~= o)
 	end;
 
-	["test: Arrays with the different objects as the elements aren't equal"] = function ()
-		local o1 = Object()
-		local o2 = Object()
-		luaunit.assertFalse(array(o1) == array(o2))
+	["test: Should return false when comparing arrays with same values and different order"] = function ()
+		luaunit.assertFalse(array("a", "b", "c") == array("c", "b", "a"))
+		luaunit.assertTrue(array("a", "b", "c") ~= array("c", "b", "a"))
+	end;
+
+	["test: Should return true when comparing arrays with equals nested arrays"] = function ()
+		luaunit.assertTrue(array("a", "b", "c", array("d", "e", "f")) == array("a", "b", "c", array("d", "e", "f")))
+		luaunit.assertFalse(array("a", "b", "c", array("d", "e", "f")) ~= array("a", "b", "c", array("d", "e", "f")))
+	end;
+
+	["test: Should return false when comparing arrays with mismatching nested arrays"] = function ()
+		luaunit.assertFalse(array("a", "b", "c", array("d", "e", "f")) == array("a", "b", "c", array("d")))
+		luaunit.assertTrue(array("a", "b", "c", array("d", "e", "f")) ~= array("a", "b", "c", array("d")))
+	end;
+
+	["test: Should return false when comparing arrays with mismatching lengths"] = function ()
+		luaunit.assertFalse(array("a") == array("a", "b", "c"))
+		luaunit.assertTrue(array("a") ~= array("a", "b", "c"))
 	end;
 }

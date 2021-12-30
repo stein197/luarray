@@ -1,30 +1,38 @@
 TestEvery = {
-	["test: every(): Calling on empty array returns true"] = function ()
+	["test: Should return true when testing an empty array"] = function ()
 		luaunit.assertTrue(array():every(function () return false end))
 	end;
 
-	["test: every(): Calling on array with single falsy element returns false"] = function ()
-		luaunit.assertFalse(array(1, 2, 3):every(function (v) return v <= 2 end))
+	["test: Should return false when there's a single falsy value"] = function ()
+		luaunit.assertFalse(array("a", "b", "c"):every(function (i, v) return i <= 2 end))
 	end;
 
-	["test: every(): Calling on array with all truthy elements return true"] = function ()
-		luaunit.assertTrue(array(1, 2, 3):every(function (v) return type(v) ~= "string" end))
+	["test: Should return true when all values are truthy"] = function ()
+		luaunit.assertTrue(array("a", "b", "c"):every(function (i, v) return type(v) == "string" end))
 	end;
 
-	["test: every(): Not returning from closure is considered as falsy"] = function ()
+	["test: Should return false when closure returns nothing"] = function ()
 		luaunit.assertFalse(array(true):every(function () end))
 	end;
 
-	["test: every(): Closure accepts value, key and table itself"] = function ()
-		local value, key, tbl
-		local a = array({a = 1})
-		a:every(function (v, k, t)
+	["test: Should pass index and value arguments to closure"] = function ()
+		local index, value, last
+		array("a"):every(function (i, v, l)
+			index = i
 			value = v
-			key = k
-			tbl = t
+			last = l
 		end)
-		luaunit.assertEquals(value, 1)
-		luaunit.assertEquals(key, "a")
-		luaunit.assertEquals(tbl, a)
+		luaunit.assertEquals(index, 1)
+		luaunit.assertEquals(value, "a")
+		luaunit.assertNil(last)
+	end;
+
+	["test: Should stop executing closure after finding first falsy value"] = function ()
+		local index = 0
+		array("a", "b", "c"):every(function (i, v)
+			index = index + 1
+			return v == "a"
+		end)
+		luaunit.assertEquals(index, 2)
 	end;
 }

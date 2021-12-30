@@ -1,34 +1,50 @@
 TestSome = {
-	["test: some(): Calling on empty array returns false"] = function ()
+	["test: Should return false when searching in empty array"] = function ()
 		luaunit.assertFalse(array():some(function () return true end))
 	end;
 
-	["test: some(): Calling on array with single trythy element returns true"] = function ()
-		luaunit.assertTrue(array(1, 2, 3):some(function (v) return v == 2 end))
+	["test: Should return true when searchin in an array with single truthy value"] = function ()
+		luaunit.assertTrue(array("a", "b", "c"):some(function (i, v) return v == "b" end))
 	end;
 
-	["test: some(): Calling on array with all falsy elements return false"] = function ()
-		luaunit.assertFalse(array(1, 2, 3):some(function (v) return type(v) == "string" end))
+	["test: Should return false when searching in array with all falsy values"] = function ()
+		luaunit.assertFalse(array("a", "b", "c"):some(function (i, v) return type(v) == "number" end))
 	end;
 
-	["test: some(): Calling on array with all truthy elements return true"] = function ()
-		luaunit.assertTrue(array(1, 2, 3):some(function (v) return type(v) ~= "string" end))
+	["test: Should return true when all values in an array are thuthy"] = function ()
+		luaunit.assertTrue(array("a", "b", "c"):some(function (i, v) return type(v) == "string" end))
 	end;
 
-	["test: some(): Not returning from closure is considered as falsy"] = function ()
+	["test: Should return false when closure doesn't return anything"] = function ()
 		luaunit.assertFalse(array(true):some(function () end))
 	end;
 
-	["test: some(): Closure accepts value, key and table itself"] = function ()
-		local value, key, tbl
-		local a = array({a = 1})
-		a:some(function (v, k, t)
+	["test: Should pass index and key arguments to closure"] = function ()
+		local index, value, last
+		array("a"):some(function (i, v, l)
+			index = i
 			value = v
-			key = k
-			tbl = t
+			last = l
 		end)
-		luaunit.assertEquals(value, 1)
-		luaunit.assertEquals(key, "a")
-		luaunit.assertEquals(tbl, a)
+		luaunit.assertEquals(index, 1)
+		luaunit.assertEquals(value, "a")
+		luaunit.assertNil(last)
+	end;
+
+	["test: Should return true when searching for nil and there's nil in an array"] = function ()
+		luaunit.assertTrue(array("a", nil, "c"):some(function (i, v) return v == "c" end))
+	end;
+
+	["test: Should return true when searching for an element that goes after nil"] = function ()
+		luaunit.assertTrue(array("a", nil, "c"):some(function (i, v) return v == "c" end))
+	end;
+
+	["test: Should stop executing closure after finding first truthy value"] = function ()
+		local index = 0
+		array("a", "b", "c"):some(function (i, v)
+			index = index + 1
+			return v == "b"
+		end)
+		luaunit.assertEquals(index, 2)
 	end;
 }

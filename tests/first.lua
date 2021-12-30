@@ -1,11 +1,19 @@
 TestFirst = {
-	["test: First entry of an empty array is nil"] = function ()
-		luaunit.assertNil(array():first())
+	["test: Should return -1, nil when an array is empty"] = function ()
+		local i, v = array():first()
+		luaunit.assertEquals(i, -1)
+		luaunit.assertNil(v)
 	end;
 
-	["test: Retrieving the first entry from the array"] = function ()
-		local k, v = array("a", "b", "c"):first()
-		luaunit.assertEquals(k, 1)
+	["test: Should be correct"] = function ()
+		local i, v = array("a", "b", "c"):first()
+		luaunit.assertEquals(i, 1)
 		luaunit.assertEquals(v, "a")
+	end;
+
+	["test: Should return 1, nil when the first value is nil"] = function ()
+		local i, v = array(nil, "b", "c"):first()
+		luaunit.assertEquals(i, 1)
+		luaunit.assertNil(v)
 	end;
 }

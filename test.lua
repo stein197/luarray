@@ -10,10 +10,9 @@
 	- object
 	- nil
 	- table with nil
-	When possible, functions should:
-	- not wrap tables with metatables
+	When function should return an array, make sure it really does (Should return a new array)
+	When function should (not) modify inner __data table, make sure it really does (not) (Should [not] modify self)
 ]]
--- TODO: Add test cases list
 
 array = require ""
 luaunit = require "luaunit"

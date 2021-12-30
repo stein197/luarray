@@ -12,31 +12,11 @@ Via LuaRocks:
 luarocks install luarray
 ```
 
-## Usage
-Firstly let's begin with differences between two terms used in this package - table and array. Table is an ordinary Lua table while array is a type that is returned by `array()` constructor. The usage is pretty similar to PHP's arrays as it's shown in the example below:
-```lua
-local array = require "luarray"
-array("a", "b", "c") -- Creates {"a", "b", "c"}
-```
-The only function takes varargs and wraps them up. But what if you want to wrap tables with arbitrary keys? The ONLY
-exception for that case is that if `array` takes only single argument AND it's a table, then the constructor wraps it:
-```lua
-array({
-	a = 1,
-	b = 2
-}) -- {a = 1, b = 2}
-```
-You can pass other arrays as well and you'll get what you expect. Note that in this case the result will be different from that was in the previous one:
-```lua
-array(array(1)) -- {{1}} instead of {1}
-```
-The constructor wraps only tables without metatables. So if pass some kind of OOP table instance then in won't wrap it:
-```lua
-local instance = SomeClass:new() -- Let's assume there's a "class" named SomeClass
-instance.field1 = "string"
-local a = array(1, 2, instance)
-a[3] -- Returns untouched instance object instead of wrapped as if it's a plain table
-```
+## Features
+- Negative indexing
+- Considering `nil` as a regular value
+- Methods that return a new array which contain nested arrays keep a reference to the original nested array. If you want method to return deep copy - clone them first with deep flag and then apply the method you want.
+- Has methods to work with arrays like with stacks
 
 ## API
 

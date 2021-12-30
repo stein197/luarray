@@ -1,37 +1,46 @@
 TestMap = {
-	["test: map(): Mapping an empty array returns empty one"] = function ()
-		luaunit.assertEquals(array():map(function () return 1 end), {})
+	setUp = function (self)
+		self.a = array("a", "b", "c")
+	end;
+	
+	["test: Should return an empty array when mapping an empty one"] = function ()
+		luaunit.assertEquals(array():map(function () return 1 end).__data, {})
 	end;
 
-	["test: map(): Mapping an array with single element"] = function ()
-		luaunit.assertEquals(array(2):map(function (v) return v * 2 end), {4})
+	["test: Should return correct result when mapping an array with single element"] = function ()
+		luaunit.assertEquals(array("a"):map(function (i, v) return v:upper() end).__data, {"A"})
 	end;
 
-	["test: map(): Mapping an array with multiple items"] = function ()
-		luaunit.assertEquals(array({a = 1, b = 2, c = 3}):map(function (v, k) return v * 2, k..k end), {aa = 2, bb = 4, cc = 6})
+	["test: Should return correct result when mapping an arbitrary array"] = function (self)
+		luaunit.assertEquals(self.a:map(function (i, v) return v:upper() end).__data, {"A", "B", "C"})
 	end;
 
-	["test: map(): Mapping closure takes all arguments"] = function ()
-		local value, key, tbl
-		local a = array({a = 1})
-		a:map(function (v, k, t)
+	["test: Should pass index and value arguments to the closure"] = function (self)
+		local key, value, last
+		self.a:map(function (i, v, l)
+			key = i
 			value = v
-			key = k
-			tbl = t
+			last = l
 		end)
-		luaunit.assertEquals(value, 1)
-		luaunit.assertEquals(key, "a")
-		luaunit.assertTrue(tbl == a)
+		luaunit.assertEquals(key, 3)
+		luaunit.assertEquals(value, "c")
+		luaunit.assertNil(last)
 	end;
 
-	["test: map(): Mapping returns different array"] = function ()
-		local a = array {1, 2, 3}
-		luaunit.assertNotEquals(a:map(function (v) return v * 2 end), a)
+	["test: Should return a new array array"] = function (self)
+		luaunit.assertFalse(rawequal(self.a:map(function (i, v) return i * 2 end), self.a))
 	end;
 
-	["test: map(): Mapping does not modify self"] = function ()
-		local a = array {1, 2, 3}
-		a:map(function (v) return v * 2 end)
-		luaunit.assertEquals(a, {1, 2, 3})
+	["test: Should not modify self"] = function (self)
+		self.a:map(function (i) return i * 2 end)
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should return correct result when mapping an array with nil"] = function ()
+		luaunit.assertEquals(array("a", nil, "c"):map(function (i, v) return v ~= nil and v:upper() or "nil" end).__data, {"A", "nil", "C"})
+	end;
+
+	["test: Should return correct result when mapping an array full of nils"] = function ()
+		luaunit.assertEquals(array(nil, nil, nil):map(function (i, v) return i * 2 end).__data, {2, 4, 6})
 	end;
 }
