@@ -420,6 +420,36 @@ Test__len = {
 		luaunit.assertEquals(#array(nil, nil, nil):uniq(), 1)
 		luaunit.assertEquals(array(nil, nil, nil):uniq():len(), 1)
 	end;
-	
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, reverse, slice, union, methods
+
+	-- reverse()
+	["test: Should be 0 when reversing an empty array"] = function ()
+		luaunit.assertEquals(#array():reverse(), 0)
+		luaunit.assertEquals(array():reverse():len(), 0)
+	end;
+
+	["test: Should be 1 when reversing an array with only one value"] = function ()
+		luaunit.assertEquals(#array("a"):reverse(), 1)
+		luaunit.assertEquals(array("a"):reverse():len(), 1)
+	end;
+
+	["test: Should be equal to the original array's length when reversing an array"] = function (self)
+		luaunit.assertEquals(#self.a1:reverse(), 3)
+		luaunit.assertEquals(self.a1:reverse():len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when reversing an array with nils"] = function ()
+		luaunit.assertEquals(#array("a", nil, "c"):reverse(), 3)
+		luaunit.assertEquals(array("a", nil, "c"):reverse():len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when reversing an array with nil at the start"] = function ()
+		luaunit.assertEquals(#array(nil, "b", "c"):reverse(), 3)
+		luaunit.assertEquals(array(nil, "b", "c"):reverse():len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when reversing an array with nil at the end"] = function ()
+		luaunit.assertEquals(#array("a", "b", nil):reverse(), 3)
+		luaunit.assertEquals(array("a", "b", nil):reverse():len(), 3)
+	end;
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, slice, union, methods
 }

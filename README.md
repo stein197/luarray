@@ -12,9 +12,10 @@ Via LuaRocks:
 luarocks install luarray
 ```
 
-## Feautures
+## Features
 - Negative indexing
 - Considering `nil` as a regular value
+- Methods that return a new array which contain nested arrays keep a reference to the original nested array. If you want method to return deep copy - clone them first with deep flag and then apply the method you want.
 
 ## API
 

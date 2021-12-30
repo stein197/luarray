@@ -323,13 +323,13 @@ function pt:uniq()
 	return rs
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Reverses the order of values in the array. Works correctly only with numeric keys.
 --- @return array rs Reversed array.
-function pt:reverse() -- TODO: Clone arrays or not? reverse() -> rev()?
-	return self:map(function (i, v) return isarray(self.__data[self.__len - i + 1]) and self.__data[self.__len - i + 1]:clone() or self.__data[self.__len - i + 1] end)
+function pt:reverse()
+	return self:map(function (i, v) return self.__data[self.__len - i + 1] end)
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Slices the part of the array. Works only with arrays with numeric keys.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
