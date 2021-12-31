@@ -305,6 +305,8 @@ end
 
 --- Checks if the array has specified element. Primitive types and arrays are compared by element while other reference
 --- types are compared by reference.
+--- @generic T Type of element the array contains.
+--- @param elt T Element against which to test.
 --- @return boolean rs `true` if the array has element.
 function pt:contains(elt)
 	return self:some(function (i, val) return val == elt end)
