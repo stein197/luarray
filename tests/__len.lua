@@ -525,5 +525,127 @@ Test__len = {
 		luaunit.assertEquals(#array("a", "b", nil, "e", "f"):slice(1, 3), 3)
 		luaunit.assertEquals(array("a", "b", nil, "e", "f"):slice(1, 3):len(), 3)
 	end;
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, padend, padstart, union, methods
+
+	-- padstart()
+	["test: Should be 0 when padding an empty array at the start"] = function ()
+		luaunit.assertEquals(#array():padstart(0, "a"), 0)
+		luaunit.assertEquals(array():padstart(0, "a"):len(), 0)
+	end;
+
+	["test: Should be equal to the first argument when padding an empty array at the start"] = function ()
+		luaunit.assertEquals(#array():padstart(3, "a"), 3)
+		luaunit.assertEquals(array():padstart(3, "a"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to 0 at the start"] = function ()
+		luaunit.assertEquals(#array("a"):padstart(0, "a"), 1)
+		luaunit.assertEquals(array("a"):padstart(0, "a"):len(), 1)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to its length at the start"] = function ()
+		luaunit.assertEquals(#array("a"):padstart(1, "a"), 1)
+		luaunit.assertEquals(array("a"):padstart(1, "a"):len(), 1)
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(3, "a"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(3, "a"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to negative length at the start"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(-3, "d"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(-3, "d"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to a length lesser than the array's one at the start"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(2, "d"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(2, "d"):len(), 3)
+	end;
+
+	["test: Should be correct when padding an array at the start"] = function ()
+		luaunit.assertEquals(#array("a"):padstart(3, "b"), 3)
+		luaunit.assertEquals(array("a"):padstart(3, "b"):len(), 3)
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(5, "d"), 5)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(5, "d"):len(), 5)
+	end;
+
+	["test: Should be greater than the original one's when padding an array to a length greater than array's one by 1 at the start"] = function ()
+		luaunit.assertEquals(#array("a"):padstart(2, "b"), 2)
+		luaunit.assertEquals(array("a"):padstart(2, "b"):len(), 2)
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(4, "d"), 4)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(4, "d"):len(), 4)
+	end;
+
+	["test: Should be correct when padding an array and there are nils at the start"] = function ()
+		luaunit.assertEquals(#array(nil, "b", "c"):padstart(4, "d"), 4)
+		luaunit.assertEquals(array(nil, "b", "c"):padstart(4, "d"):len(), 4)
+		luaunit.assertEquals(#array(nil, "b", "c"):padstart(6, "d"), 6)
+		luaunit.assertEquals(array(nil, "b", "c"):padstart(6, "d"):len(), 6)
+	end;
+
+	["test: Should be correct when padding an array with nils at the start"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(4, nil), 4)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(4, nil):len(), 4)
+		luaunit.assertEquals(#array("a", "b", "c"):padstart(6, nil), 6)
+		luaunit.assertEquals(array("a", "b", "c"):padstart(6, nil):len(), 6)
+	end;
+
+	-- padend()
+	["test: Should be 0 when padding an empty array at the end"] = function ()
+		luaunit.assertEquals(#array():padend(0, "a"), 0)
+		luaunit.assertEquals(array():padend(0, "a"):len(), 0)
+	end;
+
+	["test: Should be equal to the first argument when padding an empty array at the end"] = function ()
+		luaunit.assertEquals(#array():padend(3, "a"), 3)
+		luaunit.assertEquals(array():padend(3, "a"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to 0 at the end"] = function ()
+		luaunit.assertEquals(#array("a"):padend(0, "a"), 1)
+		luaunit.assertEquals(array("a"):padend(0, "a"):len(), 1)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to its length at the end"] = function ()
+		luaunit.assertEquals(#array("a"):padend(1, "a"), 1)
+		luaunit.assertEquals(array("a"):padend(1, "a"):len(), 1)
+		luaunit.assertEquals(#array("a", "b", "c"):padend(3, "a"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padend(3, "a"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to negative length at the end"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padend(-3, "d"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padend(-3, "d"):len(), 3)
+	end;
+
+	["test: Should be equal to the original array's length when padding an array to a length lesser than the array's one at the end"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padend(2, "d"), 3)
+		luaunit.assertEquals(array("a", "b", "c"):padend(2, "d"):len(), 3)
+	end;
+
+	["test: Should be correct when padding an array at the end"] = function ()
+		luaunit.assertEquals(#array("a"):padend(3, "b"), 3)
+		luaunit.assertEquals(array("a"):padend(3, "b"):len(), 3)
+		luaunit.assertEquals(#array("a", "b", "c"):padend(5, "d"), 5)
+		luaunit.assertEquals(array("a", "b", "c"):padend(5, "d"):len(), 5)
+	end;
+
+	["test: Should be greater than the original one's when padding an array to a length greater than array's one by 1 at the end"] = function ()
+		luaunit.assertEquals(#array("a"):padend(2, "b"), 2)
+		luaunit.assertEquals(array("a"):padend(2, "b"):len(), 2)
+		luaunit.assertEquals(#array("a", "b", "c"):padend(4, "d"), 4)
+		luaunit.assertEquals(array("a", "b", "c"):padend(4, "d"):len(), 4)
+	end;
+
+	["test: Should be correct when padding an array and there are nils at the end"] = function ()
+		luaunit.assertEquals(#array("a", "b", nil):padend(4, "d"), 4)
+		luaunit.assertEquals(array("a", "b", nil):padend(4, "d"):len(), 4)
+		luaunit.assertEquals(#array("a", "b", nil):padend(6, "d"), 6)
+		luaunit.assertEquals(array("a", "b", nil):padend(6, "d"):len(), 6)
+	end;
+
+	["test: Should be correct when padding an array with nils at the end"] = function ()
+		luaunit.assertEquals(#array("a", "b", "c"):padend(4, nil), 4)
+		luaunit.assertEquals(array("a", "b", "c"):padend(4, nil):len(), 4)
+		luaunit.assertEquals(#array("a", "b", "c"):padend(6, nil), 6)
+		luaunit.assertEquals(array("a", "b", "c"):padend(6, nil):len(), 6)
+	end;
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, union, methods
 }

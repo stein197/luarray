@@ -16,6 +16,7 @@
 	- "Should return a new array" when the function should return a new instance of array
 	- "Should [not] modify self" when the function should (not) modify inner __data table
 	- "Should return correct result" when the function is tested against ordinary cases
+	- "Should return an array equal to the original one when ..." when the function should return it with specified arguments
 ]]
 
 array = require ""

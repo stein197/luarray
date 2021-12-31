@@ -48,10 +48,6 @@ local function normalizeidx(len, i)
 	return i ~= 0 and type(i) == "number" and (i < 0 and len + i + 1 or i) or nil
 end
 
-local function isplaintable(t)
-	return type(t) == "table" and not getmetatable(t)
-end
-
 local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
 end
@@ -77,22 +73,21 @@ local function indexof(self, i, elt, isstart)
 end
 
 local function pad(self, len, elt, isstart)
-	local rs, oldlen = self:clone(), #self
-	local diff = len - oldlen
+	local rs = self:clone()
+	local diff = len - self.__len
 	if diff <= 0 then
 		return rs
 	end
 	-- TODO: Use internal shift function
 	if isstart then
-		for i = oldlen, 1, -1 do
-			rs.__data[i + diff] = rs.__data[i]
+		for i = self.__len, 1, -1 do
+			rs.__data[i + diff], rs.__data[i] = rs.__data[i], nil
 		end
 	end
-	local from = isstart and 1 or #self + 1
-	local to = isstart and diff or len
-	for i = from, to do
-		rs.__data[i] = isplaintable(elt) and array(elt) or elt
+	for i = isstart and 1 or #self + 1, isstart and diff or len do
+		rs.__data[i] = elt
 	end
+	rs.__len = len
 	return rs
 end
 
@@ -356,23 +351,25 @@ function pt:slice(from, to)
 	return array(table.unpack(self.__data, normfrom, normto))
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
---- Pads the array at the start with the given element to the given length.
+--- Pads the start of the array with the given element to the specified length.
+--- @generic T Type of element the array contains.
 --- @param len number To which length pad the array.
---- @param elt any What item to add.
+--- @param elt T What item to add.
 --- @return array rs Padded array.
 function pt:padstart(len, elt)
 	return pad(self, len, elt, true)
 end
 
---- Pads the array at the end with the given element to the given length.
+--- Pads the end of the array with the given element to the specified length.
+--- @generic T Type of element the array contains.
 --- @param len number To which length pad the array.
---- @param elt any What item to add.
+--- @param elt T What item to add.
 --- @return array rs Padded array.
 function pt:padend(len, elt)
 	return pad(self, len, elt, false)
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
