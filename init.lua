@@ -374,16 +374,16 @@ function pt:isempty()
 	return self.__len == 0
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Converts the array into ordinary Lua table.
+--- @param deep boolean Set to true for converting nested arrays into table too. `false` by default.
 --- @return table ts Table.
 function pt:totable(deep)
-	deep = ternary(deep == nil, false, deep)
 	local t = {}
 	self:each(function (i, elt) t[i] = deep and isarray(elt) and elt:totable() or elt end)
 	return t
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Returns the first index at which the given element can be found.
 --- @generic V

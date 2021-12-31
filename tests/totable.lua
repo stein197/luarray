@@ -1,30 +1,66 @@
 TestToTable = {
-	["test: totable(): Converting empty array returns empty table"] = function ()
+	["test: Should return an empty table when the array is empty"] = function ()
 		luaunit.assertEquals(array():totable(), {})
 	end;
 
-	["test: totable(): Converting nested arrays"] = function ()
-		luaunit.assertEquals(array(array(1), {2}), {{1}, {2}})
+	["test: Should convert nested tables when the argument is set to true"] = function ()
+		local c = array("c")
+		local a = array("a", "b", c)
+		luaunit.assertEquals(a:totable(true), {"a", "b", {"c"}})
+		luaunit.assertFalse(rawequal(a:totable(true)[3], c))
 	end;
 
-	["test: totable(): Converting does not destructures inner tables with different metatables"] = function ()
+	["test: Should not convert nested tables when the argument is set to false"] = function ()
+		local c = array("c")
+		local a = array("a", "b", c)
+		luaunit.assertEquals(a:totable(false), {"a", "b", c})
+		luaunit.assertTrue(rawequal(a:totable(false)[3], c))
+	end;
+
+	["test: Should not convert nested tables when the argument is not provided"] = function ()
+		local c = array("c")
+		local a = array("a", "b", c)
+		luaunit.assertEquals(a:totable(), {"a", "b", c})
+		luaunit.assertTrue(rawequal(a:totable()[3], c))
+	end;
+
+	["test: Should not convert objects when the argument is set to true"] = function ()
 		local o = Object()
-		local rs = array(1, 2, o):totable()
-		luaunit.assertEquals(rs, {1, 2, o})
+		local rs = array("a", "b", o):totable(true)
+		luaunit.assertEquals(rs, {"a", "b", o})
 		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Object()))
-		luaunit.assertEquals(rs[3]:method(), "string")
 	end;
 
-	["test: totable(): Converting to table and back to an array returns the initial array"] = function ()
-		local a = {a = 1, b = 2, c = {d = 4}}
-		luaunit.assertEquals(array(array(a):totable()), a)
+	["test: Should not convert objects when the argument is set to false"] = function ()
+		local o = Object()
+		local rs = array("a", "b", o):totable(false)
+		luaunit.assertEquals(rs, {"a", "b", o})
+		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Object()))
 	end;
 
-	["test: totable(): Returned element is a plain table"] = function ()
+	["test: Should not convert objects when the argument is not provided"] = function ()
+		local o = Object()
+		local rs = array("a", "b", o):totable()
+		luaunit.assertEquals(rs, {"a", "b", o})
+		luaunit.assertTrue(getmetatable(rs[3]) == getmetatable(Object()))
+	end;
+
+	["test: Should return an array equal to the original one when converting to table and back to array"] = function ()
+		local a = array("a", "b", "c")
+		luaunit.assertTrue(array(table.unpack(a:totable())) == a)
+	end;
+
+	["test: Should return a plain table"] = function ()
 		luaunit.assertNil(getmetatable(array():totable()))
 	end;
 
-	["test: totable()"] = function ()
-		luaunit.assertEquals(array(1, 2, {3, {d = 4}}):totable(), {1, 2, {3, {d = 4}}})
+	["test: Should return correct result when there are nils"] = function ()
+		luaunit.assertEquals(array("a", nil, "c"):totable(), {"a", nil, "c"})
+	end;
+
+	["test: Should not modify self"] = function ()
+		local a = array("a", "b", "c")
+		a:totable()
+		luaunit.assertEquals(a.__data, {"a", "b", "c"})
 	end;
 }
