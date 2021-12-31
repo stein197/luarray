@@ -384,7 +384,7 @@ end
 
 --- Returns the first index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i number At which index to start searching.
+--- @param i? number At which index to start searching. 1 by default
 --- @param elt T Value to find.
 --- @return number i First index at which the element found, otherwise -1.
 function pt:firstindexof(elt, i)
@@ -393,7 +393,7 @@ end
 
 --- Returns the last index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i number At which index to start searching.
+--- @param i? number At which index to start searching. #self by default
 --- @param elt T Value to find.
 --- @return number i Last index at which the element found, otherwise -1.
 function pt:lastindexof(elt, i)
@@ -444,11 +444,13 @@ function pt:delend()
 	return self:delat(self.__len)
 end
 
+function pt:addbefore(elt)
+end -- TODO: Use internal shift/insertat function
+function pt:addafter(elt) end -- TODO: Use internal shift/insertat function
+
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
 -- function mt:__pairs() end -- TODO
-function pt:addbefore(elt) end -- TODO: Use internal shift/insertat function
-function pt:addafter(elt) end -- TODO: Use internal shift/insertat function
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:union(f) end -- TODO
