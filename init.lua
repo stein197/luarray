@@ -33,8 +33,7 @@ local function isarray(t)
 end
 
 local function shift(self, offset)
-	-- for i = self.__len, 1, -1 do
-	for i = offset < 0 and -offset + 1 or self.__len, offset < 0 and self.__len or 1, offset < 0 and 1 or -1 do
+	for i = offset < 0 and -offset + 1 or self.__len, offset < 0 and self.__len + 1 or 1, offset < 0 and 1 or -1 do
 		self.__data[i + offset], self.__data[i] = self.__data[i], nil
 	end
 	self.__len = self.__len + offset
