@@ -7,7 +7,7 @@
 	- object
 	- nil
 	Testing methods naming convention:
-	- Basic syntax for method name is: "Should[n't] <expectation> [when <condition>]" 
+	- Basic syntax for method name is: "Should[n't] <expectation> [after <action>] [when <condition>]" 
 	- Shorthand negation is preferable (not "does not" but "doesn't")
 	Common names are:
 	- Should <expectation> when the array is empty

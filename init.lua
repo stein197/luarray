@@ -52,7 +52,11 @@ local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
 end
 
-local function shift(self, offset, i, isleft)
+local function shift(self, offset)
+	for i = self.__len, 1, -1 do
+		self.__data[i + offset], self.__data[i] = self.__data[i], nil
+	end
+	self.__len = self.__len + offset
 end
 
 local function reduce(self, f, init, isstart)
@@ -78,11 +82,8 @@ local function pad(self, len, elt, isstart)
 	if diff <= 0 then
 		return rs
 	end
-	-- TODO: Use internal shift function
 	if isstart then
-		for i = self.__len, 1, -1 do
-			rs.__data[i + diff], rs.__data[i] = rs.__data[i], nil
-		end
+		shift(rs, diff)
 	end
 	for i = isstart and 1 or #self + 1, isstart and diff or len do
 		rs.__data[i] = elt
@@ -401,6 +402,22 @@ function pt:lastindexof(elt, i)
 	return indexof(self, elt, i, false)
 end
 
+--- Adds an element to the start of the array shifting all the elements to the end.
+--- @generic T Type of elements the array contains
+--- @param elt T Element to add.
+function pt:addstart(elt)
+	shift(self, 1)
+	self.__data[1] = elt
+end
+
+--- Adds an element to the end of the array.
+--- @generic T Type of elements the array contains.
+--- @param elt T Element to add.
+function pt:addend(elt)
+	self.__len = self.__len + 1
+	self.__data[self.__len] = elt
+end
+
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 function mt:__band() end -- TODO: Intersection
@@ -408,8 +425,6 @@ function mt:__bor() end -- TODO: Union
 function mt:__call() end -- TODO: for elt in array
 function pt:addbefore(elt) end -- TODO: Use internal shift function
 function pt:addafter(elt) end -- TODO: Use internal shift function
-function pt:addstart(elt) end -- TODO: Use internal shift function
-function pt:addend(elt) end -- TODO
 function pt:delat(i) end -- TODO: Use internal shift function
 function pt:delstart(elt) end -- TODO: Use internal shift function
 function pt:delend(elt) end -- TODO

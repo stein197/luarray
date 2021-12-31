@@ -647,5 +647,64 @@ Test__len = {
 		luaunit.assertEquals(#array("a", "b", "c"):padend(6, nil), 6)
 		luaunit.assertEquals(array("a", "b", "c"):padend(6, nil):len(), 6)
 	end;
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, addend, addstart, delat, delend, delstart, diff, intersect, union, methods
+
+	-- addstart()
+	["test: Should be 1 after adding an element to the start of an empty array"] = function ()
+		local a = array()
+		a:addstart("a")
+		luaunit.assertEquals(#a, 1)
+		luaunit.assertEquals(a:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding an element to the start"] = function ()
+		local a = array("a", "b", "c")
+		a:addstart("d")
+		luaunit.assertEquals(#a, 4)
+		luaunit.assertEquals(a:len(), 4)
+	end;
+
+	["test: Should be 1 after adding nil to the start of empty array"] = function ()
+		local a = array()
+		a:addstart(nil)
+		luaunit.assertEquals(#a, 1)
+		luaunit.assertEquals(a:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding nil to the start"] = function ()
+		local a = array("a", "b", "c")
+		a:addstart(nil)
+		luaunit.assertEquals(#a, 4)
+		luaunit.assertEquals(a:len(), 4)
+	end;
+
+	-- addend()
+	["test: Should be 1 after adding an element to the end of an empty array"] = function ()
+		local a = array()
+		a:addend("a")
+		luaunit.assertEquals(#a, 1)
+		luaunit.assertEquals(a:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding an element to the end"] = function ()
+		local a = array("a", "b", "c")
+		a:addend("d")
+		luaunit.assertEquals(#a, 4)
+		luaunit.assertEquals(a:len(), 4)
+	end;
+
+	["test: Should be 1 after adding nil to the end of empty array"] = function ()
+		local a = array()
+		a:addend(nil)
+		luaunit.assertEquals(#a, 1)
+		luaunit.assertEquals(a:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding nil to the end"] = function ()
+		local a = array("a", "b", "c")
+		a:addend(nil)
+		luaunit.assertEquals(#a, 4)
+		luaunit.assertEquals(a:len(), 4)
+	end;
+
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, delat, delend, delstart, diff, intersect, union, methods
 }
