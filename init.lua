@@ -422,7 +422,7 @@ end
 
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
-function mt:__pairs() end -- TODO
+-- function mt:__pairs() end -- TODO
 function pt:addbefore(elt) end -- TODO: Use internal shift function
 function pt:addafter(elt) end -- TODO: Use internal shift function
 function pt:delat(i) end -- TODO: Use internal shift function
