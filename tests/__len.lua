@@ -1,4 +1,3 @@
--- TODO: Add test case for each tested method that modifies an array
 Test__len = {
 	setUp = function (self)
 		self.a1 = array("a", "b", "c")

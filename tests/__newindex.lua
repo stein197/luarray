@@ -1,4 +1,3 @@
--- TODO: There is a problem with length assertions. The length of sparse tables is undefined so the behavior of length operator should not rely on the inner length of table. Add length assertions
 Test__newindex = {
 	setUp = function (self)
 		self.a1 = array("a", "b", "c")
