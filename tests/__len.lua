@@ -738,8 +738,8 @@ Test__len = {
 	
 	["test: Should not change after deleting an element with 0"] = function (self)
 		self.a3:delat(0)
-		luaunit.assertEquals(#self.a, 6)
-		luaunit.assertEquals(self.a:len(), 6)
+		luaunit.assertEquals(#self.a3, 6)
+		luaunit.assertEquals(self.a3:len(), 6)
 	end;
 	
 	["test: Should decrease by 1 after deleting an element with 1"] = function (self)
