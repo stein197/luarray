@@ -17,12 +17,16 @@ TestSlice = {
 		luaunit.assertEquals(array("a"):slice(-1, 1).__data, {"a"})
 	end;
 
-	["test: Should always raise an error when the arguments are out of bounds"] = function ()
-		luaunit.assertErrorMsgContains("Cannot slice the array from -2 () to 1 () index: () is lesser than ()", function () array("a"):slice(-2) end)
-		luaunit.assertErrorMsgContains("Cannot slice the array from 2 () to 1 () index: () is lesser than ()", function () array("a"):slice(2) end)
-		luaunit.assertErrorMsgContains("Cannot slice the array from 2 () to -2 () index: () is lesser than ()", function () array("a"):slice(2, -2) end)
-		luaunit.assertErrorMsgContains("Cannot slice the array from 8 () to 6 () index: () is lesser than ()", function () array("a", "b", "c", "d", "e", "f"):slice(8) end)
-		luaunit.assertErrorMsgContains("Cannot slice the array from 5 () to 3 () index: () is lesser than ()", function () array("a", "b", "c", "d", "e", "f"):slice(5, 3) end)
+	["test: Should return aither entire array or empty one when the arguments are out of bounds"] = function ()
+		luaunit.assertEquals(array("a"):slice(-2).__data, {"a"})
+		luaunit.assertEquals(array("a"):slice(2).__data, {})
+		luaunit.assertEquals(array("a"):slice(2, -2).__data, {})
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(8).__data, {})
+	end;
+
+	["test: Should raise an error when \"to\" argument is lesser than \"from\""] = function ()
+		luaunit.assertErrorMsgContains("Cannot slice the array from 5 (5) to 3 (3) index: 3 is lesser than 5", function () array("a", "b", "c", "d", "e", "f"):slice(5, 3) end)
+		luaunit.assertErrorMsgContains("Cannot slice the array from -2 (5) to 3 (3) index: 3 is lesser than 5", function () array("a", "b", "c", "d", "e", "f"):slice(-2, 3) end)
 	end;
 
 	["test: Should return correct result"] = function ()
@@ -31,7 +35,7 @@ TestSlice = {
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1).__data, {"a", "b", "c", "d", "e", "f"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(3).__data, {"c", "d", "e", "f"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-3).__data, {"d", "e", "f"})
-		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0, 0).__data, {"a"})
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(0, 0).__data, {"a", "b", "c", "d", "e", "f"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 4).__data, {"a", "b", "c", "d"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(-5, 5).__data, {"b", "c", "d", "e"})
 		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):slice(1, 6).__data, {"a", "b", "c", "d", "e", "f"})
@@ -63,8 +67,8 @@ TestSlice = {
 		luaunit.assertEquals(array("a", "b", "c"):slice(0, 2).__data, {"a", "b"})
 	end;
 
-	["test: Should consider 0 as 1 when passing 0 as the second argument"] = function ()
-		luaunit.assertEquals(array("a", "b", "c"):slice(0, 0).__data, {"a"})
+	["test: Should consider 0 as max when passing 0 as the second argument"] = function ()
+		luaunit.assertEquals(array("a", "b", "c"):slice(0, 0).__data, {"a", "b", "c"})
 	end;
 
 	["test: Should not modify self"] = function ()

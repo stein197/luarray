@@ -32,11 +32,6 @@ local function array(...)
 	return setmetatable({__data = {...}, __len = select("#", ...)}, mt)
 end
 
---- @generic T
---- @param cond boolean
---- @param iftrue T
---- @param iffalse T
---- @return T rs
 local function ternary(cond, iftrue, iffalse)
 	if cond then
 		return iftrue
@@ -59,6 +54,9 @@ end
 
 local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
+end
+
+local function shift(self, offset, i, isleft)
 end
 
 local function reduce(self, f, init, isstart)
@@ -84,6 +82,7 @@ local function pad(self, len, elt, isstart)
 	if diff <= 0 then
 		return rs
 	end
+	-- TODO: Use internal shift function
 	if isstart then
 		for i = oldlen, 1, -1 do
 			rs.__data[i + diff] = rs.__data[i]
@@ -120,6 +119,7 @@ function mt:__newindex(i, elt)
 		local offset = -i + 1
 		i = 1
 		self.__len = oldlen + offset
+		-- TODO: Use internal shift function
 		for j = oldlen, 1, -1 do
 			self.__data[j + offset], self.__data[j] = self.__data[j], nil
 		end
@@ -329,19 +329,29 @@ function pt:reverse()
 	return self:map(function (i, elt) return self.__data[self.__len - i + 1] end)
 end
 
---- Slices the part of the array.
+--- Slices the part of the array. Raises an error if argument `to` is less than `from`.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
----                    relative to the end of the array.
+---                    relative to the end of the array. 0 is considered as 1.
 --- @param to number End index of the sliced array. If negative index is supplied then the real index is calculated
----                    relative to the end of the array.
+---                      relative to the end of the array. 0 is considered as #self.
 --- @return array rs Slice of the array.
 function pt:slice(from, to)
-	from = from == 0 and 1 or from == nil and 1 or from < 0 and self.__len + from + 1 or from
-	to = to == 0 and 1 or to == nil and self.__len or to < 0 and self.__len + to + 1 or to
-	if to < from then
-		error(string.format("Cannot slice the array from %d to %d index: %d is lesser than %d", from, to, to, from))
+	if self.__len == 0 then
+		return array()
 	end
-	return array(table.unpack(self.__data, from, to))
+	from = (from == nil or from == 0) and 1 or from
+	to = (to == nil or to == 0) and self.__len or to
+	local normfrom = normalizeidx(self.__len, from)
+	local normto = normalizeidx(self.__len, to)
+	normfrom = ternary(normfrom <= 0, 1, ternary(normfrom > self.__len, self.__len + 1, normfrom))
+	normto = ternary(normto <= 0, 1, ternary(normto > self.__len, self.__len, normto))
+	if normfrom > self.__len then
+		return array()
+	end
+	if normto < normfrom then
+		error(string.format("Cannot slice the array from %d (%d) to %d (%d) index: %d is lesser than %d", from, normfrom, to, normto, normto, normfrom))
+	end
+	return array(table.unpack(self.__data, normfrom, normto))
 end
 
 -- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
@@ -398,12 +408,12 @@ end
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
 function mt:__call() end -- TODO: for elt in array
-function pt:addbefore(elt) end -- TODO
-function pt:addafter(elt) end -- TODO
-function pt:addstart(elt) end -- TODO
+function pt:addbefore(elt) end -- TODO: Use internal shift function
+function pt:addafter(elt) end -- TODO: Use internal shift function
+function pt:addstart(elt) end -- TODO: Use internal shift function
 function pt:addend(elt) end -- TODO
-function pt:delat(i) end -- TODO
-function pt:delstart(elt) end -- TODO
+function pt:delat(i) end -- TODO: Use internal shift function
+function pt:delstart(elt) end -- TODO: Use internal shift function
 function pt:delend(elt) end -- TODO
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
