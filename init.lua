@@ -369,13 +369,13 @@ function pt:padend(len, elt)
 	return pad(self, len, elt, false)
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Checks if the array is empty.
 --- @return boolean rs `true` if the array contains no elements.
 function pt:isempty()
 	return self.__len == 0
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 --- Converts the array into ordinary Lua table.
 --- @return table ts Table.
