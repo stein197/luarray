@@ -333,9 +333,9 @@ end
 
 --- Slices the part of the array. Raises an error if argument `to` is less than `from`.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
----                    relative to the end of the array. 0 is considered as 1.
+---                    relative to the end of the array. 0 is considered as 1. 1 by default.
 --- @param to number End index of the sliced array. If negative index is supplied then the real index is calculated
----                      relative to the end of the array. 0 is considered as #self.
+---                      relative to the end of the array. 0 is considered as #self. #self by default.
 --- @return array rs Slice of the array.
 function pt:slice(from, to)
 	if self.__len == 0 then
