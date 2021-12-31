@@ -706,5 +706,177 @@ Test__len = {
 		luaunit.assertEquals(a:len(), 4)
 	end;
 
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, delat, delend, delstart, diff, intersect, union, methods
+	-- delat()
+	["test: Should be 0 when deleting an element from an empty array"] = function ()
+		local a = array()
+		a:delat(1)
+		a:delat(-1)
+		a:delat(2)
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+	
+	["test: Should be 0 after deleting the only element"] = function ()
+		local a = array("a")
+		a:delat(1)
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+	
+	["test: Should be 0 after deleting the only element with -1"] = function ()
+		local a = array("a")
+		a:delat(-1)
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+	
+	["test: Should not change after deleting an element with out of bounds index"] = function (self)
+		self.a3:delat(10)
+		luaunit.assertEquals(#self.a3, 6)
+		luaunit.assertEquals(self.a3:len(), 6)
+	end;
+	
+	["test: Should not change after deleting an element with 0"] = function (self)
+		self.a3:delat(0)
+		luaunit.assertEquals(#self.a, 6)
+		luaunit.assertEquals(self.a:len(), 6)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element with 1"] = function (self)
+		self.a3:delat(1)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element with min negative index"] = function (self)
+		self.a3:delat(-6)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by 1 after deleting nil with 1"] = function ()
+		local a = array(nil, "b", "c")
+		a:delat(1)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+	
+	["test: Should decrease by 1 after deleting nil with min negative index"] = function ()
+		local a = array(nil, "b", "c")
+		a:delat(-3)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element with #self"] = function (self)
+		self.a3:delat(6)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element with -1"] = function (self)
+		self.a3:delat(-1)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by 1 after deleting nil with #self"] = function ()
+		local a = array("a", "b", nil)
+		a:delat(3)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+	
+	["test: Should decrease by 1 after deleting nil with -1"] = function ()
+		local a = array("a", "b", nil)
+		a:delat(-1)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element"] = function (self)
+		self.a3:delat(3)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by 1 after deleting an element with negative index"] = function (self)
+		self.a3:delat(-3)
+		luaunit.assertEquals(#self.a3, 5)
+		luaunit.assertEquals(self.a3:len(), 5)
+	end;
+	
+	["test: Should decrease by after deleting nil"] = function ()
+		local a = array("a", nil, "c")
+		a:delat(2)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+	
+	["test: Should decrease by after deleting nil with negative index"] = function ()
+		local a = array("a", nil, "c")
+		a:delat(-2)
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+
+	-- delstart()
+	["test: Should be 0 after deleting the first element from an empty array"] = function ()
+		local a = array()
+		a:delstart()
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should be 0 after deleting the only first element"] = function ()
+		local a = array("a")
+		a:delstart()
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should decrease by 1 after deleting the first element"] = function ()
+		local a = array("a", "b", "c")
+		a:delstart()
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+
+	["test: Should decrease by 1 after deleting the first nil"] = function ()
+		local a = array(nil, "b", "c")
+		a:delstart()
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+
+	-- delend()
+	["test: Should be 0 after deleting the last element from an empty array"] = function ()
+		local a = array()
+		a:delend()
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should be 0 after deleting the only last element"] = function ()
+		local a = array("a")
+		a:delend()
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should decrease by 1 after deleting the last element"] = function ()
+		local a = array("a", "b", "c")
+		a:delend()
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+
+	["test: Should decrease by 1 after deleting the last nil"] = function ()
+		local a = array("a", "b", nil)
+		a:delend()
+		luaunit.assertEquals(#a, 2)
+		luaunit.assertEquals(a:len(), 2)
+	end;
+
+	-- TODO: Add test cases for __band, __bor, addafter, addbefore, diff, intersect, union, methods
 }

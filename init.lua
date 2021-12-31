@@ -1,23 +1,3 @@
---[[
-	Closures that accept key and element should accept them in that order only
-	Naming conventions:
-	- k: key (for ordinary tables)
-	- i: index
-	- elt: element
-	- f: function
-	- t: table
-	- o: object
-	- a: array
-	- s: string
-	- n: number
-	- rs: result
-	- len: length
-]]
--- TODO: Annotate types to help IDE
--- TODO: Restrict array keys to numbers only
--- TODO: Make direct call to clone() deep, indirect calls inside methods make shallow
--- TODO: Add deep flag to totable() function
--- TODO: Make generic docblocks
 local mt = {}
 
 --- @class array
@@ -53,10 +33,29 @@ local function isarray(t)
 end
 
 local function shift(self, offset)
-	for i = self.__len, 1, -1 do
+	-- for i = self.__len, 1, -1 do
+	for i = offset < 0 and -offset + 1 or self.__len, offset < 0 and self.__len or 1, offset < 0 and 1 or -1 do
 		self.__data[i + offset], self.__data[i] = self.__data[i], nil
 	end
 	self.__len = self.__len + offset
+end
+
+local function collapseat(self, i)
+	i = normalizeidx(self.__len, i)
+	if i == nil or i < 0 then
+		return
+	elseif i == 1 then
+		shift(self, -1)
+	else
+		-- if i < 0
+		if i ~= self.__len then
+			for j = i, self.__len do
+				self.__data[j] = self.__data[j + 1]
+			end
+		end
+		self.__data[self.__len] = nil
+		self.__len = self.__len - 1
+	end
 end
 
 local function reduce(self, f, init, isstart)
@@ -115,7 +114,7 @@ function mt:__newindex(i, elt)
 		local offset = -i + 1
 		i = 1
 		self.__len = oldlen + offset
-		-- TODO: Use internal shift function
+		-- TODO: Use collapse function
 		for j = oldlen, 1, -1 do
 			self.__data[j + offset], self.__data[j] = self.__data[j], nil
 		end
@@ -418,16 +417,39 @@ function pt:addend(elt)
 	self.__data[self.__len] = elt
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
+--- Deletes an element at the specified index.
+--- @generic T Type of elements the array contains.
+--- @param i number Index at which an element will be deleted. Can be negative.
+--- @return T rs Deleted element.
+function pt:delat(i)
+	if self.__len == 0 then
+		return
+	end
+	i = normalizeidx(self.__len, i)
+	local elt = self.__data[i]
+	collapseat(self, i)
+	return elt
+end
+
+--- Deletes an element from the start.
+--- @generic T Type of elements the array contains.
+--- @return T rs Deleted element.
+function pt:delstart()
+	return self:delat(1)
+end
+
+--- Deletes an element from the end.
+--- @generic T Type of elements the array contains.
+--- @return T rs Deleted element.
+function pt:delend()
+	return self:delat(self.__len)
+end
 
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
 -- function mt:__pairs() end -- TODO
-function pt:addbefore(elt) end -- TODO: Use internal shift function
-function pt:addafter(elt) end -- TODO: Use internal shift function
-function pt:delat(i) end -- TODO: Use internal shift function
-function pt:delstart(elt) end -- TODO: Use internal shift function
-function pt:delend(elt) end -- TODO
+function pt:addbefore(elt) end -- TODO: Use internal shift/insertat function
+function pt:addafter(elt) end -- TODO: Use internal shift/insertat function
 function pt:diff(f) end -- TODO
 function pt:intersect(f) end -- TODO
 function pt:union(f) end -- TODO
