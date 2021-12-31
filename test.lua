@@ -1,22 +1,21 @@
---[[ 
+--[[
 	Functions should at least be tested against:
 	- empty array
 	- array with single item
 	- array with multiple items
-	- plain table
-	- table with non-numeric keys
-	- primitive
 	- array
 	- object
 	- nil
-	- table with nil
 	Testing methods naming convention:
-	- "Should ... when the array is empty" when the function is tested against empty arrays
-	- "Should ... when the array has only one element" when the function is tested against arrays with single element
-	- "Should return a new array" when the function should return a new instance of array
-	- "Should [not] modify self" when the function should (not) modify inner __data table
-	- "Should return correct result" when the function is tested against ordinary cases
-	- "Should return an array equal to the original one when ..." when the function should return it with specified arguments
+	- Basic syntax for method name is: "Should[n't] <expectation> [when <condition>]" 
+	- Shorthand negation is preferable (not "does not" but "doesn't")
+	Common names are:
+	- Should <expectation> when the array is empty
+	- Should <expectation> when the array has only one element [and <condition>]
+	- Should return a new array
+	- Shouldn't modify self
+	- Should return correct result [when <condition>]
+	- Should return an array equal to the original one when <condition>
 ]]
 
 array = require ""

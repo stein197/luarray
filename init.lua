@@ -63,8 +63,8 @@ local function reduce(self, f, init, isstart)
 	return rs
 end
 
-local function indexof(self, i, elt, isstart)
-	for j = i and i or (isstart and 1 or self.__len), isstart and self.__len or 1, isstart and 1 or -1 do
+local function indexof(self, elt, i, isstart)
+	for j = (i == nil or i == 0) and (isstart and 1 or self.__len) or normalizeidx(self.__len, i), isstart and self.__len or 1, isstart and 1 or -1 do
 		if elt == self[j] then
 			return j
 		end
@@ -383,25 +383,25 @@ function pt:totable(deep)
 	return t
 end
 
--- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
-
 --- Returns the first index at which the given element can be found.
---- @generic V
---- @param elt V Value to find.
+--- @generic T Type of elements the array contains.
 --- @param i number At which index to start searching.
+--- @param elt T Value to find.
 --- @return number i First index at which the element found, otherwise -1.
-function pt:firstindexof(i, elt)
-	return indexof(self, i, elt, true)
+function pt:firstindexof(elt, i)
+	return indexof(self, elt, i, true)
 end
 
 --- Returns the last index at which the given element can be found.
---- @generic V
---- @param elt V Value to find.
+--- @generic T Type of elements the array contains.
 --- @param i number At which index to start searching.
+--- @param elt T Value to find.
 --- @return number i Last index at which the element found, otherwise -1.
-function pt:lastindexof(i, elt)
-	return indexof(self, i, elt, false)
+function pt:lastindexof(elt, i)
+	return indexof(self, elt, i, false)
 end
+
+-- TODO: BOUNDARY BETWEEN NEW AND OLD IMPLEMENTATION --
 
 function mt:__band() end -- TODO: Intersection
 function mt:__bor() end -- TODO: Union
