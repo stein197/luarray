@@ -42,7 +42,7 @@ end
 
 local function collapseat(self, i)
 	i = normalizeidx(self.__len, i)
-	if i == nil or i < 0 then
+	if i == nil or i < 0 or self.__len < i then
 		return
 	elseif i == 1 then
 		shift(self, -1)
