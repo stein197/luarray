@@ -229,7 +229,6 @@ end
 ---                     methods that use cloning method performs a shallow one.
 --- @return array rs Cloned array.
 function pt:clone(deep)
-	deep = ternary(deep == nil, false, deep)
 	return self:map(function (i, elt) return deep and isarray(elt) and elt:clone() or elt end)
 end
 
