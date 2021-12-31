@@ -420,7 +420,7 @@ end
 --- @generic T Type of elements the array contains.
 --- @param i number Index at which an element will be deleted. Can be negative.
 --- @return T rs Deleted element.
-function pt:delat(i)
+function pt:del(i)
 	if self.__len == 0 then
 		return
 	end
@@ -434,14 +434,14 @@ end
 --- @generic T Type of elements the array contains.
 --- @return T rs Deleted element.
 function pt:delstart()
-	return self:delat(1)
+	return self:del(1)
 end
 
 --- Deletes an element from the end.
 --- @generic T Type of elements the array contains.
 --- @return T rs Deleted element.
 function pt:delend()
-	return self:delat(self.__len)
+	return self:del(self.__len)
 end
 
 function pt:addbefore(elt)
