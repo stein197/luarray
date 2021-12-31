@@ -24,7 +24,7 @@ TestDelEnd = {
 	end;
 
 	["test: Should return the last element"] = function ()
-		luaunit.assertEquals(array("a", "b", "c"):delend(), "a")
+		luaunit.assertEquals(array("a", "b", "c"):delend(), "c")
 	end;
 
 	["test: Should return nil when the last element is nil"] = function ()
