@@ -174,7 +174,7 @@ end
 function mt:__add(a)
 	checkop(a, "unite")
 	local rs = self:clone()
-	a:each(function (i, elt) return not self:contains(elt) and rs:addend(elt) end)
+	a:each(function (i, elt) return not rs:contains(elt) and rs:addend(elt) end)
 	return rs
 end
 

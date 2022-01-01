@@ -913,10 +913,18 @@ Test__len = {
 		luaunit.assertEquals(array("d", "e", "f"):intersect(array("a", "b", "c")):len(), 0)
 	end;
 
-	["test: Should be  equal to the initial one's length after intersecting with itself"] = function ()
+	["test: Should be equal to the initial one's length after intersecting with itself"] = function ()
 		local a = array("a", "b", "c")
 		luaunit.assertEquals(#(a * a), 3)
 		luaunit.assertEquals(a:intersect(a):len(), 3)
+	end;
+
+	["test: Should be correct after intersecting when the array to intersect with has duplicates"] = function ()
+		luaunit.assertEquals(#(array("a") * array("a", "a", "b")), 1)
+	end;
+
+	["test: Should be correct after intersecting when the array has duplicates"] = function ()
+		luaunit.assertEquals(array("a", "b", "b"):intersect(array("b")):len(), 2)
 	end;
 
 	-- __add(), unite()
@@ -955,10 +963,18 @@ Test__len = {
 		luaunit.assertEquals(array("d", "e", "f"):unite(array("a", "b", "c")):len(), 6)
 	end;
 
-	["test: Should be equal to own length after with itself"] = function ()
+	["test: Should be equal to own length after uniting with itself"] = function ()
 		local a = array("a", "b", "c")
 		luaunit.assertEquals(#(a + a), 3)
 		luaunit.assertEquals(a:unite(a):len(), 3)
+	end;
+
+	["test: Should be correct after uniting with an array with duplicates"] = function ()
+		luaunit.assertEquals(#(array("a") + array("a", "b", "b")), 2)
+	end;
+
+	["test: Should be correct after uniting when the array has duplicates"] = function ()
+		luaunit.assertEquals(array("a", "b", "b"):unite(array("a", "b")):len(), 3)
 	end;
 
 	-- TODO: Add test cases for __add, __sub, unite, subtract, addbefore, addafter methods

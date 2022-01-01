@@ -40,6 +40,14 @@ Test__mul = {
 		luaunit.assertEquals(a:intersect(a).__data, {"a", "b", "c"})
 	end;
 
+	["test: Should preserve only one element when the array to intersect with has duplicates"] = function ()
+		luaunit.assertEquals((array("a") * array("a", "a", "b")).__data, {"a"})
+	end;
+
+	["test: Should preserve duplicates when the array has duplicates"] = function ()
+		luaunit.assertEquals(array("a", "b", "b"):intersect(array("b")).__data, {"b", "b"})
+	end;
+
 	["test: Should raise an error when there's an attempt to intersect with plain table"] = function ()
 		luaunit.assertErrorMsgContains("Unable to intersect with table: only arrays allowed", function () return array() * {} end)
 	end;

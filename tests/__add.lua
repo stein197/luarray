@@ -1,4 +1,5 @@
 Test__add = {
+	-- TODO: Add tests for duplicates
 	["test: Should return an empty array after uniting with an empty one when the array is empty"] = function ()
 		luaunit.assertEquals((array() + array()).__data, {})
 		luaunit.assertEquals(array():unite(array()).__data, {})
@@ -38,6 +39,14 @@ Test__add = {
 		local a = array("a", "b", "c")
 		luaunit.assertEquals((a + a).__data, {"a", "b", "c"})
 		luaunit.assertEquals(a:unite(a).__data, {"a", "b", "c"})
+	end;
+
+	["test: Should add only one element to the array when the array to unite with has duplicates"] = function ()
+		luaunit.assertEquals((array("a") + array("a", "b", "b")).__data, {"a", "b"})
+	end;
+
+	["test: Should preserve duplicates when the array has duplicates"] = function ()
+		luaunit.assertEquals(array("a", "b", "b"):unite(array("a", "b")).__data, {"a", "b", "b"})
 	end;
 
 	["test: Should raise an error when there's an attempt to unite with plain table"] = function ()

@@ -21,13 +21,13 @@ Test__concat = {
 	end;
 
 	["test: Should raise an error when concatenating with non array"] = function ()
-		luaunit.assertErrorMsgContains("Cannot concatenate array with table", function ()
+		luaunit.assertErrorMsgContains("Unable to concatenate with table: only arrays allowed", function ()
 			local a = array()..{}
 		end)
 	end;
 
 	["test: Should raise an error when concatenating with an object"] = function ()
-		luaunit.assertErrorMsgContains("Cannot concatenate array with table", function ()
+		luaunit.assertErrorMsgContains("Unable to concatenate with table: only arrays allowed", function ()
 			local a = array()..Object()
 		end)
 	end;
