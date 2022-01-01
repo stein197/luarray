@@ -166,7 +166,7 @@ end
 --- Performs an union between two arrays. Same as `unite` method. Raises an error if there's an attempt to unite with
 --- non array. Preserves an order of the first array.
 --- @param a array Array to unite with.
---- @return array ts Array that contains elements from both arrays.
+--- @return array rs Array that contains elements from both arrays.
 function mt:__add(a)
 	if not isarray(a) then
 		error(string.format("Unable to unite with %s: only arrays allowed", type(a)))
@@ -484,7 +484,7 @@ end
 --- Performs an union between two arrays. Same as `+` operator. Raises an error if there's an attempt to unite with non
 --- array. Preserves an order of the first array.
 --- @param a array Array to unite with.
---- @return array ts Array that contains elements from both arrays.
+--- @return array rs Array that contains elements from both arrays.
 function pt:unite(a)
 	return self + a
 end
