@@ -496,5 +496,6 @@ function mt:__sub(a) end -- TODO: Substraction
 function pt:subtract(a) end
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
+function pt:chunk(size) end -- TODO
 
 return array
