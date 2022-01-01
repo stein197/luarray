@@ -877,5 +877,5 @@ Test__len = {
 		luaunit.assertEquals(a:len(), 2)
 	end;
 
-	-- TODO: Add test cases for __band, __bor, addafter, addbefore, diff, intersect, union, methods
+	-- TODO: Add test cases for __mul, __add, __sub, intersect, unite, substract, addbefore, addafter methods
 }

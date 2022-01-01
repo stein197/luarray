@@ -1,5 +1,8 @@
+-- TODO: Generalize use of zero indices
+-- TODO: Restrict out of bounds indices and raise an error?
 local mt = {}
 
+--- @generic T
 --- @class array
 --- @field private __data table
 --- @field private __len number
@@ -444,15 +447,14 @@ function pt:delend()
 	return self:del(self.__len)
 end
 
-function pt:addbefore(elt)
-end -- TODO: Use internal shift/insertat function
-function pt:addafter(elt) end -- TODO: Use internal shift/insertat function
-
-function mt:__band() end -- TODO: Intersection
-function mt:__bor() end -- TODO: Union
 -- function mt:__pairs() end -- TODO
-function pt:diff(f) end -- TODO
-function pt:intersect(f) end -- TODO
-function pt:union(f) end -- TODO
+function mt:__mul(a) end -- TODO: Intersection
+function mt:__add(a) end -- TODO: Union
+function mt:__sub(a) end -- TODO: Substraction
+function pt:intersect(a) end -- TODO
+function pt:unite(a) end
+function pt:subtract(a) end
+function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
+function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
 
 return array
