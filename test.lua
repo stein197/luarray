@@ -13,7 +13,7 @@
 	- Should <expectation> when the array is empty
 	- Should <expectation> when the array has only one element [and <condition>]
 	- Should return a new array
-	- Shouldn't modify self
+	- Shouldn't modify itself
 	- Should return correct result [when <condition>]
 	- Should return an array equal to the original one when <condition>
 ]]

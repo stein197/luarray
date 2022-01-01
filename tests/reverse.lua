@@ -32,7 +32,7 @@ TestReverse = {
 		luaunit.assertTrue(rawequal(array("a", "b", c):reverse().__data[1], c))
 	end;
 
-	["test: Should not modify self"] = function (self)
+	["test: Shouldn't modify itself"] = function (self)
 		self.a:reverse()
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;

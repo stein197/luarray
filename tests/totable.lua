@@ -58,7 +58,7 @@ TestToTable = {
 		luaunit.assertEquals(array("a", nil, "c"):totable(), {"a", nil, "c"})
 	end;
 
-	["test: Should not modify self"] = function ()
+	["test: Shouldn't modify itself"] = function ()
 		local a = array("a", "b", "c")
 		a:totable()
 		luaunit.assertEquals(a.__data, {"a", "b", "c"})

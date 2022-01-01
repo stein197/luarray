@@ -39,7 +39,7 @@ TestReduceEnd = {
 		luaunit.assertEquals(tmp, "A")
 	end;
 
-	["test: Should not modify self"] = function ()
+	["test: Shouldn't modify itself"] = function ()
 		local a = array("a", "b", "c")
 		a:reduceend(function () return 1 end)
 		luaunit.assertEquals(a.__data, {"a", "b", "c"})

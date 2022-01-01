@@ -62,17 +62,17 @@ TestClone = {
 		luaunit.assertTrue(rawequal(array("a", "b", "c", a):clone().__data[4], a))
 	end;
 
-	["test: Should not modify self when flag is set to true"] = function (self)
+	["test: Shouldn't modify itself when flag is set to true"] = function (self)
 		self.a:clone(true)
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;
 
-	["test: Should not modify self when flag is set to false"] = function (self)
+	["test: Shouldn't modify itself when flag is set to false"] = function (self)
 		self.a:clone(false)
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;
 
-	["test: Should not modify self when flag is not set"] = function (self)
+	["test: Shouldn't modify itself when flag is not set"] = function (self)
 		self.a:clone()
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;

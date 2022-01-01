@@ -23,7 +23,7 @@ TestUniq = {
 		luaunit.assertEquals(self.a:uniq().__data, {"a", "b", "c"})
 	end;
 
-	["test: Should not modify self"] = function ()
+	["test: Shouldn't modify itself"] = function ()
 		local a = array("a", "a", "a")
 		a:uniq()
 		luaunit.assertEquals(a.__data, {"a", "a", "a"})

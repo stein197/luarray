@@ -15,7 +15,7 @@ TestShuffle = {
 		luaunit.assertEquals(array("a"):shuffle().__data, {"a"})
 	end;
 
-	["test: Should not modify self"] = function (self)
+	["test: Shouldn't modify itself"] = function (self)
 		self.a:shuffle()
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c", "d", "e", "f"})
 	end;

@@ -71,7 +71,7 @@ TestSlice = {
 		luaunit.assertEquals(array("a", "b", "c"):slice(0, 0).__data, {"a", "b", "c"})
 	end;
 
-	["test: Should not modify self"] = function ()
+	["test: Shouldn't modify itself"] = function ()
 		local a = array("a", "b", "c")
 		a:slice(1, 2)
 		luaunit.assertEquals(a.__data, {"a", "b", "c"})

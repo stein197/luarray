@@ -31,7 +31,7 @@ TestMap = {
 		luaunit.assertFalse(rawequal(self.a:map(function (i, elt) return i * 2 end), self.a))
 	end;
 
-	["test: Should not modify self"] = function (self)
+	["test: Shouldn't modify itself"] = function (self)
 		self.a:map(function (i) return i * 2 end)
 		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
 	end;

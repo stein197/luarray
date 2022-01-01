@@ -49,7 +49,7 @@ TestPadStart = {
 		luaunit.assertFalse(rawequal(a:padstart(2, "a"), a))
 	end;
 
-	["test: Should not modify self"] = function ()
+	["test: Shouldn't modify itself"] = function ()
 		local a = array("a", "b", "c")
 		a:padstart(4, "d")
 		luaunit.assertEquals(a.__data, {"a", "b", "c"})
