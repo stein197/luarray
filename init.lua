@@ -150,6 +150,19 @@ function mt:__eq(t)
 	return isarray(t) and self.__len == t.__len and self:every(function (i, elt) return elt == t.__data[i] end)
 end
 
+--- Performs an intersection between two arrays. Same as `intersect` method. Raises an array if there's an attempt to
+--- intersect with non array. Preserves an order of the first array.
+--- @param a array Array to intersect with.
+--- @return array rs Array with elements that both arrays contain.
+function mt:__mul(a)
+	if not isarray(a) then
+		error(string.format("Unable to intersect with %s: only arrays allowed", type(a)))
+	end
+	local rs = array()
+	self:each(function (i, elt) return a:contains(elt) and rs:addend(elt) end)
+	return rs
+end
+
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
@@ -447,11 +460,17 @@ function pt:delend()
 	return self:del(self.__len)
 end
 
+--- Performs an intersection between two arrays. Same as `*` operator. Raises an array if there's an attempt to
+--- intersect with non array. Preserves an order of the first array.
+--- @param a array Array to intersect with.
+--- @return array rs Array with elements that both arrays contain.
+function pt:intersect(a)
+	return self * a
+end
+
 -- function mt:__pairs() end -- TODO
-function mt:__mul(a) end -- TODO: Intersection
 function mt:__add(a) end -- TODO: Union
 function mt:__sub(a) end -- TODO: Substraction
-function pt:intersect(a) end -- TODO
 function pt:unite(a) end
 function pt:subtract(a) end
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function

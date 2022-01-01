@@ -877,5 +877,46 @@ Test__len = {
 		luaunit.assertEquals(a:len(), 2)
 	end;
 
-	-- TODO: Add test cases for __mul, __add, __sub, intersect, unite, substract, addbefore, addafter methods
+	["test: Should be 0 after intersecting an empty array with empty one"] = function ()
+		luaunit.assertEquals(#(array() * array()), 0)
+		luaunit.assertEquals(array():intersect(array()):len(), 0)
+	end;
+
+	["test: Should be 0 after intersecting any array with empty one"] = function ()
+		luaunit.assertEquals(#(array() * array("a")), 0)
+		luaunit.assertEquals(array("a"):intersect(array()):len(), 0)
+	end;
+
+	["test: Should be equal to one of original arrays after intersecting when one of them is a subset of another"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") * array("a", "b", "c", "d", "e", "f")), 3)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):intersect(array("a", "b", "c")):len(), 3)
+	end;
+
+	["test: Should be correct after intersecting"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c", "d") * array("f", "e", "d", "c")), 2)
+		luaunit.assertEquals(array("f", "e", "d", "c"):intersect(array("a", "b", "c", "d")):len(), 2)
+	end;
+
+	["test: Should be correct after intersecting when both arrays contain nil"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") * array("c", nil, "d")), 2)
+		luaunit.assertEquals(array("c", nil, "d"):intersect(array(nil, "b", "c")):len(), 2)
+	end;
+
+	["test: Should be correct after intersecting when both arrays contain nil and one of them has only one element"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") * array(nil)), 1)
+		luaunit.assertEquals(array(nil):intersect(array(nil, "b", "c")):len(), 1)
+	end;
+
+	["test: Should be 0 after intersecting when both arrays don't have overlapping elements"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") * array("d", "e", "f")), 0)
+		luaunit.assertEquals(array("d", "e", "f"):intersect(array("a", "b", "c")):len(), 0)
+	end;
+
+	["test: Should be  equal to the initial one's length after intersecting with itself"] = function ()
+		local a = array("a", "b", "c")
+		luaunit.assertEquals(#(a * a), 3)
+		luaunit.assertEquals(a:intersect(a):len(), 3)
+	end;
+
+	-- TODO: Add test cases for __add, __sub, unite, subtract, addbefore, addafter methods
 }
