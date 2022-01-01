@@ -1,5 +1,6 @@
--- TODO: Generalize use of zero indices
+-- TODO: Make same use of zero indices
 -- TODO: Restrict out of bounds indices and raise an error?
+-- TODO: Review doc comments
 local mt = {}
 
 --- @generic T
@@ -141,9 +142,7 @@ end
 --- @param a array Array to concatenate.
 --- @return array rs New array which is a result of concatenating the current array with another one.
 function mt:__concat(a)
-	if not isarray(a) then
-		error(string.format("Cannot concatenate array with %s", type(a)))
-	end
+	checkop(a, "concatenate")
 	local rs = alloc(self.__len + a.__len)
 	rs:each(function (i, elt) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
 	return rs
