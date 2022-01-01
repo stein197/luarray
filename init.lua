@@ -177,6 +177,26 @@ function mt:__add(a)
 	return rs
 end
 
+--- Performs subtraction between arrays. Same as `subtract` method. Raises an error if there's an attempt to subtract
+--- on/from non array.
+--- @param a array Array to subtract.
+--- @return array rs Array whose elements were subtracted with another one.
+function mt:__sub(a)
+	checkop(a, "subtract")
+	local rs = self:clone()
+	-- TODO: Replace with less heavy algorithm - shift all elements at once instead of shifting in each loop
+	for i = 1, a.__len do
+		while true do
+			local i = rs:firstindexof(a.__data[i])
+			if i < 0 then
+				break
+			end
+			collapseat(rs, i)
+		end
+	end
+	return rs
+end
+
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
@@ -490,9 +510,15 @@ function pt:unite(a)
 	return self + a
 end
 
+--- Performs subtraction between arrays. Same as `subtract` method. Raises an error if there's an attempt to subtract
+--- on/from non array.
+--- @param a array Array to subtract.
+--- @return array rs Array whose elements were subtracted with another one.
+function pt:subtract(a)
+	return self - a
+end
+
 -- function mt:__pairs() end -- TODO
-function mt:__sub(a) end -- TODO: Substraction
-function pt:subtract(a) end
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:chunk(size) end -- TODO

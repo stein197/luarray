@@ -977,5 +977,57 @@ Test__len = {
 		luaunit.assertEquals(array("a", "b", "b"):unite(array("a", "b")):len(), 3)
 	end;
 
-	-- TODO: Add test cases for __add, __sub, unite, subtract, addbefore, addafter methods
+	-- __sub(), subtract()
+	["test: Should be 0 after subtracting empty arrays"] = function ()
+		luaunit.assertEquals(#(array() - array()), 0)
+		luaunit.assertEquals(array():subtract(array()):len(), 0)
+	end;
+
+	["test: Should be 0 after subtracting from empty array"] = function ()
+		luaunit.assertEquals(#(array() - array("a")), 0)
+	end;
+
+	["test: Should be equal to the original array after subtracting an empty one"] = function ()
+		luaunit.assertEquals(#array("a"):subtract(array()), 1)
+	end;
+
+	["test: Should be 0 after subtracting superset of the array"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") - array("a", "b", "c", "d", "e", "f")), 0)
+	end;
+
+	["test: Should be correct after subtracting"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c", "d") - array("f", "e", "d", "c")), 2)
+		luaunit.assertEquals(array("f", "e", "d", "c"):subtract(array("a", "b", "c", "d")):len(), 2)
+	end;
+
+	["test: Should be correct after subtracting an array with nil"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") - array("c", nil, "d")), 1)
+		luaunit.assertEquals(array("c", nil, "d"):subtract(array(nil, "b", "c")):len(), 1)
+	end;
+
+	["test: Should be correct after subtracting an array with single nil element when the array contains nil"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") - array(nil)), 2)
+		luaunit.assertEquals(array(nil):subtract(array(nil, "b", "c")):len(), 0)
+	end;
+
+	["test: Should be equal to the original array's length after subtracting when both arrays don't have overlapping elements"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") - array("d", "e", "f")), 3)
+		luaunit.assertEquals(array("d", "e", "f"):subtract(array("a", "b", "c")):len(), 3)
+	end;
+
+	["test: Should be 0 after subtracting with itself"] = function ()
+		local a = array("a", "b", "c")
+		luaunit.assertEquals(#(a - a), 0)
+		luaunit.assertEquals(a:subtract(a):len(), 0)
+	end;
+
+	["test: Should be correct after subtracting when the array to subtract with has duplicates"] = function ()
+		luaunit.assertEquals(#(array("a", "b") - array("a", "a")), 1)
+	end;
+
+	["test: Should be correct after subtracting when the array has duplicates"] = function ()
+		luaunit.assertEquals(array("a", "b", "b"):subtract(array("a", "b")):len(), 0)
+	end;
+
+	-- TODO: Add test cases for addbefore, addafter, chunk methods
 }
