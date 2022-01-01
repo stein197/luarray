@@ -35,6 +35,12 @@ local function isarray(t)
 	return type(t) == "table" and getmetatable(t) == mt
 end
 
+local function checkop(arg, op)
+	if not isarray(arg) then
+		error(string.format("Unable to %s with %s: only arrays allowed", op, type(arg)))
+	end
+end
+
 local function shift(self, offset)
 	for i = offset < 0 and -offset + 1 or self.__len, offset < 0 and self.__len + 1 or 1, offset < 0 and 1 or -1 do
 		self.__data[i + offset], self.__data[i] = self.__data[i], nil
@@ -155,9 +161,7 @@ end
 --- @param a array Array to intersect with.
 --- @return array rs Array with elements that both arrays contain.
 function mt:__mul(a)
-	if not isarray(a) then
-		error(string.format("Unable to intersect with %s: only arrays allowed", type(a)))
-	end
+	checkop(a, "intersect")
 	local rs = array()
 	self:each(function (i, elt) return a:contains(elt) and rs:addend(elt) end)
 	return rs
@@ -168,9 +172,7 @@ end
 --- @param a array Array to unite with.
 --- @return array rs Array that contains elements from both arrays.
 function mt:__add(a)
-	if not isarray(a) then
-		error(string.format("Unable to unite with %s: only arrays allowed", type(a)))
-	end
+	checkop(a, "unite")
 	local rs = self:clone()
 	a:each(function (i, elt) return not self:contains(elt) and rs:addend(elt) end)
 	return rs
