@@ -163,6 +163,19 @@ function mt:__mul(a)
 	return rs
 end
 
+--- Performs an union between two arrays. Same as `unite` method. Raises an error if there's an attempt to unite with
+--- non array. Preserves an order of the first array.
+--- @param a array Array to unite with.
+--- @return array ts Array that contains elements from both arrays.
+function mt:__add(a)
+	if not isarray(a) then
+		error(string.format("Unable to unite with %s: only arrays allowed", type(a)))
+	end
+	local rs = self:clone()
+	a:each(function (i, elt) return not self:contains(elt) and rs:addend(elt) end)
+	return rs
+end
+
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
@@ -468,10 +481,16 @@ function pt:intersect(a)
 	return self * a
 end
 
+--- Performs an union between two arrays. Same as `+` operator. Raises an error if there's an attempt to unite with non
+--- array. Preserves an order of the first array.
+--- @param a array Array to unite with.
+--- @return array ts Array that contains elements from both arrays.
+function pt:unite(a)
+	return self + a
+end
+
 -- function mt:__pairs() end -- TODO
-function mt:__add(a) end -- TODO: Union
 function mt:__sub(a) end -- TODO: Substraction
-function pt:unite(a) end
 function pt:subtract(a) end
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function

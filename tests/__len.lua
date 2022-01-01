@@ -877,6 +877,7 @@ Test__len = {
 		luaunit.assertEquals(a:len(), 2)
 	end;
 
+	-- __mul(), __intersect()
 	["test: Should be 0 after intersecting an empty array with empty one"] = function ()
 		luaunit.assertEquals(#(array() * array()), 0)
 		luaunit.assertEquals(array():intersect(array()):len(), 0)
@@ -916,6 +917,48 @@ Test__len = {
 		local a = array("a", "b", "c")
 		luaunit.assertEquals(#(a * a), 3)
 		luaunit.assertEquals(a:intersect(a):len(), 3)
+	end;
+
+	-- __add(), unite()
+	["test: Should be 0 after uniting empty arrays"] = function ()
+		luaunit.assertEquals(#(array() + array()), 0)
+		luaunit.assertEquals(array():unite(array()):len(), 0)
+	end;
+
+	["test: Should be equal to the longest array's length after uniting with empty array"] = function ()
+		luaunit.assertEquals(#(array() + array("a")), 1)
+		luaunit.assertEquals(array("a"):unite(array()):len(), 1)
+	end;
+
+	["test: Should be equal to the longest array's length after uniting when one of the arrays is a subset of another one"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") + array("a", "b", "c", "d", "e", "f")), 6)
+		luaunit.assertEquals(array("a", "b", "c", "d", "e", "f"):unite(array("a", "b", "c")):len(), 6)
+	end;
+
+	["test: Should be correct after uniting"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c", "d") + array("f", "e", "d", "c")), 6)
+		luaunit.assertEquals(array("f", "e", "d", "c"):unite(array("a", "b", "c", "d")):len(), 6)
+	end;
+
+	["test: Should be correct after uniting when both arrays contain nil"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") + array("c", nil, "d")), 4)
+		luaunit.assertEquals(array("c", nil, "d"):unite(array(nil, "b", "c")):len(), 4)
+	end;
+
+	["test: Should be equal to the longest array's length after uniting when both arrays contain nil and one of them has only one element"] = function ()
+		luaunit.assertEquals(#(array(nil, "b", "c") + array(nil)), 3)
+		luaunit.assertEquals(array(nil):unite(array(nil, "b", "c")):len(), 3)
+	end;
+
+	["test: Should be a sum of both arrays' lengths after uniting when both arrays don't have overlapping elements"] = function ()
+		luaunit.assertEquals(#(array("a", "b", "c") + array("d", "e", "f")), 6)
+		luaunit.assertEquals(array("d", "e", "f"):unite(array("a", "b", "c")):len(), 6)
+	end;
+
+	["test: Should be equal to own length after with itself"] = function ()
+		local a = array("a", "b", "c")
+		luaunit.assertEquals(#(a + a), 3)
+		luaunit.assertEquals(a:unite(a):len(), 3)
 	end;
 
 	-- TODO: Add test cases for __add, __sub, unite, subtract, addbefore, addafter methods
