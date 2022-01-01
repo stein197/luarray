@@ -150,7 +150,7 @@ function mt:__eq(t)
 	return isarray(t) and self.__len == t.__len and self:every(function (i, elt) return elt == t.__data[i] end)
 end
 
---- Performs an intersection between two arrays. Same as `intersect` method. Raises an array if there's an attempt to
+--- Performs an intersection between two arrays. Same as `intersect` method. Raises an error if there's an attempt to
 --- intersect with non array. Preserves an order of the first array.
 --- @param a array Array to intersect with.
 --- @return array rs Array with elements that both arrays contain.
@@ -460,7 +460,7 @@ function pt:delend()
 	return self:del(self.__len)
 end
 
---- Performs an intersection between two arrays. Same as `*` operator. Raises an array if there's an attempt to
+--- Performs an intersection between two arrays. Same as `*` operator. Raises an error if there's an attempt to
 --- intersect with non array. Preserves an order of the first array.
 --- @param a array Array to intersect with.
 --- @return array rs Array with elements that both arrays contain.
