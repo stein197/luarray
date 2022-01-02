@@ -537,7 +537,22 @@ function pt:chunk(size)
 	return rs
 end
 
-function pt:flat(depth) end -- TODO
+--- Flattens the array to the specified depth.
+--- @param depth number Max depth at which flatten the array. 1 by default.
+--- @return array rs Flattened array. Returns the same array when `depth` is 0.
+function pt:flat(depth)
+	depth = depth == nil and 1 or depth
+	local rs = array()
+	for i = 1, self.__len do
+		if isarray(self.__data[i]) and depth > 0 then
+			self.__data[i]:flat(depth - 1):each(function (_, elt) rs:addend(elt) end)
+		else
+			rs:addend(self.__data[i])
+		end
+	end
+	return rs
+end
+
 function pt:min(f) end -- TODO
 function pt:max(f) end -- TODO
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function

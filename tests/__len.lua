@@ -1055,5 +1055,33 @@ Test__len = {
 		luaunit.assertEquals(self.a3:chunk(4):len(), 2)
 	end;
 
+	-- flat()
+	["test: Should be 0 after flattening an empty array"] = function ()
+		luaunit.assertEquals(#array():flat(), 0)
+		luaunit.assertEquals(#array():flat(0), 0)
+		luaunit.assertEquals(#array():flat(1), 0)
+		luaunit.assertEquals(#array():flat(10), 0)
+	end;
+
+	["test: Should be correct after flattening"] = function ()
+		local a = array("a", "b", array("c", "d", array("e", "f")))
+		luaunit.assertEquals(#a:flat(), 5)
+		luaunit.assertEquals(#a:flat(1), 5)
+		luaunit.assertEquals(#a:flat(2), 6)
+	end;
+
+	["test: Should be the same for both flattening with omitted and 1"] = function ()
+		local a = array("a", "b", array("c", "d", array("e", "f")))
+		luaunit.assertEquals(#a:flat(), #a:flat(1))
+	end;
+
+	["test: Should be equal to the original one after flattening  when the depth is 0"] = function ()
+		luaunit.assertEquals(#array("a", "b", array("c", "d", array("e", "f"))):flat(0), 3)
+	end;
+
+	["test: Should be a sum of nested arrays after flattening when the depth is a large number"] = function (self)
+		luaunit.assertEquals(#array("a", "b", array("c", "d", array("e", "f"))):flat(10), 6)
+	end;
+
 	-- TODO: Add test cases for addbefore, addafter methods
 }
