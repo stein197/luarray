@@ -197,6 +197,10 @@ function mt:__sub(a)
 	return rs
 end
 
+function mt:__pairs()
+
+end -- TODO
+
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
 function pt:len()
@@ -518,7 +522,7 @@ function pt:subtract(a)
 	return self - a
 end
 
--- function mt:__pairs() end -- TODO
+function pt:flat(depth) end -- TODO
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:chunk(size) end -- TODO
