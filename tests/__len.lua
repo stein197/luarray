@@ -1029,5 +1029,31 @@ Test__len = {
 		luaunit.assertEquals(array("a", "b", "b"):subtract(array("a", "b")):len(), 0)
 	end;
 
-	-- TODO: Add test cases for addbefore, addafter, chunk methods
+	-- chunk()
+	["test: Should be after chunking an empty array"] = function ()
+		luaunit.assertEquals(#array():chunk(1), 0)
+		luaunit.assertEquals(array():chunk(1):len(), 0)
+	end;
+
+	["test: Should be 1 after chunking when the array has only one element"] = function ()
+		luaunit.assertEquals(#array("a"):chunk(1), 1)
+		luaunit.assertEquals(array("a"):chunk(1):len(), 1)
+	end;
+
+	["test: Should be 1 after chunking when the argument is greater than the array's length"] = function (self)
+		luaunit.assertEquals(#self.a3:chunk(10), 1)
+		luaunit.assertEquals(self.a3:chunk(10):len(), 1)
+	end;
+
+	["test: Should be correct after chunking when the array can be chunked in equal pieces"] = function (self)
+		luaunit.assertEquals(#self.a3:chunk(2), 3)
+		luaunit.assertEquals(self.a3:chunk(2):len(), 3)
+	end;
+
+	["test: Should be correct after chunking when the array cannot be chunked in equal pieces"] = function (self)
+		luaunit.assertEquals(#self.a3:chunk(4), 2)
+		luaunit.assertEquals(self.a3:chunk(4):len(), 2)
+	end;
+
+	-- TODO: Add test cases for addbefore, addafter methods
 }

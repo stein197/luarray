@@ -522,7 +522,21 @@ function pt:subtract(a)
 	return self - a
 end
 
-function pt:chunk(size) end -- TODO
+--- Splits the array into chunks of the same size. Raises an error if `size` is less than 1.
+--- @param size number Size of chunks.
+--- @return array rs 
+function pt:chunk(size)
+	if size < 1 then
+		error(string.format("Unable to chunk array with %i size of length: the size cannot be less than 1", size))
+	end
+	local len = math.ceil(self.__len / size)
+	local rs = alloc(len)
+	for i = 1, len do
+		rs.__data[i] = self:slice(size * (i - 1) + 1, size * i)
+	end
+	return rs
+end
+
 function pt:flat(depth) end -- TODO
 function pt:min(f) end -- TODO
 function pt:max(f) end -- TODO
