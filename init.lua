@@ -197,9 +197,9 @@ function mt:__sub(a)
 	return rs
 end
 
-function mt:__pairs()
+-- function mt:__pairs()
 
-end -- TODO
+-- end -- TODO
 
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.

@@ -4,7 +4,7 @@ TestShuffle = {
 	end;
 	
 	["test: Should be correct"] = function (self)
-		luaunit.assertNotEquals(self.a:shuffle(), {"a", "b", "c", "d", "e", "f"})
+		luaunit.assertNotEquals(self.a:shuffle().__data, {"a", "b", "c", "d", "e", "f"})
 	end;
 
 	["test: Should return an empty array when shuffling an empty one"] = function ()
