@@ -524,7 +524,7 @@ end
 
 --- Splits the array into chunks of the same size. Raises an error if `size` is less than 1.
 --- @param size number Size of chunks.
---- @return array rs 
+--- @return array rs Chunked array.
 function pt:chunk(size)
 	if size < 1 then
 		error(string.format("Unable to chunk array with %i size of length: the size cannot be less than 1", size))
