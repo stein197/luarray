@@ -553,8 +553,21 @@ function pt:flat(depth)
 	return rs
 end
 
-function pt:min(f) end -- TODO
-function pt:max(f) end -- TODO
+--- Returns the only element distincts from others by some parameter. Could used for retrieving min or max values.
+--- @generic T Type of elements the array contains.
+--- @param f fun(a: T, b: T): T Comparison function. Should return the highest element.
+--- @return T rs The only element that has the most precedence over others.
+function pt:only(f)
+	if self.__len == 0 then
+		return nil
+	end
+	local rs = self.__data[1]
+	for i = 2, self.__len do
+		rs = f(rs, self.__data[i])
+	end
+	return rs
+end
+
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
 
