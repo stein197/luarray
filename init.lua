@@ -522,9 +522,11 @@ function pt:subtract(a)
 	return self - a
 end
 
+function pt:chunk(size) end -- TODO
 function pt:flat(depth) end -- TODO
+function pt:min(f) end -- TODO
+function pt:max(f) end -- TODO
 function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
 function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
-function pt:chunk(size) end -- TODO
 
 return array
