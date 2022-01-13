@@ -211,9 +211,17 @@ function mt:__sub(a)
 	return rs
 end
 
--- function mt:__pairs()
-
--- end -- TODO
+--- Overloads call to `pairs()` function. Returns an iterator through the entire array including nils.
+function mt:__pairs()
+	local i = 0
+	return function ()
+		i = i + 1
+		if self.__len < i then
+			return nil, nil
+		end
+		return i, self.__data[i]
+	end
+end
 
 --- Returns length of the table. Same as `#` operator.
 --- @return number len The length of the table.
