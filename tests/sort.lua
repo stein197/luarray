@@ -34,33 +34,6 @@ TestSort = {
 		luaunit.assertEquals(array("a", "b", "c"):sort().__data, {"a", "b", "c"})
 	end;
 
-	["test: Should place nils in the middle when sorting nils in the middle"] = function ()
-		luaunit.assertEquals(array("a", 1, nil):sort(function (a, b)
-			if a == "a" then
-				return true
-			elseif a == 1 then
-				return false 
-			else
-				return true
-			end
-		end).__data, {"a", nil, 1})
-	end;
-
-	["test: Should place nils in the start when sorting nils to the start"] = function ()
-		luaunit.assertEquals(array("a", nil, "c"):sort(function (a, b)
-			return a == nil or a < b
-		end).__data, {nil, "a", "c"})
-	end;
-
-	["test: Should place nils in the end when sorting nils to the end"] = function ()
-		luaunit.assertEquals(array("a", nil, "c"):sort(function (a, b)
-			if a == nil then
-				return false
-			end
-			return a < b
-		end).__data, {"a", "c", nil})
-	end;
-
 	["test: Should return the same result when sorting an array of nils"] = function ()
 		luaunit.assertEquals(array(nil, nil, nil):sort().__data, {nil, nil, nil})
 	end;
