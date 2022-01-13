@@ -1,6 +1,7 @@
 -- TODO: Make same use of zero indices
 -- TODO: Restrict out of bounds indices and raise an error?
 -- TODO: Review doc comments
+-- TODO: Make sure that methods that accept indices can accept negative ones as well
 local mt = {}
 
 --- @generic T
@@ -65,6 +66,19 @@ local function collapseat(self, i)
 		self.__data[self.__len] = nil
 		self.__len = self.__len - 1
 	end
+end
+
+local function add(self, i, elt, isbefore)
+	i = normalizeidx(self.__len, i)
+	if not i or i <= 0 or self.__len < i then
+		return
+	end
+	i = isbefore and i or i + 1
+	for j = self.__len, i, -1 do
+		self.__data[j + 1], self.__data[j] = self.__data[j], nil
+	end
+	self.__len = self.__len + 1
+	self.__data[i] = elt
 end
 
 local function reduce(self, f, init, isstart)
@@ -568,7 +582,20 @@ function pt:only(f)
 	return rs
 end
 
-function pt:addbefore(i, elt) end -- TODO: Use internal shift/insertat function
-function pt:addafter(i, elt) end -- TODO: Use internal shift/insertat function
+--- Adds an element before specified index. Does nothing if the index is out of bounds.
+--- @generic T Type of elements the array contains.
+--- @param i number Index before which add the element.
+--- @param elt T An element to add.
+function pt:addbefore(i, elt)
+	add(self, i, elt, true)
+end
+
+--- Adds an element after specified index. Does nothing if the index is out of bounds.
+--- @generic T Type of elements the array contains.
+--- @param i number Index after which add the element.
+--- @param elt T An element to add.
+function pt:addafter(i, elt)
+	add(self, i, elt, false)
+end
 
 return array

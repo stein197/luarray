@@ -1,5 +1,6 @@
 Test__len = {
 	setUp = function (self)
+		self.a0 = array("a")
 		self.a1 = array("a", "b", "c")
 		self.a2 = array("d", "e", "f")
 		self.a3 = array("a", "b", "c", "d", "e", "f")
@@ -1083,5 +1084,201 @@ Test__len = {
 		luaunit.assertEquals(#array("a", "b", array("c", "d", array("e", "f"))):flat(10), 6)
 	end;
 
-	-- TODO: Add test cases for addbefore, addafter methods
+	-- addbefore()
+	["test: Should not change after adding an element before index when the array is empty"] = function ()
+		local a = array()
+		a:addbefore(1, "a")
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should not change after adding an element before index when the index is not 1 nor -1 and the array contains only one element"] = function (self)
+		self.a0:addbefore(2, "z")
+		self.a0:addbefore(-2, "z")
+		luaunit.assertEquals(#self.a0, 1)
+		luaunit.assertEquals(self.a0:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the array contains only one element and the index is 1"] = function (self)
+		self.a0:addbefore(1, "z")
+		luaunit.assertEquals(#self.a0, 2)
+		luaunit.assertEquals(self.a0:len(), 2)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the array contains only one element and the index is -1"] = function (self)
+		self.a0:addbefore(-1, "z")
+		luaunit.assertEquals(#self.a0, 2)
+		luaunit.assertEquals(self.a0:len(), 2)
+	end;
+
+	["test: Should not change after adding an element before index when the index is 0 and the array has only one element"] = function (self)
+		self.a0:addbefore(0, "z")
+		luaunit.assertEquals(#self.a0, 1)
+		luaunit.assertEquals(self.a0:len(), 1)
+	end;
+
+	["test: Should not change after adding an element before index when the index is 0"] = function (self)
+		self.a1:addbefore(0, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element before index when the index is > #self"] = function (self)
+		self.a1:addbefore(10, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element before index when the index is < -#self"] = function (self)
+		self.a1:addbefore(-10, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element before index when the index is #self + 1"] = function (self)
+		self.a1:addbefore(4, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element before index when the index is -#self - 1"] = function (self)
+		self.a1:addbefore(-4, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should be increased by 1 after adding an element when the index is 1"] = function (self)
+		self.a1:addbefore(1, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the index is the middle one"] = function (self)
+		self.a1:addbefore(2, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the index is length of the array"] = function (self)
+		self.a1:addbefore(3, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the index is -#self"] = function (self)
+		self.a1:addbefore(-3, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index when the index is the middle one and it's < 0"] = function (self)
+		self.a1:addbefore(-2, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element before index  when the index is -1"] = function (self)
+		self.a1:addbefore(-1, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	-- addafter()
+	["test: Should not change after adding an element after index when the array is empty"] = function ()
+		local a = array()
+		a:addafter(1, "a")
+		luaunit.assertEquals(#a, 0)
+		luaunit.assertEquals(a:len(), 0)
+	end;
+
+	["test: Should not change after adding an element after index when the index is not 1 nor -1 and the array contains only one element"] = function (self)
+		self.a0:addafter(2, "z")
+		self.a0:addafter(-2, "z")
+		luaunit.assertEquals(#self.a0, 1)
+		luaunit.assertEquals(self.a0:len(), 1)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the array contains only one element and the index is 1"] = function (self)
+		self.a0:addafter(1, "z")
+		luaunit.assertEquals(#self.a0, 2)
+		luaunit.assertEquals(self.a0:len(), 2)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the array contains only one element and the index is -1"] = function (self)
+		self.a0:addafter(-1, "z")
+		luaunit.assertEquals(#self.a0, 2)
+		luaunit.assertEquals(self.a0:len(), 2)
+	end;
+
+	["test: Should not change after adding an element after index when the index is 0 and the array has only one element"] = function (self)
+		self.a0:addafter(0, "z")
+		luaunit.assertEquals(#self.a0, 1)
+		luaunit.assertEquals(self.a0:len(), 1)
+	end;
+
+	["test: Should not change after adding an element after index when the index is 0"] = function (self)
+		self.a1:addafter(0, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element after index when the index is > #self"] = function (self)
+		self.a1:addafter(10, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element after index when the index is < -#self"] = function (self)
+		self.a1:addafter(-10, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element after index when the index is #self + 1"] = function (self)
+		self.a1:addafter(4, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should not change after adding an element after index when the index is -#self - 1"] = function (self)
+		self.a1:addafter(-4, "z")
+		luaunit.assertEquals(#self.a1, 3)
+		luaunit.assertEquals(self.a1:len(), 3)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is 1"] = function (self)
+		self.a1:addafter(1, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is the middle one"] = function (self)
+		self.a1:addafter(2, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is length of the array"] = function (self)
+		self.a1:addafter(3, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is -#self"] = function (self)
+		self.a1:addafter(-3, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is the middle one and it's < 0"] = function (self)
+		self.a1:addafter(-2, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
+
+	["test: Should be increased by 1 after adding an element after index when the index is -1"] = function (self)
+		self.a1:addafter(-1, "z")
+		luaunit.assertEquals(#self.a1, 4)
+		luaunit.assertEquals(self.a1:len(), 4)
+	end;
 }

@@ -1,19 +1,88 @@
 TestAddBefore = {
-	-- Should always raise an error when the array is empty
+	setUp = function (self)
+		self.one = array("a")
+		self.a = array("a", "b", "c")
+	end;
 	
-	-- Should always raise an error when the index is 0
+	["test: Should do nothing when the array is empty"] = function ()
+		local a = array()
+		a:addbefore(1, "a")
+		luaunit.assertEquals(a.__data, {})
+	end;
 
-	-- Should add an element to the start when the index is 1
-	-- Should add an element to the start when the index is -#self
+	["test: Should do nothing when the index is not 1 nor -1 and the array contains only one element"] = function (self)
+		self.one:addbefore(2, "z")
+		self.one:addbefore(-2, "z")
+		luaunit.assertEquals(self.one.__data, {"a"})
+	end;
 
-	-- Should add an element between indices when the index is > 0
-	-- Should add an element between indices when the index is < 0
+	["test: Should add an element to the start when the array contains only one element and the index is 1"] = function (self)
+		self.one:addbefore(1, "z")
+		luaunit.assertEquals(self.one.__data, {"z", "a"})
+	end;
 
-	-- Should add an element before the last one when the index is #self
-	-- Should add an element before the last one when the index is -1
+	["test: Should add an element to the start when the array contains only one element and the index is -1"] = function (self)
+		self.one:addbefore(-1, "z")
+		luaunit.assertEquals(self.one.__data, {"z", "a"})
+	end;
 
-	-- Should add an element to the end when the index is #self + 1
+	["test: Should do nothing when the index is 0 and the array has only one element"] = function (self)
+		self.one:addbefore(0, "z")
+		luaunit.assertEquals(self.one.__data, {"a"})
+	end;
 
-	-- Should add an element when the index is > #self
-	-- Should add an element when the index is < -#self
+	["test: Should do nothing when the index is 0"] = function (self)
+		self.a:addbefore(0, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should do nothing when the index is > #self"] = function (self)
+		self.a:addbefore(10, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should do nothing when the index is < -#self"] = function (self)
+		self.a:addbefore(-10, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should do nothing when the index is #self + 1"] = function (self)
+		self.a:addbefore(4, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should do nothing when the index is -#self - 1"] = function (self)
+		self.a:addbefore(-4, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "c"})
+	end;
+
+	["test: Should add an element to the start when the index is 1"] = function (self)
+		self.a:addbefore(1, "z")
+		luaunit.assertEquals(self.a.__data, {"z", "a", "b", "c"})
+	end;
+
+	["test: Should add an element to the middle when the index is the middle one"] = function (self)
+		self.a:addbefore(2, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "z", "b", "c"})
+	end;
+
+	["test: Should add an element before the last one when the index is length of the array"] = function (self)
+		self.a:addbefore(3, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "z", "c"})
+	end;
+
+	["test: Should add an element to the start when the index is -#self"] = function (self)
+		self.a:addbefore(-3, "z")
+		luaunit.assertEquals(self.a.__data, {"z", "a", "b", "c"})
+	end;
+
+	["test: Should add an element to the middle when the index is the middle one and it's < 0"] = function (self)
+		self.a:addbefore(-2, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "z", "b", "c"})
+	end;
+
+	["test: Should add an element to before the last one start when the index is -1"] = function (self)
+		self.a:addbefore(-1, "z")
+		luaunit.assertEquals(self.a.__data, {"a", "b", "z", "c"})
+	end;
 }
