@@ -1,5 +1,4 @@
 Test__add = {
-	-- TODO: Add tests for duplicates
 	["test: Should return an empty array after uniting with an empty one when the array is empty"] = function ()
 		luaunit.assertEquals((array() + array()).__data, {})
 		luaunit.assertEquals(array():unite(array()).__data, {})
