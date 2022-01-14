@@ -54,18 +54,14 @@ local function collapseat(self, i)
 	i = normalizeidx(self.__len, i)
 	if i == nil or i < 0 or self.__len < i then
 		return
-	elseif i == 1 then
-		shift(self, -1)
-	else
-		-- if i < 0
-		if i ~= self.__len then
-			for j = i, self.__len do
-				self.__data[j] = self.__data[j + 1]
-			end
-		end
-		self.__data[self.__len] = nil
-		self.__len = self.__len - 1
 	end
+	if i ~= self.__len then
+		for j = i, self.__len do
+			self.__data[j] = self.__data[j + 1]
+		end
+	end
+	self.__data[self.__len] = nil
+	self.__len = self.__len - 1
 end
 
 local function add(self, i, elt, isbefore)
@@ -137,7 +133,6 @@ function mt:__newindex(i, elt)
 		local offset = -i + 1
 		i = 1
 		self.__len = oldlen + offset
-		-- TODO: Use collapse function
 		for j = oldlen, 1, -1 do
 			self.__data[j + offset], self.__data[j] = self.__data[j], nil
 		end
@@ -158,7 +153,7 @@ end
 function mt:__concat(a)
 	checkop(a, "concatenate")
 	local rs = alloc(self.__len + a.__len)
-	rs:each(function (i, elt) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
+	rs:each(function (i) rs.__data[i] = ternary(i <= #self, self.__data[i], a.__data[i - #self]) end)
 	return rs
 end
 
@@ -201,11 +196,11 @@ function mt:__sub(a)
 	-- TODO: Replace with less heavy algorithm - shift all elements at once instead of shifting in each loop
 	for i = 1, a.__len do
 		while true do
-			local i = rs:firstindexof(a.__data[i])
-			if i < 0 then
+			local idx = rs:firstindexof(a.__data[i])
+			if idx < 0 then
 				break
 			end
-			collapseat(rs, i)
+			collapseat(rs, idx)
 		end
 	end
 	return rs
