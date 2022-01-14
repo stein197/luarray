@@ -23,9 +23,9 @@ a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
 ```
 
 ## Key features
-- Negative indexing where indices are expected
+- Negative indexing
 - Object-oriented approach
-- `nil` is a regular element
+- `nil` is valid as an element
 - Methods to work with arrays like with stacks
 - Overloaded `[]`, `#`, `..`, `*`, `+` and `-` operators to short a few operations
 
