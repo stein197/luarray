@@ -6,33 +6,38 @@
 
 ![luarray](logo.svg)
 
-Lua provides only a few methods to work with tables. This package is an attempt to extend Lua's capabilities to work with array-like structures by introducing new `array` type with a bunch of useful and common methods which other programming languages have. All instance methods can be chained instead of using static function call.
+Lua provides only a few methods to work with tables. This package is an attempt to extend Lua's capabilities to work with array-like structures by introducing new `array` type with a bunch of useful and common methods which other programming languages have.
 
 ## Installation
 Via LuaRocks:
 ```
 luarocks install luarray
 ```
+Or directly download and include [init.lua](init.lua) file
 
-## Features
-- Negative indexing for all methods that work with indices.
-- Considering `nil` as a regular element
-- Methods that return a new array which contain nested arrays keep a reference to the original nested array. If you want method to return deep copy - clone them first with deep flag and then apply the method you want.
-- Has methods to work with arrays like with stacks
-- Overloaded `[]`, `#`, `..`, `*`, `+` and `-` operators
+## Usage
+The module exports only one constructor function. If you ever worked with PHP then the usage will be very familiar:
+```lua
+local array = require "luarray" -- Require the module
+local a = array("a", "b", "c") -- Instantiate an array, like in PHP
+a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
+```
+
+## Key features
+- Negative indexing where indices are expected
 - Object-oriented approach
+- `nil` is a regular element
+- Methods to work with arrays like with stacks
+- Overloaded `[]`, `#`, `..`, `*`, `+` and `-` operators to short a few operations
 
 ## API
 
 > To get more detailed documentation refer to the sources doc comments.
 
 ## Testing
-Install luaunit package:
+Install luaunit:
 ```
 luarocks install luaunit
 ```
 
-Then run from the console:
-```
-lua test.lua
-```
+Then run `lua test.lua` for Windows or `./lua test.lua` for Linux
