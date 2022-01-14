@@ -110,7 +110,7 @@ local function pad(self, len, elt, isstart)
 end
 
 --- Overloads index access to the array. Works the same way as an accessing an arbitrary table but in addition to that
---- it's also possible to access elements with negative indices. In such cases the counting starts from the end of the
+--- it's also possible to access elements with negative indices. In such cases the counting starts from the end of the.
 --- array.
 --- @generic T Type of elements the array contains.
 --- @param i number An index.
@@ -120,7 +120,7 @@ function mt:__index(i)
 end
 
 --- Overloads index assigning. Works the same way as an assigning in arbitrary table but in addition to that it's also
---- possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does
+--- possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does.
 --- nothing if there's an attempt to assign at non numeric or 0 index.
 --- @generic T Type of elements the array contains.
 --- @param i number Index at which to assign the element.
@@ -372,7 +372,7 @@ function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
 end
 
---- Checks if the array has specified element. Primitive types and arrays are compared by value and others by reference
+--- Checks if the array has specified element. Primitive types and arrays are compared by value and others by reference.
 --- @generic T Type of elements the array contains.
 --- @param elt T Element against which to test.
 --- @return boolean rs `true` if the array contains the element.
@@ -457,7 +457,7 @@ end
 
 --- Returns the first index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number Index at which to start searching. 1 by default
+--- @param i? number Index at which to start searching. 1 by default.
 --- @param elt T Element to find.
 --- @return number i First index at which the element found, otherwise -1.
 function pt:firstindexof(elt, i)
@@ -466,7 +466,7 @@ end
 
 --- Returns the last index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number Index at which to start searching. #self by default
+--- @param i? number Index at which to start searching. #self by default.
 --- @param elt T Element to find.
 --- @return number i Last index at which the element found, otherwise -1.
 function pt:lastindexof(elt, i)
