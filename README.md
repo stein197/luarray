@@ -15,7 +15,7 @@ luarocks install luarray
 ```
 
 ## Features
-- Negative indexing
+- Negative indexing for all methods that work with indices.
 - Considering `nil` as a regular element
 - Methods that return a new array which contain nested arrays keep a reference to the original nested array. If you want method to return deep copy - clone them first with deep flag and then apply the method you want.
 - Has methods to work with arrays like with stacks

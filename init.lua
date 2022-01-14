@@ -1,6 +1,5 @@
 -- TODO: Make same use of zero indices
 -- TODO: Restrict out of bounds indices and raise an error?
--- TODO: Review doc comments
 -- TODO: Make sure that methods that accept indices can accept negative ones as well
 local mt = {}
 
@@ -113,17 +112,19 @@ end
 --- Overloads index access to the array. Works the same way as an accessing an arbitrary table but in addition to that
 --- it's also possible to access elements with negative indices. In such cases the counting starts from the end of the
 --- array.
+--- @generic T Type of elements the array contains.
 --- @param i number An index.
---- @return any elt The element associated with the index.
+--- @return T elt The element associated with the index.
 function mt:__index(i)
 	return pt[i] or self.__data[normalizeidx(#self.__data, i)]
 end
 
---- Overloads index assigning. Works the same way as an accessing an arbitrary table but in addition to that it's also
+--- Overloads index assigning. Works the same way as an assigning in arbitrary table but in addition to that it's also
 --- possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does
---- nothing if there's an attempt to assign at non numeric index.
---- @param i number Index at which assign the element.
---- @param elt any Value to assign.
+--- nothing if there's an attempt to assign at non numeric or 0 index.
+--- @generic T Type of elements the array contains.
+--- @param i number Index at which to assign the element.
+--- @param elt T Element to assign.
 function mt:__newindex(i, elt)
 	local oldlen = self.__len
 	i = normalizeidx(oldlen, i)
@@ -164,8 +165,8 @@ function mt:__eq(t)
 	return isarray(t) and self.__len == t.__len and self:every(function (i, elt) return elt == t.__data[i] end)
 end
 
---- Performs an intersection between two arrays. Same as `intersect` method. Raises an error if there's an attempt to
---- intersect with non array. Preserves an order of the first array.
+--- Performs intersection between two arrays. Same as `intersect` method. Raises an error if there's an attempt to
+--- intersect with non array. Preserves an order of elements of the first array.
 --- @param a array Array to intersect with.
 --- @return array rs Array with elements that both arrays contain.
 function mt:__mul(a)
@@ -175,8 +176,8 @@ function mt:__mul(a)
 	return rs
 end
 
---- Performs an union between two arrays. Same as `unite` method. Raises an error if there's an attempt to unite with
---- non array. Preserves an order of the first array.
+--- Performs union between two arrays. Same as `unite` method. Raises an error if there's an attempt to unite with non
+--- array. Preserves an order of elements of the first array.
 --- @param a array Array to unite with.
 --- @return array rs Array that contains elements from both arrays.
 function mt:__add(a)
@@ -225,9 +226,10 @@ function pt:len()
 end
 
 --- Returns the first entry that satisfies a predicate.
---- @param f fun(i: number, elt: any): boolean Predicate.
+--- @generic T Type of elements the array contains.
+--- @param f fun(i: number, elt: T): boolean Predicate.
 --- @return number i Index of the element that satisfies predicate.
---- @return any elt Value that satisfies predicate.
+--- @return any elt Element that satisfies predicate.
 function pt:find(f)
 	for i = 1, self.__len do
 		if f(i, self.__data[i]) then
@@ -238,7 +240,8 @@ function pt:find(f)
 end
 
 --- Check if at least one element in the array satisfies the predicate.
---- @param f fun(i: number, elt: any): boolean Predicate.
+--- @generic T Type of elements the array contains.
+--- @param f fun(i: number, elt: T): boolean Predicate.
 --- @return boolean rs `true` if at least one element satisfies the predicate.
 function pt:some(f)
 	for i = 1, self.__len do
@@ -249,8 +252,9 @@ function pt:some(f)
 	return false
 end
 
---- Checks if every element in the array satisfies the passed predicate.
---- @param f fun(i: number, elt: any): boolean Predicate.
+--- Checks if every element in the array satisfies the predicate.
+--- @generic T Type of elements the array contains.
+--- @param f fun(i: number, elt: T): boolean Predicate.
 --- @return boolean rs `true` if all elements satisfy the predicate.
 function pt:every(f)
 	for i = 1, self.__len do
@@ -261,9 +265,10 @@ function pt:every(f)
 	return true
 end
 
---- Filters all the elements preserving only those that pass the predicate. Returns new array.
---- @param f fun(i: number, elt: any): boolean Predicate.
---- @return array rs New array containing every element that satisfies the predicate. Keys stay preserved.
+--- Filters all the elements preserving only those that pass the predicate. Returns a new array.
+--- @generic T Type of elements the array contains.
+--- @param f fun(i: number, elt: T): boolean Predicate.
+--- @return array rs New array containing every element that satisfies the predicate.
 function pt:filter(f)
 	local rs = array()
 	for i = 1, self.__len do
@@ -275,9 +280,10 @@ function pt:filter(f)
 	return rs
 end
 
---- Applies given function to every element in the array and returns the new one with elements returned by the function.
+--- Applies given function to every element in the array and returns a new one with elements returned by the function.
 --- @generic T Type of element the array contains.
---- @param f fun(i: number, elt: T): T Function to apply on each element. Returns new element.
+--- @generic U Type of elements the new array will contain.
+--- @param f fun(i: number, elt: T): U Function to apply to each element.
 --- @return array rs New array.
 function pt:map(f)
 	local rs = alloc(self.__len)
@@ -295,8 +301,8 @@ function pt:each(f)
 end
 
 --- Makes a clone of the table.
---- @param deep boolean Nested arrays will be deeply cloned if this element is set to `true`. By default `false`. Other
----                     methods that use cloning method performs a shallow one.
+--- @param deep boolean Nested arrays will be deeply cloned if this element is set to `true`. `false` by default. Other
+---                     methods that use this method perform a shallow one.
 --- @return array rs Cloned array.
 function pt:clone(deep)
 	return self:map(function (i, elt) return deep and isarray(elt) and elt:clone() or elt end)
@@ -313,7 +319,7 @@ function pt:sort(f)
 	return rs
 end
 
---- Shuffles the array. Works only with arrays with numeric keys.
+--- Shuffles the array.
 --- @return array rs Suffled array.
 function pt:shuffle()
 	local rs = self:clone()
@@ -326,17 +332,16 @@ end
 
 --- Returns the first index and element of the array.
 --- @generic T Type of elements the array contains.
---- @return number i The first index of the array. Usually 1 but it could be -1 if the array is empty.
---- @return T elt The first element of the array.
+--- @return number i The first index of the array. -1 if the array is empty.
+--- @return T elt The first element of the array. nil if the array is empty.
 function pt:first()
 	return self:isempty() and -1 or 1, self.__data[1]
 end
 
 --- Returns the last index and element of the array.
 --- @generic T Type of elements the array contains.
---- @return number i The last index of the array. Usually equals to the length of the array but it could be -1 if the
----                  array is empty.
---- @return T elt The last element of the array.
+--- @return number i The last index of the array. -1 if the array is empty.
+--- @return T elt The last element of the array. nil if the array is empty.
 function pt:last()
 	return self:isempty() and -1 or self.__len, self.__data[self.__len]
 end
@@ -348,30 +353,29 @@ function pt:join(sep)
 end
 
 --- Applies the given function to each element from the start to the end in the array returning an accumulate element.
---- @generic T Type of element the array contains.
---- @generic V Type of an accumulated element.
---- @param f fun(rs: V, i: number, elt: T): V Function to apply.
---- @param init? V A element to start with.
---- @return V rs Accumulated element.
+--- @generic T Type of elements the array contains.
+--- @generic U Type of an accumulated element.
+--- @param f fun(rs: U, i: number, elt: T): U Function to apply.
+--- @param init? U An element to start with.
+--- @return U rs Accumulated element.
 function pt:reducestart(f, init)
 	return reduce(self, f, init, true)
 end
 
 --- Applies the given function to each element from the end to the start in the array returning an accumulate element.
 --- @generic T Type of element the array contains.
---- @generic V Type of an accumulated element.
---- @param f fun(rs: V, i: number, elt: T): V Function to apply.
---- @param init? V A element to start with.
---- @return V rs Accumulated element.
+--- @generic U Type of an accumulated element.
+--- @param f fun(rs: U, i: number, elt: T): U Function to apply.
+--- @param init? U An element to start with.
+--- @return U rs Accumulated element.
 function pt:reduceend(f, init)
 	return reduce(self, f, init, false)
 end
 
---- Checks if the array has specified element. Primitive types and arrays are compared by element while other reference
---- types are compared by reference.
---- @generic T Type of element the array contains.
+--- Checks if the array has specified element. Primitive types and arrays are compared by value and others by reference
+--- @generic T Type of elements the array contains.
 --- @param elt T Element against which to test.
---- @return boolean rs `true` if the array has element.
+--- @return boolean rs `true` if the array contains the element.
 function pt:contains(elt)
 	return self:some(function (i, val) return val == elt end)
 end
@@ -389,26 +393,24 @@ function pt:uniq()
 	return rs
 end
 
---- Reverses the order of elements in the array. Works correctly only with numeric keys.
+--- Reverses the order of elements in the array.
 --- @return array rs Reversed array.
 function pt:reverse()
-	return self:map(function (i, elt) return self.__data[self.__len - i + 1] end)
+	return self:map(function (i) return self.__data[self.__len - i + 1] end)
 end
 
---- Slices the part of the array. Raises an error if argument `to` is less than `from`.
+--- Slices a part of the array. Raises an error if the argument `to` is less than `from`.
 --- @param from number Start index of the sliced array. If negative index is supplied then the real index is calculated
----                    relative to the end of the array. 0 is considered as 1. 1 by default.
+---                    relative to the end of the array. 1 by default.
 --- @param to number End index of the sliced array. If negative index is supplied then the real index is calculated
----                      relative to the end of the array. 0 is considered as #self. #self by default.
+---                      relative to the end of the array. #self by default.
 --- @return array rs Slice of the array.
 function pt:slice(from, to)
 	if self.__len == 0 then
 		return array()
 	end
-	from = (from == nil or from == 0) and 1 or from
-	to = (to == nil or to == 0) and self.__len or to
-	local normfrom = normalizeidx(self.__len, from)
-	local normto = normalizeidx(self.__len, to)
+	local normfrom = normalizeidx(self.__len, from) or 1
+	local normto = normalizeidx(self.__len, to) or self.__len
 	normfrom = ternary(normfrom <= 0, 1, ternary(normfrom > self.__len, self.__len + 1, normfrom))
 	normto = ternary(normto <= 0, 1, ternary(normto > self.__len, self.__len, normto))
 	if normfrom > self.__len then
@@ -421,31 +423,31 @@ function pt:slice(from, to)
 end
 
 --- Pads the start of the array with the given element to the specified length.
---- @generic T Type of element the array contains.
---- @param len number To which length pad the array.
---- @param elt T What item to add.
+--- @generic T Type of elements the array contains.
+--- @param len number Length to which pad the array.
+--- @param elt T Item to add.
 --- @return array rs Padded array.
 function pt:padstart(len, elt)
 	return pad(self, len, elt, true)
 end
 
 --- Pads the end of the array with the given element to the specified length.
---- @generic T Type of element the array contains.
---- @param len number To which length pad the array.
---- @param elt T What item to add.
+--- @generic T Type of elements the array contains.
+--- @param len number Length to which pad the array.
+--- @param elt T Item to add.
 --- @return array rs Padded array.
 function pt:padend(len, elt)
 	return pad(self, len, elt, false)
 end
 
 --- Checks if the array is empty.
---- @return boolean rs `true` if the array contains no elements.
+--- @return boolean rs `true` if the array does not contain elements.
 function pt:isempty()
 	return self.__len == 0
 end
 
---- Converts the array into ordinary Lua table.
---- @param deep boolean Set to true for converting nested arrays into table too. `false` by default.
+--- Converts the array into an ordinary Lua table.
+--- @param deep boolean Set to `true` for converting nested arrays into table too. `false` by default.
 --- @return table ts Table.
 function pt:totable(deep)
 	local t = {}
@@ -455,8 +457,8 @@ end
 
 --- Returns the first index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number At which index to start searching. 1 by default
---- @param elt T Value to find.
+--- @param i? number Index at which to start searching. 1 by default
+--- @param elt T Element to find.
 --- @return number i First index at which the element found, otherwise -1.
 function pt:firstindexof(elt, i)
 	return indexof(self, elt, i, true)
@@ -464,15 +466,15 @@ end
 
 --- Returns the last index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number At which index to start searching. #self by default
---- @param elt T Value to find.
+--- @param i? number Index at which to start searching. #self by default
+--- @param elt T Element to find.
 --- @return number i Last index at which the element found, otherwise -1.
 function pt:lastindexof(elt, i)
 	return indexof(self, elt, i, false)
 end
 
 --- Adds an element to the start of the array shifting all the elements to the end.
---- @generic T Type of elements the array contains
+--- @generic T Type of elements the array contains.
 --- @param elt T Element to add.
 function pt:addstart(elt)
 	shift(self, 1)
@@ -487,9 +489,9 @@ function pt:addend(elt)
 	self.__data[self.__len] = elt
 end
 
---- Deletes an element at the specified index.
+--- Deletes an element at the specified index shifting rightmost elements to the left.
 --- @generic T Type of elements the array contains.
---- @param i number Index at which an element will be deleted. Can be negative.
+--- @param i number Index at which an element will be deleted.
 --- @return T rs Deleted element.
 function pt:del(i)
 	if self.__len == 0 then
@@ -501,7 +503,7 @@ function pt:del(i)
 	return elt
 end
 
---- Deletes an element from the start.
+--- Deletes an element from the start shifting all elements to the left.
 --- @generic T Type of elements the array contains.
 --- @return T rs Deleted element.
 function pt:delstart()
@@ -515,23 +517,23 @@ function pt:delend()
 	return self:del(self.__len)
 end
 
---- Performs an intersection between two arrays. Same as `*` operator. Raises an error if there's an attempt to
---- intersect with non array. Preserves an order of the first array.
+--- Performs intersection between two arrays. Same as `*` operator. Raises an error if there's an attempt to intersect
+--- with non array. Preserves an order of elements of the first array.
 --- @param a array Array to intersect with.
 --- @return array rs Array with elements that both arrays contain.
 function pt:intersect(a)
 	return self * a
 end
 
---- Performs an union between two arrays. Same as `+` operator. Raises an error if there's an attempt to unite with non
---- array. Preserves an order of the first array.
+--- Performs union between two arrays. Same as `+` operator. Raises an error if there's an attempt to unite with non
+--- array. Preserves an order of elements of the first array.
 --- @param a array Array to unite with.
 --- @return array rs Array that contains elements from both arrays.
 function pt:unite(a)
 	return self + a
 end
 
---- Performs subtraction between arrays. Same as `subtract` method. Raises an error if there's an attempt to subtract
+--- Performs subtraction between arrays. Same as `-` operator. Raises an error if there's an attempt to subtract
 --- on/from non array.
 --- @param a array Array to subtract.
 --- @return array rs Array whose elements were subtracted with another one.
@@ -570,7 +572,7 @@ function pt:flat(depth)
 	return rs
 end
 
---- Returns the only element distincts from others by some parameter. Could used for retrieving min or max values.
+--- Returns the only element that distinct from others by any parameter. Could be used for retrieving min or max values.
 --- @generic T Type of elements the array contains.
 --- @param f fun(a: T, b: T): T Comparison function. Should return the highest element.
 --- @return T rs The only element that has the most precedence over others.
