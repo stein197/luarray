@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="115.81351mm"
+   width="219.21361mm"
    height="45.436275mm"
-   viewBox="0 0 115.81351 45.436275"
+   viewBox="0 0 219.21361 45.436275"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
@@ -25,14 +25,14 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-smooth-nodes="true"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-global="true"
-     inkscape:snap-nodes="false"
+     inkscape:snap-nodes="true"
      inkscape:snap-object-midpoints="true"
-     inkscape:zoom="1"
-     inkscape:cx="172.5"
-     inkscape:cy="105.5"
+     inkscape:zoom="4"
+     inkscape:cx="388.625"
+     inkscape:cy="88.625"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -42,17 +42,18 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     inkscape:snap-page="true" />
   <defs
      id="defs2" />
   <g
      inkscape:label="Слой 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(3.4689188,-49.240429)">
+     transform="translate(216.36581,-49.240429)">
     <g
        id="g34858"
-       transform="matrix(6.4885935,0,0,6.4885935,-54.41888,-225.85981)"
+       transform="matrix(6.4885935,0,0,6.4885935,-215.61573,-225.85981)"
        style="stroke-width:0.154116">
       <circle
          style="font-variation-settings:normal;vector-effect:none;fill:#000080;fill-opacity:1;stroke:none;stroke-width:0.00407768;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
@@ -69,7 +70,7 @@
     </g>
     <g
        id="g34820"
-       transform="matrix(6.4885935,0,0,6.4885935,-54.781779,-225.62455)"
+       transform="matrix(6.4885935,0,0,6.4885935,-215.97863,-225.62455)"
        style="stroke-width:0.154116">
       <path
          d="m 7.9081638,47.404259 v -3.030304 h 0.4010088 v 2.672703 h 1.4924142 v 0.357601 z"
@@ -82,7 +83,7 @@
     </g>
     <g
        id="g34810"
-       transform="matrix(6.4885935,0,0,6.4885935,-54.777784,-225.62455)"
+       transform="matrix(6.4885935,0,0,6.4885935,-215.97464,-225.62455)"
        style="fill:#ffffff;fill-opacity:1;stroke-width:0.154116">
       <path
          d="m 13.317946,48.24555 v -3.871595 h 0.820621 v 0.307992 h -0.448551 v 3.255612 h 0.448551 v 0.307991 z"
@@ -99,7 +100,7 @@
     </g>
     <g
        id="g34816"
-       transform="matrix(6.4885935,0,0,6.4885935,-54.781779,-225.62455)"
+       transform="matrix(6.4885935,0,0,6.4885935,-215.97863,-225.62455)"
        style="stroke-width:0.154116">
       <path
          d="m 18.778571,47.404259 v -2.195213 h 0.334863 v 0.332796 q 0.128157,-0.233578 0.235644,-0.307992 0.109554,-0.07441 0.239779,-0.07441 0.188102,0 0.382405,0.11989 l -0.128158,0.345198 q -0.136425,-0.08062 -0.272851,-0.08062 -0.121956,0 -0.219108,0.07441 -0.09715,0.07235 -0.138493,0.202571 -0.06201,0.198438 -0.06201,0.434082 v 1.149283 z"
