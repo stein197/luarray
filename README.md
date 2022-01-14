@@ -2,7 +2,6 @@
 [![](https://img.shields.io/github/license/stein197/luarray)](LICENSE)
 ![](https://img.shields.io/github/v/tag/stein197/luarray?label=Version)
 [![](https://img.shields.io/luarocks/v/stein197/luarray)](https://luarocks.org/modules/stein197/luarray)
-[![](https://img.shields.io/github/size/stein197/luarray/init.lua)](init.lua)
 
 ![luarray](logo.svg)
 
