@@ -1,6 +1,3 @@
--- TODO: Make same use of zero indices
--- TODO: Restrict out of bounds indices and raise an error?
--- TODO: Make sure that methods that accept indices can accept negative ones as well
 local mt = {}
 
 --- @generic T

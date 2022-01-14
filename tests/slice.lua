@@ -17,7 +17,7 @@ TestSlice = {
 		luaunit.assertEquals(array("a"):slice(-1, 1).__data, {"a"})
 	end;
 
-	["test: Should return aither entire array or empty one when the arguments are out of bounds"] = function ()
+	["test: Should return either entire array or empty one when the arguments are out of bounds"] = function ()
 		luaunit.assertEquals(array("a"):slice(-2).__data, {"a"})
 		luaunit.assertEquals(array("a"):slice(2).__data, {})
 		luaunit.assertEquals(array("a"):slice(2, -2).__data, {})

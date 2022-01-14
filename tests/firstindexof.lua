@@ -68,4 +68,8 @@ TestFirstIndexOf = {
 	["test: Should return correct for nil when nil is at the end of the array"] = function ()
 		luaunit.assertEquals(array("a", "b", nil):firstindexof(nil), 3)
 	end;
+
+	["test: Should return nil when the index is out of bounds"] = function ()
+		luaunit.assertEquals(array("a", "b", "c"):firstindexof("a", 10), -1)
+	end;
 }
