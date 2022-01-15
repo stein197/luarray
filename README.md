@@ -30,7 +30,7 @@ a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
 - [Overloaded operators](#overloaded-operators)
 
 ### Negative indexing
-Methods that accept indices can also accept negative once. In such case the counting starts from the end of an array:
+Methods that accept indices can also accept negative ones. In such case the counting starts from the end of an array:
 ```lua
 array("a", "b", "c"):slice(-2) -- array("b", "c")
 ```
@@ -40,7 +40,7 @@ array("a", "b", "c")[-1] -- "c"
 ```
 
 ### Object-oriented approach
-Instead of calling separate functions on tables, created ones has methods that allows to chain them:
+Instead of calling separate functions on tables, created ones has methods that allow to chain them:
 ```lua
 array("a", "b", "c"):reverse():join() -- "cba"
 ```
