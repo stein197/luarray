@@ -28,6 +28,7 @@ a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
 - [`nil` as an element](#nil-as-an-element)
 - [Stack methods](#stack-methods)
 - [Overloaded operators](#overloaded-operators)
+- [Consistency](#consistency)
 
 ### Negative indexing
 Methods that accept indices can also accept negative ones. In such case the counting starts from the end of an array:
@@ -85,9 +86,15 @@ print(a == array("a", "b", "c"))
 a = a - array("b") -- array("a", "c")
 ```
 
-## API
+### Consistency
+Methods that accept closures will pass index and value to them in that order only:
+```lua
+array():map(function (i, elt) --[[ ... ]] end)
+```
+Methods that operate with array ends are named appropriately: `reduceend`, `addend`, `delstart`, `addstart` and so on.
 
-> To get more detailed documentation refer to the sources doc comments.
+## Documentation
+To get all available API, please refer to [doc.md](doc.md) or run `node doc.js` to generate documentation.
 
 ## Testing
 Install luaunit:
