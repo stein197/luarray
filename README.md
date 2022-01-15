@@ -23,11 +23,67 @@ a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
 ```
 
 ## Key features
-- Negative indexing
-- Object-oriented approach
-- `nil` is valid as an element
-- Methods to work with arrays like with stacks
-- Overloaded `[]`, `#`, `..`, `*`, `+` and `-` operators to short a few operations
+- [Negative indexing](#negative-indexing)
+- [Object-oriented approach](#object-oriented-approach)
+- [`nil` as an element](#nil-as-an-element)
+- [Stack methods](#stack-methods)
+- [Overloaded operators](#overloaded-operators)
+
+### Negative indexing
+Methods that accept indices can also accept negative once. In such case the counting starts from the end of an array:
+```lua
+array("a", "b", "c"):slice(-2) -- array("b", "c")
+```
+It also applies to index operator:
+```lua
+array("a", "b", "c")[-1] -- "c"
+```
+
+### Object-oriented approach
+Instead of calling separate functions on tables, created ones has methods that allows to chain them:
+```lua
+array("a", "b", "c"):reverse():join() -- "cba"
+```
+
+### `nil` as an element
+Oridnary lua tables consider nils as a gap, so if a table has nil in the middle and if you'd like to determine it's length, it'll finish at first nil. The library consider `nil` as a regular element which doesn't break a sequence of elements:
+```lua
+local a = array("a", nil, "c", nil)
+a:len() -- 4
+```
+
+### Stack methods
+An array could be used as a stack - the library provides such methods:
+```lua
+local a = array()
+a:addend("a")
+a:addend("b")
+a:delend()
+print(a) -- array("a")
+```
+
+### Overloaded operators
+The library overloads the next metamethods for arrays:
+- `__index()` for indexing
+- `__newindex()` for direct assigning
+- `__len()` for retrieving length
+- `__concat()` for concatenating arrays
+- `__pairs()` for usage in `pairs()` function
+- `__eq()` for deep comparison between arrays
+- `__mul()` for intersecting
+- `__add()` for union
+- `__sub()` for subtraction
+
+Example:
+```lua
+local a = array("a")
+a = a..array("b") -- array("a", "b")
+a[2] -- "b"
+a[3] = "c"
+print(a == array("a", "b", "c"))
+> true
+a = a - array("b") -- array("a", "c")
+```
 
 ## API
 
