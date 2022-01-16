@@ -21,6 +21,7 @@ local array = require "luarray" -- Require the module
 local a = array("a", "b", "c") -- Instantiate an array, like in PHP
 a:map(function (i, elt) return elt:upper() end):reverse():join() -- "CBA"
 ```
+Methods that return array create a new one instead of modifying the current array.
 
 ## Key features
 - [Negative indexing](#negative-indexing)
