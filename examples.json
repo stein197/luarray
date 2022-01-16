@@ -6,7 +6,7 @@
 	"__len": "#array(\"a\") -- 1",
 	"__mul": "array(\"a\", \"b\") * array(\"b\", \"c\") -- array(\"b\")",
 	"__newindex": "array(\"a\")[2] = \"b\" -- array(\"a\", \"b\")",
-	"__pairs": "for i, v in pairs(array(\"a\", \"b\", \"c\")) do\n\tprint(i, v)\nend\n> 1, \"a\"\n>2, \"b\"\n>3, \"c\"",
+	"__pairs": "for i, v in pairs(array(\"a\", \"b\", \"c\")) do\n\tprint(i, v)\nend\n> 1, \"a\"\n> 2, \"b\"\n> 3, \"c\"",
 	"__sub": "array(\"a\", \"b\") - array(\"b\") -- array(\"a\")",
 	"addafter": "local a = array(\"a\", \"b\")\na:addafter(2, \"c\")\na -- array(\"a\", \"b\", \"c\")",
 	"addbefore": "local a = array(\"b\", \"c\")\na:addbefore(1, \"a\")\na -- array(\"a\", \"b\", \"c\")",

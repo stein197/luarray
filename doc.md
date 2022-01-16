@@ -142,6 +142,7 @@ Overloads index assigning. Works the same way as an assigning in arbitrary table
 **Parameters**
 
 `i` `number` - Index at which to assign the element.
+
 `elt` `T` - Element to assign.
 
 ```lua
@@ -156,8 +157,8 @@ for i, v in pairs(array("a", "b", "c")) do
 	print(i, v)
 end
 > 1, "a"
->2, "b"
->3, "c"
+> 2, "b"
+> 3, "c"
 ```
 
 ## __sub
@@ -181,6 +182,7 @@ Adds an element after specified index. Does nothing if the index is out of bound
 **Parameters**
 
 `i` `number` - Index after which add the element.
+
 `elt` `T` - An element to add.
 
 ```lua
@@ -195,6 +197,7 @@ Adds an element before specified index. Does nothing if the index is out of boun
 **Parameters**
 
 `i` `number` - Index before which add the element.
+
 `elt` `T` - An element to add.
 
 ```lua
@@ -320,6 +323,10 @@ a:delstart() -- "a"
 ## each
 Applies passed closure to all elements.
 
+**Parameters**
+
+`f` `fun(i: number, elt: T)` - Closure.
+
 ```lua
 array("a", "b", "c"):each(function (i, elt) print(i, elt) end)
 ```
@@ -364,6 +371,7 @@ Returns the first entry that satisfies a predicate.
 **Returns**
 
 `number` - Index of the element that satisfies predicate.
+
 `any` - Element that satisfies predicate.
 
 ```lua
@@ -376,6 +384,7 @@ Returns the first index and element of the array.
 **Returns**
 
 `number` - The first index of the array. -1 if the array is empty.
+
 `T` - The first element of the array. nil if the array is empty.
 
 ```lua
@@ -387,8 +396,9 @@ Returns the first index at which the given element can be found.
 
 **Parameters**
 
-`i?` `number` - Index at which to start searching. 1 by default.
 `elt` `T` - Element to find.
+
+`i?` `number` - Index at which to start searching. 1 by default.
 
 **Returns**
 
@@ -456,6 +466,7 @@ Returns the last index and element of the array.
 **Returns**
 
 `number` - The last index of the array. -1 if the array is empty.
+
 `T` - The last element of the array. nil if the array is empty.
 
 ```lua
@@ -467,8 +478,9 @@ Returns the last index at which the given element can be found.
 
 **Parameters**
 
-`i?` `number` - Index at which to start searching. #self by default.
 `elt` `T` - Element to find.
+
+`i?` `number` - Index at which to start searching. #self by default.
 
 **Returns**
 
@@ -525,6 +537,7 @@ Pads the end of the array with the given element to the specified length.
 **Parameters**
 
 `len` `number` - Length to which pad the array.
+
 `elt` `T` - Item to add.
 
 **Returns**
@@ -541,6 +554,7 @@ Pads the start of the array with the given element to the specified length.
 **Parameters**
 
 `len` `number` - Length to which pad the array.
+
 `elt` `T` - Item to add.
 
 **Returns**
@@ -557,6 +571,7 @@ Applies the given function to each element from the end to the start in the arra
 **Parameters**
 
 `f` `fun(rs: U, i: number, elt: T): U` - Function to apply.
+
 `init?` `U` - An element to start with.
 
 **Returns**
@@ -573,6 +588,7 @@ Applies the given function to each element from the start to the end in the arra
 **Parameters**
 
 `f` `fun(rs: U, i: number, elt: T): U` - Function to apply.
+
 `init?` `U` - An element to start with.
 
 **Returns**
@@ -611,6 +627,7 @@ Slices a part of the array. Raises an error if the argument `to` is less than `f
 **Parameters**
 
 `from` `number` - Start index of the sliced array. If negative index is supplied then the real index is calculated relative to the end of the array. 1 by default.
+
 `to` `number` - End index of the sliced array. If negative index is supplied then the real index is calculated relative to the end of the array. #self by default.
 
 **Returns**

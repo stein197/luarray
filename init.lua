@@ -454,8 +454,8 @@ end
 
 --- Returns the first index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number Index at which to start searching. 1 by default.
 --- @param elt T Element to find.
+--- @param i? number Index at which to start searching. 1 by default.
 --- @return number i First index at which the element found, otherwise -1.
 function pt:firstindexof(elt, i)
 	return indexof(self, elt, i, true)
@@ -463,8 +463,8 @@ end
 
 --- Returns the last index at which the given element can be found.
 --- @generic T Type of elements the array contains.
---- @param i? number Index at which to start searching. #self by default.
 --- @param elt T Element to find.
+--- @param i? number Index at which to start searching. #self by default.
 --- @return number i Last index at which the element found, otherwise -1.
 function pt:lastindexof(elt, i)
 	return indexof(self, elt, i, false)
