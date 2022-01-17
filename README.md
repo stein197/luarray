@@ -102,7 +102,7 @@ array():map(function (i, elt) --[[ ... ]] end)
 Methods that operate with array ends are named appropriately: `reduceend`, `addend`, `delstart`, `addstart` and so on.
 
 ## Documentation
-To get all available API, please refer to [doc.md](doc.md) or run `node doc.js` to generate documentation.
+To get all available API, please refer to [api.md](api.md) or run `node api.js` to generate documentation.
 
 ## Testing
 Install luaunit:

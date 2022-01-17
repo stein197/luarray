@@ -30,4 +30,4 @@ for (const item of data) {
 	const returns = item.returns.map(returns => `\`${returns[0]}\` - ${returns[2]}`).join("\n\n");
 	result += `\n## ${item.name}\n${item.desc}${params ? `\n\n**Parameters**\n\n${params}` : ""}${returns ? `\n\n**Returns**\n\n${returns}` : ""}\n\n\`\`\`lua\n${examples[item.name]}\n\`\`\`\n`;
 }
-fs.writeFileSync("doc.md", result);
+fs.writeFileSync("api.md", result);
