@@ -17,8 +17,8 @@ const data = fs
 	)
 	.map(item => ({
 		name: item[item.length - 1].match(/^function\s+(?:mt|pt):(\w+)/)[1],
-		// fullName: item[item.length - 1].match(/^function\s+(?:mt|pt):(.+)/)[1],
 		desc: item[0],
+		generics: item.filter(l => l.match(/^@generic/)).map(l => l.match(/^@generic\s+(\w+)\s+(.+)/)?.filter((v, i) => 1 <= i && i <= 2)).filter(item => item),
 		params: item.filter(l => l.match(/^@param/)).map(l => l.match(/^@param\s+(\w+\??)\s+(fun\(.+?\)\s*(?::\s*\w+)?|\w+)\s+(.+)/)?.filter((v, i) => 1 <= i && i <= 3)).filter(item => item),
 		returns: item.filter(l => l.match(/^@return/)).map(l => l.match(/^@return\s+(\w+\??)\s+(fun\(.+?\)\s*(?::\s*\w+)?|\w+)\s+(.+)/)?.filter((v, i) => 1 <= i && i <= 3)).filter(item => item)
 	}))
@@ -26,8 +26,9 @@ const data = fs
 for (const item of data)
 	result += `- [${item.name}](#${item.name})\n`;
 for (const item of data) {
+	const generics = item.generics.map(generic => `\`${generic[0]}\` - ${generic[1]}`).join("\n\n");
 	const params = item.params.map(param => `\`${param[0]}\` \`${param[1]}\` - ${param[2]}`).join("\n\n");
 	const returns = item.returns.map(returns => `\`${returns[0]}\` - ${returns[2]}`).join("\n\n");
-	result += `\n## ${item.name}\n${item.desc}${params ? `\n\n**Parameters**\n\n${params}` : ""}${returns ? `\n\n**Returns**\n\n${returns}` : ""}\n\n\`\`\`lua\n${examples[item.name]}\n\`\`\`\n`;
+	result += `\n## ${item.name}\n${item.desc}${generics ? `\n\n**Generics**\n\n${generics}` : ""}${params ? `\n\n**Parameters**\n\n${params}` : ""}${returns ? `\n\n**Returns**\n\n${returns}` : ""}\n\n\`\`\`lua\n${examples[item.name]}\n\`\`\`\n`;
 }
 fs.writeFileSync("api.md", result);
