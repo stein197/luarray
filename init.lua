@@ -574,11 +574,7 @@ end
 --- @param f fun(a: T, b: T): T Comparison function. Should return the highest element.
 --- @return T rs The only element that has the most precedence over others.
 function pt:only(f)
-	local rs = self.__data[1]
-	for i = 2, self.__len do
-		rs = f(rs, self.__data[i])
-	end
-	return rs
+	return self:reducestart(function (rs, i, elt) return f(rs, elt) end)
 end
 
 --- Adds an element before specified index. Does nothing if the index is out of bounds.
