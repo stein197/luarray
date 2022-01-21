@@ -113,7 +113,7 @@ end
 --- @param i number An index.
 --- @return T elt The element associated with the index.
 function mt:__index(i)
-	return pt[i] or self.__data[normalizeidx(#self.__data, i)]
+	return pt[i] or self.__data[normalizeidx(self.__len, i)]
 end
 
 --- Overloads index assigning. Works the same way as an assigning in arbitrary table but in addition to that it's also
