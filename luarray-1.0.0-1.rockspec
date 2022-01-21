@@ -9,16 +9,15 @@ source = {
 description = {
 	summary = "Instantiatable flexible array implementation with familiar methods for Lua",
 	detailed = [[
-		Lua provides only a few methods to work with tables. This package is an attempt to extend Lua's capabilities
-		to work with array-like structures by introducing new `array` type with a bunch of useful and common methods
-		which other programming languages have.
+		Lua provides only a few methods to work with tables.
+		This package is an attempt to extend Lua's capabilities to work with array-like structures by introducing a wrapper with a bunch of useful and common methods which other programming languages have.
 	]],
 	homepage = "https://github.com/stein197/luarray",
 	issues_url = "https://github.com/stein197/luarray/issues",
 	license = "MIT",
 	maintainer = "Nail' Gafarov <nil20122013@gmail.com>",
 	labels = {
-		"array"
+		"array", "table"
 	}
 }
 dependencies = {
