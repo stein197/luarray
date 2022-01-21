@@ -73,4 +73,8 @@ Test__index = {
 	["test: Should return corresponding element before nil when accessing with negative index"] = function ()
 		luaunit.assertEquals(array("a", nil, "c")[-3], "a")
 	end;
+
+	["test: Should return nil when accessing nil with -1"] = function ()
+		luaunit.assertNil(array("a", "b", nil)[-1])
+	end;
 }
