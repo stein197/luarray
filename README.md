@@ -1,4 +1,4 @@
-# Instantiatable flexible array implementation with familiar methods for Lua
+# Arrays for Lua
 [![](https://img.shields.io/github/license/stein197/luarray)](LICENSE)
 [![](https://img.shields.io/luarocks/v/stein197/luarray)](https://luarocks.org/modules/stein197/luarray)
 
@@ -101,7 +101,7 @@ array():map(function (i, elt) --[[ ... ]] end)
 Methods that operate with array ends are named appropriately: `reduceend`, `addend`, `delstart`, `addstart` and so on.
 
 ## Documentation
-To get all available API, please refer to [doc.md](doc.md) or run `node doc.js` to generate documentation.
+To get all available API, please refer to [api.md](api.md) or run `node api.js` to generate documentation.
 
 ## Testing
 Install luaunit:

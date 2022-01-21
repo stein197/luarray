@@ -97,6 +97,10 @@ array("a", array("b")) == array("a", array("b")) -- true
 ## __index
 Overloads index access to the array. Works the same way as an accessing an arbitrary table but in addition to that it's also possible to access elements with negative indices. In such cases the counting starts from the end of the. array.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `i` `number` - An index.
@@ -139,6 +143,10 @@ array("a", "b") * array("b", "c") -- array("b")
 ## __newindex
 Overloads index assigning. Works the same way as an assigning in arbitrary table but in addition to that it's also possible to assign elements at negative indices. In such cases the counting starts from the end of the array. Does. nothing if there's an attempt to assign at non numeric or 0 index.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `i` `number` - Index at which to assign the element.
@@ -179,6 +187,10 @@ array("a", "b") - array("b") -- array("a")
 ## addafter
 Adds an element after specified index. Does nothing if the index is out of bounds.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `i` `number` - Index after which add the element.
@@ -193,6 +205,10 @@ a -- array("a", "b", "c")
 
 ## addbefore
 Adds an element before specified index. Does nothing if the index is out of bounds.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -209,6 +225,10 @@ a -- array("a", "b", "c")
 ## addend
 Adds an element to the end of the array.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `elt` `T` - Element to add.
@@ -221,6 +241,10 @@ a -- array("a", "b", "c")
 
 ## addstart
 Adds an element to the start of the array shifting all the elements to the end.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -267,6 +291,10 @@ array("a", "b", "c"):clone() -- array("a", "b", "c")
 ## contains
 Checks if the array has specified element. Primitive types and arrays are compared by value and others by reference.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `elt` `T` - Element against which to test.
@@ -281,6 +309,10 @@ array("a", "b", "c"):contains("c") -- true
 
 ## del
 Deletes an element at the specified index shifting rightmost elements to the left.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -299,6 +331,10 @@ a -- array("a", "c")
 ## delend
 Deletes an element from the end.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Returns**
 
 `T` - Deleted element.
@@ -310,6 +346,10 @@ a:delend() -- "c"
 
 ## delstart
 Deletes an element from the start shifting all elements to the left.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Returns**
 
@@ -323,6 +363,10 @@ a:delstart() -- "a"
 ## each
 Applies passed closure to all elements.
 
+**Generics**
+
+`T` - Type of element the array contains.
+
 **Parameters**
 
 `f` `fun(i: number, elt: T)` - Closure.
@@ -333,6 +377,10 @@ array("a", "b", "c"):each(function (i, elt) print(i, elt) end)
 
 ## every
 Checks if every element in the array satisfies the predicate.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -349,6 +397,10 @@ array("a", "b", "c"):every(function (i, elt) return type(elt) == "string" end) -
 ## filter
 Filters all the elements preserving only those that pass the predicate. Returns a new array.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `f` `fun(i: number, elt: T): boolean` - Predicate.
@@ -363,6 +415,10 @@ array("a", "b", "c"):filter(function (i, elt) return i % 2 == 0 end) -- array("b
 
 ## find
 Returns the first entry that satisfies a predicate.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -381,6 +437,10 @@ array("a", "b", "c"):find(function (i, elt) return elt < "c" end) -- "a"
 ## first
 Returns the first index and element of the array.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Returns**
 
 `number` - The first index of the array. -1 if the array is empty.
@@ -393,6 +453,10 @@ array("a", "b", "c"):first() -- 1, "a"
 
 ## firstindexof
 Returns the first index at which the given element can be found.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -463,6 +527,10 @@ array("a", "b", "c"):join(", ") -- "a, b, c"
 ## last
 Returns the last index and element of the array.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Returns**
 
 `number` - The last index of the array. -1 if the array is empty.
@@ -475,6 +543,10 @@ array("a", "b", "c"):last() -- 3, "c"
 
 ## lastindexof
 Returns the last index at which the given element can be found.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -504,6 +576,12 @@ array("a", "b", "c"):len() -- 3
 ## map
 Applies given function to every element in the array and returns a new one with elements returned by the function.
 
+**Generics**
+
+`T` - Type of element the array contains.
+
+`U` - Type of elements the new array will contain.
+
 **Parameters**
 
 `f` `fun(i: number, elt: T): U` - Function to apply to each element.
@@ -519,6 +597,10 @@ array("a", "b", "c"):map(function (i, elt) return elt:upper() end) -- array("A",
 ## only
 Returns the only element that distinct from others by any parameter. Could be used for retrieving min or max values.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `f` `fun(a: T, b: T): T` - Comparison function. Should return the highest element.
@@ -533,6 +615,10 @@ array(1, 10, 50):only(function (a, b) return a > b and a or b end) -- 50
 
 ## padend
 Pads the end of the array with the given element to the specified length.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
@@ -551,6 +637,10 @@ array("a", "b", "c"):padend(6, "d") -- array("a", "b", "c", "d", "d", "d")
 ## padstart
 Pads the start of the array with the given element to the specified length.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `len` `number` - Length to which pad the array.
@@ -568,6 +658,12 @@ array("a", "b", "c"):padstart(6, "d") -- array("d", "d", "d", "a", "b", "c")
 ## reduceend
 Applies the given function to each element from the end to the start in the array returning an accumulate element.
 
+**Generics**
+
+`T` - Type of element the array contains.
+
+`U` - Type of an accumulated element.
+
 **Parameters**
 
 `f` `fun(rs: U, i: number, elt: T): U` - Function to apply.
@@ -584,6 +680,12 @@ array("a", "b", "c"):reduceend(function (prev, i, elt) return prev..elt end) -- 
 
 ## reducestart
 Applies the given function to each element from the start to the end in the array returning an accumulate element.
+
+**Generics**
+
+`T` - Type of elements the array contains.
+
+`U` - Type of an accumulated element.
 
 **Parameters**
 
@@ -641,6 +743,10 @@ array("a", "b", "c"):slice(-3, 2) -- array("a", "b")
 ## some
 Check if at least one element in the array satisfies the predicate.
 
+**Generics**
+
+`T` - Type of elements the array contains.
+
 **Parameters**
 
 `f` `fun(i: number, elt: T): boolean` - Predicate.
@@ -655,6 +761,10 @@ array("a", "b", "c"):some(function (i, elt) return elt == "a" end) -- true
 
 ## sort
 Sorts the array.
+
+**Generics**
+
+`T` - Type of elements the array contains.
 
 **Parameters**
 
