@@ -1,5 +1,7 @@
 const fs = require("fs");
-const examples = JSON.parse(fs.readFileSync("examples.json").toString());
+const path = require("path");
+
+const examples = JSON.parse(fs.readFileSync(__dirname + path.sep + "examples.json").toString());
 let result = "# API\n\n## Table of contents\n";
 const data = fs
 	.readFileSync("init.lua")
@@ -31,4 +33,4 @@ for (const item of data) {
 	const returns = item.returns.map(returns => `\`${returns[0]}\` - ${returns[2]}`).join("\n\n");
 	result += `\n## ${item.name}\n${item.desc}${generics ? `\n\n**Generics**\n\n${generics}` : ""}${params ? `\n\n**Parameters**\n\n${params}` : ""}${returns ? `\n\n**Returns**\n\n${returns}` : ""}\n\n\`\`\`lua\n${examples[item.name]}\n\`\`\`\n`;
 }
-fs.writeFileSync("api.md", result);
+fs.writeFileSync(__dirname + path.sep + "api.md", result);
