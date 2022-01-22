@@ -193,13 +193,12 @@ function mt:__sub(a)
 	local rs = self:clone()
 	-- TODO: Replace with less heavy algorithm - shift all elements at once instead of shifting in each loop
 	for i = 1, a.__len do
-		while true do
+		repeat
 			local idx = rs:firstindexof(a.__data[i])
-			if idx < 0 then
-				break
+			if idx >= 0 then
+				collapseat(rs, idx)
 			end
-			collapseat(rs, idx)
-		end
+		until idx < 0
 	end
 	return rs
 end
